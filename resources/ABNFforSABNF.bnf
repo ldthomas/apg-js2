@@ -1,0 +1,115 @@
+
+;
+; ABNF for JavaScript APG 2.0.0 SABNF
+; RFC 5234 with some restrictions and additions.
+;
+;   1. Rules must begin at first character of each line.
+;      Indentations on first rule and rules thereafter are not allowed.
+;   2. Relaxed line endings. CRLF, LF or CR are accepted as valid line ending.
+;   3. Prose values, <prose value>, are accepted as valid grammar syntax.
+;      However, a working parser cannot and will not be generated from them.
+;
+; Super set (SABNF) additions:
+;   1. Syntactic predicate operators, & and !, are accepted as element prefixes.
+;      e.g. &%d13 or &rule or !(A / B)
+;   2. User-Defined Terminals (UDT) of the form, u_name and e_name are accepted.
+;      'name' is alpha followed by alpha/num/hyphen just like a rule name.
+;      u_name may be used as an element but no rule definition is given.
+;      e.g. rule = A / u_myUdt
+;           A = "a"
+;      would be a valid grammar.
+;   3. Case-sensitive, single-quoted strings are accepted.
+;      e.g. 'abc' would be equivalent to %d97.98.99
+;
+File          = *(BlankLine / Rule / RuleError)
+BlankLine     = *(%d32/%d9) [comment] LineEnd
+Rule          = RuleLookup owsp Alternation ((owsp LineEnd) / (LineEndError LineEnd))
+RuleLookup    = RuleNameTest owsp DefinedAsTest
+RuleNameTest  = RuleName/RuleNameError
+RuleName      = alphanum
+RuleNameError = 1*(%d33-60/%d62-126) ; all chars up to next space, "defined as" (=) or line end
+DefinedAsTest = DefinedAs / DefinedAsError
+DefinedAsError = 1*2%d33-126 ; the next 2 or 2 chars, not space or line end
+DefinedAs     = IncAlt / Defined
+Defined       = %d61
+IncAlt        = %d61.47
+RuleError     = 1*(%d32-126 / %d9  / LineContinue) LineEnd
+LineEndError  = 1*(%d32-126 / %d9  / LineContinue)
+Alternation   = Concatenation *(owsp AltOp Concatenation)
+Concatenation = Repetition *(CatOp Repetition)
+Repetition    = [AndOp / NotOp / RepOp] (Group / Option / BasicElement / BasicElementError)
+BasicElement  = UdtOp   /
+                RnmOp   /
+                TrgOp   /
+                TbsOp   /
+                TlsOp   /
+                ClsOp   /
+                ProsVal
+BasicElementError = 1*(%d33-40/%d42-46/%d48-92/%d94-126)
+					; all chars up to next space(%d32, CatOp), ')'(%d41, group close), '/'(%d47, AltOp), ']'(%d93, option close) or line end
+Group         = GroupOpen  Alternation (GroupClose / GroupError)
+GroupError    = 1*(%d33-40/%d42-46/%d48-92/%d94-126) ; same as BasicElementError
+GroupOpen     = %d40 owsp
+GroupClose    = owsp %d41
+Option        = OptionOpen Alternation (OptionClose / OptionError)
+OptionError   = 1*(%d33-40/%d42-46/%d48-92/%d94-126) ; same as BasicElementError
+OptionOpen    = %d91 owsp
+OptionClose   = owsp %d93
+RnmOp         = alphanum
+UdtOp         = udt-empty / udt-non-empty
+udt-non-empty = %d117.95 alphanum
+udt-empty     = %d101.95 alphanum
+RepOp         = (rep-min StarOp rep-max) /
+                (rep-min StarOp)         /
+                (StarOp rep-max)         /
+                 StarOp                  /
+                 rep-min-max
+AltOp         = %d47 owsp
+CatOp         = wsp
+StarOp        = %d42
+AndOp         = %d38
+NotOp         = %d33
+TrgOp         = %d37 ((Dec dmin %d45 dmax) / (Hex xmin %d45 xmax) / (Bin bmin %d45 bmax))
+TbsOp         = %d37 ((Dec dString *(%d46 dString)) / (Hex xString *(%d46 xString)) / (Bin bString *(%d46 bString)))
+TlsOp         = TlsOpen TlsString TlsClose
+TlsOpen       = %d34
+TlsClose      = %d34
+TlsString     = *(%d32-33/%d35-126/StringTab)
+StringTab     = %d9
+ClsOp         = ClsOpen ClsString ClsClose
+ClsOpen       = %d39
+ClsClose      = %d39
+ClsString     = *(%d32-38/%d40-126/StringTab)
+ProsVal       = ProsValOpen ProsValString ProsValClose
+ProsValOpen   = %d60
+ProsValString = *(%d32-61/%d63-126/StringTab)
+ProsValClose  = %d62
+
+rep-min       = rep-num
+rep-min-max   = rep-num
+rep-max       = rep-num
+rep-num       = 1*(%d48-57)
+dString       = dnum
+xString       = xnum
+bString       = bnum
+Dec           = (%d68/%d100)
+Hex           = (%d88/%d120)
+Bin           = (%d66/%d98)
+dmin          = dnum
+dmax          = dnum
+bmin          = bnum
+bmax          = bnum
+xmin          = xnum
+xmax          = xnum
+dnum          = 1*(%d48-57)
+bnum          = 1*%d48-49
+xnum          = 1*(%d48-57 / %d65-70 / %d97-102)
+
+; Basics
+alphanum      = (%d97-122/%d65-90) *(%d97-122/%d65-90/%d48-57/%d45)
+owsp          = *space
+wsp           = 1*space
+space         = %d32 / %d9 / comment /  LineContinue
+comment       = %d59 *(%d32-126 / %d9)
+LineEnd       = %d13.10 / %d10 / %d13
+LineContinue  = (%d13.10 / %d10 / %d13) (%d32 / %d9)

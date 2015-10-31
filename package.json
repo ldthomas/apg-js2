@@ -1,0 +1,29 @@
+{
+  "name": "apg",
+  "version": "2.0.0",
+  "description": "An ABNF Parser Generator - generates recursive-descent parsers from grammars written in a superset of Augmented Backus-Naur Form (ABNF)",
+  "main": "./src/apg.js",
+  "scripts": {
+    "test": "apg -v"
+  },
+  "bin" : {"apg":"./bin/apg"},
+  "files" : ["src", "resources", "bin"],
+  "dependencies": {
+    "apg-lib": "2.x"
+  },
+  "repository" :
+  { "type" : "git"
+  , "url" : "https://github.com/ldthomas/apg-js2.git"
+  },
+  "bugs" : {
+  "url" : "https://github.com/ldthomas/apg-js2/issues"
+  },
+  "keywords": [
+    "apg",
+    "parser",
+    "generator",
+    "ABNF"
+  ],
+  "author": "Lowell D. Thomas <lowell@coasttocoastresearch.com>",
+  "license": "BSD-3-Clause"
+}

@@ -1,0 +1,16 @@
+.*
+!.gitignore
+*~
+*.log
+*.out
+*.zip
+*.tgz
+cmsg
+**html/
+**RemoteSystemsTempFiles/
+**Archive/
+**workfiles/
+**node_modules/
+**html/
+**test/
+
