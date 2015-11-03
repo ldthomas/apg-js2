@@ -13,4 +13,7 @@ cmsg
 **node_modules/
 **html/
 **test/
+**documentation/
+**docs/
+conf.json
 
