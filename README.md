@@ -33,7 +33,7 @@ Its features include:
 *Requires node.js and npm*
 
 ```
-clone https://github.com/ldthomas/apg-js2.git apg
+git clone https://github.com/ldthomas/apg-js2.git apg
 cd apg
 npm install -g ./
 apg -v
@@ -57,12 +57,28 @@ resolving the conflict.
 <li>You probably know other ways to do it better to your suiting.</li>
 </ol>
 
+apg is meant to be installed globally and used as a command line application.
+However, if you want a local copy you can use it as follows.
+```
+mkdir mylocal
+cd mylocal
+npm install apg
+cd node_modules/apg
+```
+To run the locally installed copy:<br>
+`node main.js args`<br>
+
+To generate a local copy of the documentation:<br>
+`npm install -g docco` (if not already installed)<br>
+`./docco-gen`<br>
+Click on `./docs/index.html` to get started.
+
 **Examples:**  
 See <a href="https://github.com/ldthomas/apg-js2-examples">apg-js2-examples</a> for examples of running JavaScript APG 2.0 and the parsers it generates.
   
 **Documentation:**  
-To be done.  
-For now, run `apg -h` for a list of options and you can look at the code in the <a href="https://github.com/ldthomas/apg-js2-examples">examples</a>.
+Visit the APG web site and see the JavaScript [apg documentation page](./#),
+or see above to generate your own local copy (the web site copy may not always be synced to the latest commits).  
 
 **Copyright:**  
   *Copyright &copy; 2015 Lowell D. Thomas, all rights reserved*  

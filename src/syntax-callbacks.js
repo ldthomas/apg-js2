@@ -1,3 +1,6 @@
+// This module has all of the syntax callback functions for the [ABNF for SABNF parser](./abnf-forsabnf-parser.html).
+// (*See `resources/ABNFforSABNF.bnf` for the grammar file these callback functions are based on.*)
+// These functions are called by the parser's RNM operators (see `apg-lib` documentation).
 module.exports = function(){
 	"use strict";
 	var thisFileName = "SyntaxCallbacks.js: ";

@@ -1,165 +1,193 @@
+// This is the main or driver function for the parser generator.
+// It handles:
+//    - verification and interpretation of the command line parameters
+//    - execution of immediate commands (help, version, line end conversion)
+//    - setting up and opening the HTML files for display of the output
+//    - reading and verifying the input SABNF grammar file
+//    - parsing the input SABNF grammar, reporting errors, or generating a grammar object
+//    - evaluation of the input grammar's attributes
+//    - if all is OK, writing the generated grammar object to the specified file
 module.exports = function(args) {
-	"use strict";
-	var thisFileName = "generator.js: ";
-	var thisSectionName = "";
-	var files= null;
-	var nodeUtil;
-	try {
-		// SETUP - get all dependencies first (make sure they are available)
-		thisSectionName = "set up: ";
-		nodeUtil = require("util");
-		var apglib = require("apg-lib");
-		var Attributes = new require("./attributes.js");
-		var CommandLineObject = require("./command-line.js");
-		var GrammarObject = require("./input-analysis-parser.js");
-		var FilesObject = require("./html-files.js");
-		var SabnfObject = require("./abnf-for-sabnf-parser.js");
+  "use strict";
+  var thisFileName = "generator.js: ";
+  var thisSectionName = "";
+  var files = null;
+  var nodeUtil;
+  // The try block - all unrecoverable errors throw exceptions.
+  try {
+    // Setup section - get all dependencies first.
+    thisSectionName = "set up: ";
+    nodeUtil = require("util");
+    var htmlFiles = require("./html-files.js");
+    var apglib = require("apg-lib");
+    var cmdLine = require("./command-line.js");
+    var grammarAnalysis = new (require("./input-analysis-parser.js"))();
+    var sabnf = new (require("./abnf-for-sabnf-parser.js"))();
+    var Attributes = require("./attributes.js");
 
-		// CONFIGURATION - 	get command line parameters
-		thisSectionName = "command line configuration: ";
-		var config = (new CommandLineObject()).commandLine(args);
+    // Get command line parameters and set up the configuration accordingly.
+    thisSectionName = "command line configuration: ";
+    var config = cmdLine(args);
 
-		// - process immediate options, --help, --version
-		if (config.fHelp === true || args.length === 0) {
-			// help screen requested - display and exit
-			console.log(config.helpScreen(args));
-			return;
-		}
-		if (config.fVersion === true) {
-			// version number requested - display and exit
-			var msg = "";
-			msg += config.getVersion();
-			msg += ", ";
-			msg += config.getCopyright();
-			console.log(msg);
-			return;
-		}
+    // Process immediate options, `--help` & `--version`
+    if (config.fHelp === true || args.length === 0) {
+      console.log(config.helpScreen(args));
+      return;
+    }
+    if (config.fVersion === true) {
+      var msg = "";
+      msg += config.getVersion();
+      msg += ", ";
+      msg += config.getCopyright();
+      console.log(msg);
+      return;
+    }
 
-		// HTML SETUP - opening the html file for outout
-		thisSectionName = "HTML setup: ";
-		files = new FilesObject();
-		files.open(config);
-		files.writePage("console", "\nconsole opened");
-		files.writePage("configuration", config.displayHtml());
+    // Open the HTML output files.
+    // (e.g. after running apg view `html/index.html` and its links to see the output.)
+    thisSectionName = "HTML setup: ";
+    files = new htmlFiles();
+    files.open(config);
+    files.writePage("console", "\nconsole opened");
+    files.writePage("configuration", config.displayHtml());
 
-		// GRAMMAR VALIDATION - get and validate the input grammar
-		thisSectionName = "grammar validation: ";
-		if (config.vInput.length === 0) {
-			throw new Error("no input grammar file specified");
-		}
-		var grammar = new GrammarObject();
-		grammar.get(config.vInput);
-		var grammarResult = grammar.analyze(config.fStrict);
-		files.writePage("grammar", grammar.toHtml());
+    // Get and validate the input SABNF grammar.
+    thisSectionName = "grammar validation: ";
+    if (config.vInput.length === 0) {
+      throw new Error("no input grammar file specified");
+    }
+    grammarAnalysis.get(config.vInput);
+    var grammarResult = grammarAnalysis.analyze(config.fStrict);
+    files.writePage("grammar", grammarAnalysis.toHtml());
 
-		if (config.fCRLF || config.fLF) {
-			// LINE END CONVERSIONS - process  --CRLF and --LF
-			thisSectionName = "line end conversions: ";
-			if (config.fCRLF) {
-				var name = config.vInput[0] + ".crlf";
-				grammar.toCRLF(name);
-				files.writePage("console", "\nconverted input grammar file(s)  to '" + name+ "' with CRLF line ends");
-				console.log(thisFileName
-						+ "converted input grammar file(s)  to '" + name
-						+ "' with CRLF line ends");
-			}
-			if (config.fLF) {
-				var name = config.vInput[0] + ".lf";
-				grammar.toLF(name);
-				files.writePage("console", "\nconverted input grammar file(s)  to '" + name+ "' with LF line ends");
-				console.log(thisFileName
-						+ "converted input grammar file(s)  to '" + name
-						+ "' with LF line ends");
-			}
-			// check for errors before return
-		}
-		if (grammarResult.hasErrors === true) {
-			thisSectionName = "grammar validation: ";
-			files.writePage("grammar", grammar.errorsToHtml())
-			var msg = "invalid input grammar"
-			throw new Error(msg);
-		}
-		if (config.fCRLF || config.fLF) {
-			// line end conversions end processing
-			return;
-		}
-		
-		// GENERATOR - parse the input grammar generating the parser rules and opcodes
-		thisSectionName = "generater syntax: ";
-		var sabnf = new SabnfObject(grammar);
-		grammarResult = sabnf.syntax(config.fStrict);
-		files.writePage("state", apglib.utils.stateToHtml(grammarResult.state));
-		files.writePage("grammarStats", grammarResult.stats.displayHtml("ops"));
-		if (grammarResult.hasErrors) {
-			files.writePage("grammar", sabnf.errorsToHtml("Grammar Syntax Errors"));
-			throw "grammar has syntax errors";
-		}
-		files.writePage("console", "\ngrammar syntax OK");
+    // Do line end conversions (`--CRLF` and `--LF` options) here before reporting any grammar validation errors.
+    if (config.fCRLF || config.fLF) {
+      thisSectionName = "line end conversions: ";
+      if (config.fCRLF) {
+        var name = config.vInput[0] + ".crlf";
+        grammarAnalysis.toCRLF(name);
+        files.writePage("console", "\nconverted input grammar file(s)  to '"
+            + name + "' with CRLF line ends");
+        console.log(thisFileName + "converted input grammar file(s)  to '"
+            + name + "' with CRLF line ends");
+      }
+      if (config.fLF) {
+        var name = config.vInput[0] + ".lf";
+        grammarAnalysis.toLF(name);
+        files.writePage("console", "\nconverted input grammar file(s)  to '"
+            + name + "' with LF line ends");
+        console.log(thisFileName + "converted input grammar file(s)  to '"
+            + name + "' with LF line ends");
+      }
+    }
+    // Exit here if grammar has validation errors.
+    if (grammarResult.hasErrors === true) {
+      thisSectionName = "grammar validation: ";
+      files.writePage("grammar", grammarAnalysis.errorsToHtml())
+      var msg = "invalid input grammar"
+      throw new Error(msg);
+    }
+    if (config.fCRLF || config.fLF) {
+      return;
+    }
 
-		thisSectionName = "generater semantics: ";
-		grammarResult = sabnf.semantic();
-		if (grammarResult.hasErrors) {
-			files.writePage("grammar", sabnf.errorsToHtml("Grammar Semantic Errors"));
-			throw "grammar has semantic errors";
-		}
-		files.writePage("console", "\ngrammar semantics OK");
+    // Parse the input SABNF grammar and generate a grammar object for the
+    // user's parser.
+    //
+    // The syntax phase (see `syntax-callbacks.js` for the code that handles
+    // this).
+    // Any grammar syntax errors caught are reported to the `html/grammar.html` page.
+    thisSectionName = "generater syntax: ";
+    grammarResult = sabnf.syntax(grammarAnalysis, config.fStrict);
+    files.writePage("state", apglib.utils.stateToHtml(grammarResult.state));
+    files.writePage("grammarStats", grammarResult.stats.displayHtml("ops"));
+    if (grammarResult.hasErrors) {
+      files.writePage("grammar", sabnf.errorsToHtml("Grammar Syntax Errors"));
+      throw "grammar has syntax errors";
+    }
+    files.writePage("console", "\ngrammar syntax OK");
 
-		// ATTRIBUTES - use the parser-generated rules and opcodes to find the grammar attributes
-		thisSectionName = "grammar attributes: ";
-		var attrs = new Attributes(grammarResult.rules);
-		var attrErrors = attrs.getAttributes();
-		files.writePage("rules", attrs.rulesWithReferencesToHtml());
-		files.writePage("attributes", attrs.ruleAttrsToHtml());
-		if(attrErrors > 0){
-			throw "grammar has attribute errors";
-		}
-		files.writePage("console", "\ngrammar Attributes OK");
+    // The semantic phase. The grammar's rules and opcodes are generated here (see
+    // `semantic-callbacks.js` for the code that handles this).
+    // Any grammar semantic errors caught are reported to the `html/grammar.html` page.
+    thisSectionName = "generater semantics: ";
+    grammarResult = sabnf.semantic();
+    if (grammarResult.hasErrors) {
+      files.writePage("grammar", sabnf.errorsToHtml("Grammar Semantic Errors"));
+      throw "grammar has semantic errors";
+    }
+    files.writePage("console", "\ngrammar semantics OK");
 
-		// OUTPUT - output configured parsers
-		thisSectionName = "generate output : ";
-		var msg;
-		if(config.vJSLang !== ""){
-			var filename = sabnf.generateJavaScript(grammarResult.rules, grammarResult.udts, config.vJSLang);
-			msg = "\nJavaScript parser generated: "+filename;
-			console.log(msg);
-			files.writePage("console", msg);
-		}
-		if(config.vCLang !== ""){
-			msg = "\nC language generator: not yet implemented";
-			console.log(msg);
-			files.writePage("console", msg);
-		}
-		if(config.vCppLang !== ""){
-			msg = "\nC++ language generator: not yet implemented";
-			console.log(msg);
-			files.writePage("console", msg);
-		}
-		if(config.vJavaLang !== ""){
-			msg = "\nJava language generator: not yet implemented";
-			console.log(msg);
-			files.writePage("console", msg);
-		}
-	} catch (e) {
-		var msg = "\nEXCEPTION THROWN: " + thisFileName + thisSectionName + "\n";
-		if (e instanceof Error) {
-			msg += e.name + ": " + e.message;
-		} else if (typeof (e) === "string") {
-			msg += e;
-		} else {
-			msg += nodeUtil.inspect(e, {
-				showHidden : true,
-				depth : null,
-				colors : true
-			});
-		}
-		console.log(msg);
-		if(files !== null){
-			files.writePage("console", msg);
-		}
-	} finally {
-		// attempt a graceful close of any remaining open files
-		if(files !== null){
-			files.close();
-		}
-	}
+    // Attribute generation. Output results to `html/attributes.html`.
+    // Exit if there are attribute errors, such as left recursion.
+    thisSectionName = "grammar attributes: ";
+    var attrs = new Attributes();
+    var attrErrors = attrs.getAttributes(grammarResult.rules);
+    files.writePage("rules", attrs.rulesWithReferencesToHtml());
+    files.writePage("attributes", attrs.ruleAttrsToHtml());
+    if (attrErrors > 0) {
+      throw "grammar has attribute errors";
+    }
+    files.writePage("console", "\ngrammar Attributes OK");
+
+    // Check the configuration for requested parsers.
+    thisSectionName = "generate output : ";
+    var msg;
+    // Generate a grammar object to be used in the user's parser for this
+    // input SABNF grammar.
+    if (config.vJSLang !== "") {
+      var filename = sabnf.generateJavaScript(grammarResult.rules,
+          grammarResult.udts, config.vJSLang);
+      msg = "\nJavaScript parser generated: " + filename;
+      console.log(msg);
+      files.writePage("console", msg);
+    }
+    // Output in languages other than JavaScript not implemented.
+    // Maybe some day.
+    if (config.vCLang !== "") {
+      msg = "\nC language generator: not yet implemented";
+      console.log(msg);
+      files.writePage("console", msg);
+    }
+    if (config.vCppLang !== "") {
+      msg = "\nC++ language generator: not yet implemented";
+      console.log(msg);
+      files.writePage("console", msg);
+    }
+    if (config.vJavaLang !== "") {
+      msg = "\nJava language generator: not yet implemented";
+      console.log(msg);
+      files.writePage("console", msg);
+    }
+
+    // The catch block.
+    //
+    // Generate an appropriate error message and write it to the console
+    // and the HTML console page (`html/index.html`) if it is open.
+  } catch (e) {
+    var msg = "\nEXCEPTION THROWN: " + thisFileName + thisSectionName + "\n";
+    if (e instanceof Error) {
+      msg += e.name + ": " + e.message;
+    } else if (typeof (e) === "string") {
+      msg += e;
+    } else {
+      msg += nodeUtil.inspect(e, {
+        showHidden : true,
+        depth : null,
+        colors : true
+      });
+    }
+    console.log(msg);
+    if (files !== null) {
+      files.writePage("console", msg);
+    }
+
+    // The finally block.
+    //
+    // Attempt a graceful close of any remaining open files.
+  } finally {
+    if (files !== null) {
+      files.close();
+    }
+  }
 }

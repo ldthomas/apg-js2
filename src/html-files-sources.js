@@ -1,4 +1,10 @@
+// This module simply defines several HTML quantities as text strings.
+// This avoids the need for the application to carry along 
+// resource functions that need to be available and read in.
+
 "use strict;"
+// screencss is the main CSS file used to display the apg output in HTML format.
+// All of the pages, `/html/console.html`, etc. use it.
 var screencss  = "";
 screencss += "\/*************************************\n";
 screencss += " * TITLE: Sinorca Screen Stylesheet  *\n";
@@ -340,6 +346,7 @@ screencss += ".attr-table i > em {font-size: 150%;font-weight:bold;}\n";
 screencss += ".attr-table kbd > em {font-size: 150%;font-weight:bold;}\n";
 screencss += "\n";
 
+// An alternative CSS style sheet to be used for printing an HTML page.
 var printcss  = "\n";
 printcss += "\/************************************\n";
 printcss += " * TITLE: Sinorca Print Stylesheet  * \n";
@@ -478,6 +485,10 @@ printcss += "  background-color: transparent;\n";
 printcss += "  text-decoration: none;\n";
 printcss += "}\n";
 
+// This is the JavaScript code for sorting the rule list
+// as well for the show/hide anchors for the list of dependent rules.
+// Uses the `<script>` data written to the page by 
+//[rulesWithReferencesToHtml()](./attributes.html#section-12)
 var rulesort  = "\n";
 rulesort += "\"use strict;\"\n";
 rulesort += "\n";
@@ -613,6 +624,10 @@ rulesort += "	html += \"<\/table>\";\n";
 rulesort += "	return html;\n";
 rulesort += "}\n";
 
+//This is the JavaScript code for sorting the rule list
+//on the `html/attributes.html` page.
+//Uses the `<script>` data written to the page by 
+//[attrsToHtml()](./attributes.html#section-7)
 var attrsort  = "";
 attrsort += "\"use strict;\"\n";
 attrsort += "\n";
@@ -835,6 +850,7 @@ attrsort += "	html += \"<\/table>\"\n";
 attrsort += "	return html;\n";
 attrsort += "}\n";
 
+// Export the strings here.
 exports.screencss = screencss;
 exports.printcss = printcss;
 exports.attrsort = attrsort;
