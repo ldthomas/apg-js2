@@ -7,7 +7,7 @@
     "test": "apg -v"
   },
   "bin" : {"apg":"./bin/apg"},
-  "files" : ["src", "resources", "bin", "index.md", "docco-gen", "index.js"],
+  "files" : ["src", "resources", "bin", "index.md", "docco-gen", "main.js"],
   "dependencies": {
     "apg-lib": "2.x"
   },

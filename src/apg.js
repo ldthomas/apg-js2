@@ -7,6 +7,13 @@
 //    - parsing the input SABNF grammar, reporting errors, or generating a grammar object
 //    - evaluation of the input grammar's attributes
 //    - if all is OK, writing the generated grammar object to the specified file
+/*
+* COPYRIGHT: Copyright (c) 2015 Lowell D. Thomas, all rights reserved
+*   LICENSE: BSD-3-Clause
+*    AUTHOR: Lowell D. Thomas
+*     EMAIL: lowell@coasttocoastresearch.com
+*   WEBSITE: http://coasttocoastresearch.com/
+*/
 module.exports = function(args) {
   "use strict";
   var thisFileName = "generator.js: ";

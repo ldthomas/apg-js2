@@ -1,4 +1,5 @@
-**Annotated Table of Contents**
+**Annotated Table of Contents**<br>
+*JavaScript APG Version 2.0*
 
 0. The GitHub & npm README page.
 > [README.md](./README.html)

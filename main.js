@@ -7,7 +7,14 @@
 //node main.js args
 //```
 //
-//Not used by the global installation (recommended).
+//Not used by the global installation.
+/*
+* COPYRIGHT: Copyright (c) 2015 Lowell D. Thomas, all rights reserved
+*   LICENSE: BSD-3-Clause
+*    AUTHOR: Lowell D. Thomas
+*     EMAIL: lowell@coasttocoastresearch.com
+*   WEBSITE: http://coasttocoastresearch.com/
+*/
 (function(){
 	"use strict";
 	/* remove the first two arguments node.js arguments */
