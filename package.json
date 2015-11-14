@@ -1,22 +1,31 @@
 {
   "name": "apg",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "An ABNF Parser Generator - generates recursive-descent parsers from grammars written in a superset of Augmented Backus-Naur Form (ABNF)",
   "main": "./src/apg.js",
   "scripts": {
     "test": "apg -v"
   },
-  "bin" : {"apg":"./bin/apg"},
-  "files" : ["src", "resources", "bin", "index.md", "docco-gen", "main.js"],
+  "bin": {
+    "apg": "./bin/apg"
+  },
+  "files": [
+    "src",
+    "resources",
+    "bin",
+    "index.md",
+    "docco-gen",
+    "main.js"
+  ],
   "dependencies": {
     "apg-lib": "2.x"
   },
-  "repository" :
-  { "type" : "git"
-  , "url" : "https://github.com/ldthomas/apg-js2.git"
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ldthomas/apg-js2.git"
   },
-  "bugs" : {
-  "url" : "https://github.com/ldthomas/apg-js2/issues"
+  "bugs": {
+    "url": "https://github.com/ldthomas/apg-js2/issues"
   },
   "keywords": [
     "apg",
