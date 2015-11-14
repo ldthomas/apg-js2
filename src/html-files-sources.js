@@ -487,6 +487,8 @@ printcss += "}\n";
 
 // This is the JavaScript code for sorting the rule list
 // as well for the show/hide anchors for the list of dependent rules.
+// The `window.onload` function is written to work even if `jQuery` is not available.
+// In that case the table will display, but the anchors for sorting will not work.
 // Uses the `<script>` data written to the page by 
 //[rulesWithReferencesToHtml()](./attributes.html#section-12)
 var rulesort  = "\n";
@@ -500,9 +502,6 @@ rulesort += '    var el = document.getElementById("sort-links");\n';
 rulesort += '    el.innerHTML = tableGen();\n';
 rulesort += '  }\n';
 rulesort += '}\n';
-//rulesort += "$(document).ready(function() {\n";
-//rulesort += "	sort({data: \"index\"});\n";
-//rulesort += "});\n";
 rulesort += "\n";
 rulesort += "function sortByNameDown(lhs, rhs){\n";
 rulesort += "	if(lhs.name < rhs.name){\n";
@@ -634,6 +633,8 @@ rulesort += "}\n";
 
 //This is the JavaScript code for sorting the rule list
 //on the `html/attributes.html` page.
+//The `window.onload` function is written to work even if `jQuery` is not available.
+//In that case the table will display, but the anchors for sorting will not work.
 //Uses the `<script>` data written to the page by 
 //[attrsToHtml()](./attributes.html#section-7)
 var attrsort  = "";
@@ -647,11 +648,6 @@ attrsort += '    var el = document.getElementById("sort-links");\n';
 attrsort += '    el.innerHTML = tableGen();\n';
 attrsort += '  }\n';
 attrsort += '}\n';
-//attrsort += "$(document).ready(function() {\n";
-//attrsort += "	sort({\n";
-//attrsort += "		data : null\n";
-//attrsort += "	});\n";
-//attrsort += "});\n";
 attrsort += "\n";
 attrsort += "function sortCols(lhs, rhs) {\n";
 attrsort += "	var lval, rval;\n";

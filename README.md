@@ -77,8 +77,14 @@ Click on `./docs/index.html` to get started.
 See <a href="https://github.com/ldthomas/apg-js2-examples">apg-js2-examples</a> for examples of running JavaScript APG 2.0 and the parsers it generates.
   
 **Documentation:**  
-Visit the APG web site and see the JavaScript [apg documentation page](./#),
-or see above to generate your own local copy (the web site copy may not always be synced to the latest commits).  
+The documentation is in the code in [`docco`](https://jashkenas.github.io/docco/) format.
+To generate the documentation, from the package directory:
+```
+npm install -g docco
+./docco-gen
+```
+View `docs/index.html` in any web browser to get started.
+Or view it on the [APG website](http://coasttocoastresearch.com/docjs2/apg/index.html)
 
 **Copyright:**  
   *Copyright &copy; 2015 Lowell D. Thomas, all rights reserved*  
