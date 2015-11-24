@@ -14,12 +14,14 @@
 Its features include:
 
 <ul>
-<li>generates language parsers and translators from a superset of the Augmented Backus-Naur Form (ABNF <a href="https://tools.ietf.org/html/rfc5234">RFC5234</a>) grammar syntax</li>
-<li>accepts valid ABNF grammars</li>
-<li>use of callback functions keeps the parser's action code separate from the grammar</li>
-<li>accepts case-sensitive literal strings(*)</li>
+<li>generates language parsers and translators from a superset of the Augmented Backus-Naur Form 
+(ABNF) grammar syntax (<a href="https://tools.ietf.org/html/rfc5234">RFC 5234</a>)</li>
+<li>accepts valid ABNF grammars, including <a href="https://tools.ietf.org/html/rfc7405">RFC 7405</a> case-sensitive and -insensitive 
+literal strings of the form <code>%s"abc" & %i"abc"</code>
+</li>
 <li>accepts <code>AND</code> & <code>NOT</code> syntactic predicate operators for conditional parsing based on specified, look-ahead phrases</li>
 <li>accepts User-Defined Terminals (UDTs) which provide user-written, non-Context-Free phrase recognition operators</li>
+<li>use of callback functions keeps the parser's action code separate from the grammar</li>
 <li>user-written callback functions provide complete monitoring and flow control of the parser</li>
 <li>optional generation of an Abstract Syntax Tree (AST)</li>
 <li>translation of the AST with user-written callback functions</li>
@@ -30,17 +32,8 @@ Its features include:
 <li>runs as a <a = href="https://nodejs.org/en/">node.js</a>, desktop cli function</li>
 </ul>
 
-<i>(*)Note: [RFC 5234](https://tools.ietf.org/html/rfc5234) does not have a specification
-for directly representing literal text strings in a case-sensitive manner.
-JavaScript APG 2.0 adds this feature using single-quoted strings.
-However, RFC 5234 has now been updated with
-[RFC 7405](https://tools.ietf.org/html/rfc7405) 
-to include literal text strings with the prefixes `%i` and `%s` for case insensitive and case sensitive strings, respectively.
-This version of JavaScript APG does not yet recognize these prefixes.</i>
-
-**Installation:**  
+**Installation:**    
 *Requires node.js and npm.*
-
 ```
 git clone https://github.com/ldthomas/apg-js2.git apg
 cd apg

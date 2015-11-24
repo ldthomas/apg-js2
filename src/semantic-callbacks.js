@@ -107,51 +107,6 @@ module.exports = function(grammar) {
     }
     return ret;
   }
-
-  /*
-   * Opcode prototypes.
-   */
-  var opAlt = {
-    type : id.ALT,
-    children : []
-  }
-  var opCat = {
-    type : id.CAT,
-    children : []
-  }
-  var opRep = {
-    type : id.REP,
-    min : 0,
-    max : 0
-  }
-  var opRnm = {
-    type : id.RNM,
-    index : 0
-  }
-  var opUdt = {
-    type : id.UDT,
-    empty : false,
-    index : 0
-  }
-  var opAnd = {
-    type : id.AND
-  }
-  var opNot = {
-    type : id.NOT
-  }
-  var opTls = {
-    type : id.TLS,
-    string : []
-  }
-  var opTbs = {
-    type : id.TBS,
-    string : []
-  }
-  var opTrg = {
-    type : id.TRG,
-    min : 0,
-    max : 0
-  }
   // The AST callback functions.
   function semFile(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
@@ -500,17 +455,43 @@ module.exports = function(grammar) {
   function semTlsOp(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
+      data.tlscase = true; /* default to case insensitive */
     } else if (state == id.SEM_POST) {
-      var str = chars.slice(phraseIndex + 1, phraseIndex + phraseCount - 1);
-      for (var i = 0; i < str.length; i += 1) {
-        if (str[i] >= 65 && str[i] <= 90) {
-          str[i] += 32;
-        }
+    }
+    return ret;
+  }
+  function semTlsCase(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      if(phraseCount > 0 && (chars[phraseIndex + 1] === 83 || chars[phraseIndex + 1] === 115)){
+        data.tlscase = false;  /* set to case sensitive */
       }
-      data.opcodes.push({
-        type : id.TLS,
-        string : str,
-      });
+    }
+    return ret;
+  }
+  function semTlsString(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      if(data.tlscase){
+        var str = chars.slice(phraseIndex, phraseIndex + phraseCount);
+        for (var i = 0; i < str.length; i += 1) {
+          if (str[i] >= 65 && str[i] <= 90) {
+            str[i] += 32;
+          }
+        }
+        data.opcodes.push({
+          type : id.TLS,
+          string : str,
+        });
+      }else{
+        data.opcodes.push({
+          type : id.TBS,
+          string : chars.slice(phraseIndex,
+              (phraseIndex + phraseCount))
+        });
+      }
     }
     return ret;
   }
@@ -666,6 +647,8 @@ module.exports = function(grammar) {
   this.callbacks['rulelookup'] = semRuleLookup;
   this.callbacks['rulename'] = semRuleName;
   this.callbacks['tbsop'] = semTbsOp;
+  this.callbacks['tlscase'] = semTlsCase;
+  this.callbacks['tlsstring'] = semTlsString;
   this.callbacks['tlsop'] = semTlsOp;
   this.callbacks['trgop'] = semTrgOp;
   this.callbacks['udt-empty'] = semUdtEmpty;

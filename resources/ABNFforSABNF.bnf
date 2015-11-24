@@ -2,6 +2,10 @@
 ;
 ; ABNF for JavaScript APG 2.0.0 SABNF
 ; RFC 5234 with some restrictions and additions.
+; Updated 11/24/2014 for RFC 7405 case-sensitive literal string notation
+;  - accepts %s"string" as a case-sensitive string
+;  - accepts %i"string" as a case-insensitive string
+;  - accepts "string" as a case-insensitive string
 ;
 ;   1. Rules must begin at first character of each line.
 ;      Indentations on first rule and rules thereafter are not allowed.
@@ -71,7 +75,8 @@ AndOp         = %d38
 NotOp         = %d33
 TrgOp         = %d37 ((Dec dmin %d45 dmax) / (Hex xmin %d45 xmax) / (Bin bmin %d45 bmax))
 TbsOp         = %d37 ((Dec dString *(%d46 dString)) / (Hex xString *(%d46 xString)) / (Bin bString *(%d46 bString)))
-TlsOp         = TlsOpen TlsString TlsClose
+TlsOp         = TlsCase TlsOpen TlsString TlsClose
+TlsCase       = ["%i" / "%s"]
 TlsOpen       = %d34
 TlsClose      = %d34
 TlsString     = *(%d32-33/%d35-126/StringTab)
