@@ -22,16 +22,22 @@
 ; Value parameters can be single token (--in=<file>) or double token parameters (-in <file>)
 ; The string may be empty (no parameters).
 ;
-file       = *param
-param      = (value-param / flag-param / other) %d10
-other      = 1*%d32-126
+file         = *param
+param        = in
+             / html
+             / js-lang
+             / java-lang
+             / c-lang
+             / cpp-lang
+             / (flag-param / other) %d10
+other        = 1*%d32-126
 
-flag-param = compressed
-           / help
-           / version
-           / strict
-           / crlf
-           / linefeed
+flag-param   = compressed
+             / help
+             / version
+             / strict
+             / crlf
+             / linefeed
 
 value-param  = in
              / html
@@ -41,39 +47,36 @@ value-param  = in
              / java-lang
 
 ; flag parameters
-help            = (%d45.104 / %d45.45.104.101.108.112 / %d63 )
-				;('-h'    / '--help' / '?')                        
-version         = (%d45.118 / %d45.45.118.101.114.115.105.111.110 )
-				;('-v'    / '--version')
-strict          = (%d45.115 / %d45.45.115.116.114.105.99.116 )
-				;('-s'   / '--strict')
-crlf            = (%d45.114 / %d45.45.67.82.76.70 )
-				;('-r'   / '--CRLF')
-linefeed        = (%d45.108 / %d45.45.76.70 )
-				;('-l'   / '--LF')
-compressed      = %d45 1*(%d97-122/%d65-90)
+help         = ('-h' / '--help' / '?' )
+version      = ('-v' / '--version' )
+strict       = ('-s' / '--strict' )
+crlf         = ('-r' / '--CRLF' )
+linefeed     = ('-l' / '--LF' )
+compressed   = %d45 1*(%d97-122/%d65-90)
 
 ; value parameters
-in			= in-short / in-long
-in-long		= (%d45.45.105.110.61 cdvalue)							;('--in=' comma-delimited values)
-in-short	= (%d45 "in" %d10 cdvalue)								;('-in '  comma-delimited values)
-html 		= html-short / html-long
-html-long	= (%d45.45.72.84.77.76.61  value)						;('--HTML=' 		value)
-html-short	= (%d45 "html" %d10  value)								;('-html ' 		   	value)
-c-lang 		= c-short / c-long
-c-long 		= (%d45.45.67.61 value)									;('--C=' 			value)
-c-short		= (%d45 "c" %d10 value)									;('-c ' 			value)
-cpp-lang 	= cpp-short / cpp-long
-cpp-long 	= (%d45.45.67.112.112.61 value)							;('--Cpp=' 			value)
-cpp-short 	= (%d45 "cpp" %d10 value)								;('-cpp ' 			value)
-js-lang 	= js-short / js-long
-js-long 	= (%d45.45.74.97.118.97.83.99.114.105.112.116.61 value)	;('--JavaScript='	value)
-js-short 	= (%d45 "js" %d10 value)									;('-js ' 	   		value)
-java-lang 	= java-short / java-long
-java-long 	= (%d45.45.74.97.118.97.61 value)						;('--Java=' 		value)
-java-short 	= (%d45 "java" %d10 value)								;('-java ' 		   	value)
+in          = in-short / in-long
+in-long     = '--in=' cdvalue %d10
+in-short    = '-in' %d10 cdvalue %d10
+html        = html-short / html-long
+html-long   = '--HTML'  html-value %d10
+html-short  = '-html' %d10  html-value %d10
+c-lang      = c-short / c-long
+c-long      = '--C=' [lang-value] %d10
+c-short     = '-c' %d10 [lang-value %d10]
+cpp-lang    = cpp-short / cpp-long
+cpp-long    = '--C++=' [lang-value] %d10
+cpp-short   = '-c++' %d10 [lang-value %d10]
+js-lang     = js-short / js-long
+js-long     = '--JavaScript=' [lang-value] %d10
+js-short    = '-js' %d10 [lang-value %d10]
+java-lang   = java-short / java-long
+java-long   = '--Java=' [lang-value] %d10
+java-short  = '-java' %d10 [lang-value %d10]
 
 ; core
-cdvalue = invalue *(*%d32 %d44 *%d32 invalue) 
-invalue = (%d33-43/%d45-126) *(%d33-43/%d45-126)
-value = %d32-126 *%d32-126
+cdvalue     = invalue *(*%d32 %d44 *%d32 invalue) 
+invalue     = (%d33-43/%d45-126) *(%d33-43/%d45-126)
+html-value  = 1*%d33-126
+lang-value  = (%d33-44/%d46-126) *%d33-126
+              ; can be empty, first character cannot be hyphen "-" if not empty

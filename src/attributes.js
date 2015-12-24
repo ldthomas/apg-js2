@@ -389,15 +389,25 @@ module.exports = function() {
     attrNonRecursive(rules);
     attrRecursive(rules);
     ruleErrorCount = 0;
+    var attrErrors = [];
     rules.forEach(function(rule) {
-      if (rule.attr.left === true || rule.attr.finite === false
-          || rule.attr.cyclic === true) {
+      rule.error = false;
+      if (rule.attr.left === true) {
         rule.error = true;
         ruleErrorCount += 1;
-      } else {
-        rule.error = false;
+        attrErrors.push({name: rule.name, error: "left recursive"});
+      }
+      if (rule.attr.finite === false) {
+        rule.error = true;
+        ruleErrorCount += 1;
+        attrErrors.push({name: rule.name, error: "infinite"});
+      }
+      if (rule.attr.cyclic === true) {
+        rule.error = true;
+        ruleErrorCount += 1;
+        attrErrors.push({name: rule.name, error: "cyclic"});
       }
     });
-    return ruleErrorCount;
+    return attrErrors;
   }
 }

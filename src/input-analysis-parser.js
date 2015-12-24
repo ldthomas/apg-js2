@@ -111,25 +111,6 @@ module.exports = function() {
     return id.SEM_OK;
   }
 
-  /*
-   * grammar error format 
-   * { 
-   *  line: 0, 
-   *  char: 0, 
-   *  msg: "" 
-   * }
-   * grammar line object format 
-   * {
-   *   lineNo : line number, 
-   *   zero-based, 
-   *   beginChar : index of first character, 
-   *   length : number of characters in line, including line ending characters, 
-   *   textLength : number of characters of text, 
-   *   endLength : number of characters in the line end - 1 (LF or CR) or 2(CRLF), 
-   *   endType: "CRLF" or "LF" or "CR" or "none", 
-   *   invalidChars : number of invalid characters - e.g. 0x255 
-   * }
-   */
   // Read the grammar from the named file.
   this.get = function(filename) {
     var files = [];
@@ -156,10 +137,37 @@ module.exports = function() {
           + "get(): error reading input grammar file\n" + e.message);
     }
   };
+  this.getString = function(str){
+    if(typeof(str) !== "string" || str === ""){
+      throw new Error(thisFileName + 'getString(): input not a valid string: "' + str + '"');
+    }
+    this.chars.length = 0;
+    this.lines.length = 0;
+    this.chars = apglib.utils.stringToChars(str);
+  }
+  /*
+   * grammar error format 
+   * { 
+   *  line: 0, 
+   *  char: 0, 
+   *  msg: "" 
+   * }
+   * grammar line object format 
+   * {
+   *   lineNo : line number, // zero-based  
+   *   beginChar : index of first character, 
+   *   length : number of characters in line, including line ending characters, 
+   *   textLength : number of characters of text, 
+   *   endLength : number of characters in the line end - 1 (LF or CR) or 2(CRLF), 
+   *   endType: "CRLF" or "LF" or "CR" or "none", 
+   *   invalidChars : number of invalid characters - e.g. 0x255 
+   * }
+   */
   // Analyze the grammar for character code errors and catalog the lines.
   this.analyze = function(strict, doTrace) {
     var ret = {
       hasErrors : false,
+      errors : errors,
       trace : null
     }
     if (strict === undefined || strict !== true) {

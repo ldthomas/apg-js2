@@ -66,6 +66,9 @@ module.exports = function() {
         case 108: // 'l'
           data.config.fLF = true;
           break;
+        case 107: // 'k'
+          data.config.fCallStack = true;
+          break;
         default:
           data.errors.push("unrecognized command line argument flag: "
               + String.fromCharCode(chars[phraseIndex + i]));
@@ -116,7 +119,20 @@ module.exports = function() {
     }
     return id.SEM_OK;
   }
-  function semValue(state, chars, phraseIndex, phraseCount, data) {
+  function semHtmlValue(state, chars, phraseIndex, phraseCount, data) {
+    if (state == id.SEM_PRE) {
+      data.value = "";
+      var end = phraseIndex + phraseCount
+      for (var i = phraseIndex; i < end; i++) {
+        data.value += String.fromCharCode(chars[i]);
+      }
+      if(phraseCount === 0){
+        data.errors.push("htmlDir value cannot be empty");
+      }
+    }
+    return id.SEM_OK;
+  }
+  function semLangValue(state, chars, phraseIndex, phraseCount, data) {
     if (state == id.SEM_PRE) {
       data.value = "";
       var end = phraseIndex + phraseCount
@@ -153,6 +169,7 @@ module.exports = function() {
     parser.ast.callbacks['c-long'] = false;
     parser.ast.callbacks['c-short'] = false;
     parser.ast.callbacks['cdvalue'] = false;
+    parser.ast.callbacks['compressed'] = semCompressed;
     parser.ast.callbacks['cpp-lang'] = semCppLang;
     parser.ast.callbacks['cpp-long'] = false;
     parser.ast.callbacks['cpp-short'] = false;
@@ -163,6 +180,7 @@ module.exports = function() {
     parser.ast.callbacks['html'] = semHTML;
     parser.ast.callbacks['html-long'] = false;
     parser.ast.callbacks['html-short'] = false;
+    parser.ast.callbacks['html-value'] = semHtmlValue;
     parser.ast.callbacks['in'] = false;
     parser.ast.callbacks['in-long'] = false;
     parser.ast.callbacks['in-short'] = false;
@@ -173,12 +191,11 @@ module.exports = function() {
     parser.ast.callbacks['js-lang'] = semJSLang;
     parser.ast.callbacks['js-long'] = false;
     parser.ast.callbacks['js-short'] = false;
+    parser.ast.callbacks['lang-value'] = semLangValue;
     parser.ast.callbacks['linefeed'] = semLF;
-    parser.ast.callbacks['compressed'] = semCompressed;
     parser.ast.callbacks['other'] = semOther;
     parser.ast.callbacks['param'] = false;
     parser.ast.callbacks['strict'] = semStrict;
-    parser.ast.callbacks['value'] = semValue;
     parser.ast.callbacks['value-param'] = false;
     parser.ast.callbacks['version'] = semVersion;
 

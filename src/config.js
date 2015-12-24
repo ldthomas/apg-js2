@@ -71,23 +71,28 @@ module.exports = function() {
   this.getCopyright = function() {
     return COPYRIGHT;
   }
-  
+
   // The flag defaults.
   this.fHelp = false;
   this.fVersion = false;
   this.fStrict = false;
   this.fCRLF = false;
   this.fLF = false;
-  
+
   // The key/value defaults.
   this.vInput = [];
   this.vHTMLDir = HTMLDIR;
-  this.vCLang = "";
-  this.vCppLang = "";
-  this.vJSLang = "";
-  this.vJavaLang = "";
-  
-  // A function to display the configuration in text format suitable for `console.log()` output.
+  this.vCLang = null;
+  this.vCppLang = null;
+  this.vJSLang = null;
+  this.vJavaLang = null;
+//  this.vCLang = "";
+//  this.vCppLang = "";
+//  this.vJSLang = "";
+//  this.vJavaLang = "";
+
+  // A function to display the configuration in text format suitable for
+  // `console.log()` output.
   this.display = function() {
     var text = "";
     text += "\nconfiguration:";
@@ -102,9 +107,15 @@ module.exports = function() {
     text += "\n";
     text += "-L, --LF: " + this.fLF;
     text += "\n";
+    text += "-k, --call-stack: " + this.fCallStack;
+    text += "\n";
     text += "--in: '" + this.vInput + "'";
     text += "\n";
     text += "--HTML: '" + this.vHTMLDir + "'";
+    text += "\n";
+    text += "--node-hits: '" + this.vNodeHits + "'";
+    text += "\n";
+    text += "--tree-depth: '" + this.vTreeDepth + "'";
     text += "\n";
     text += "--C: '" + this.vCLang + "'";
     text += "\n";
@@ -116,9 +127,10 @@ module.exports = function() {
     text += "\n";
     return text;
   };
-  
+
   // A function to display the configuration in HTML format.
-  // This function is used to generate the `html/configuration.html` output page.
+  // This function is used to generate the `html/configuration.html` output
+  // page.
   this.displayHtml = function() {
     var html = '<table id="config-table">\n';
     html += '<tr>\n';
@@ -146,6 +158,10 @@ module.exports = function() {
     html += '<td>-L</td><td>--LF</td><td>' + this.fLF
         + '</td><td>convert all line endings to LF, including last line</td>\n';
     html += '</tr>\n';
+    html += '<td>-k</td><td>--call-stack</td><td>'
+        + this.fCallStack
+        + '</td><td>display the maximum call stack depth for this JavaScript engine</td>\n';
+    html += '</tr>\n';
     html += '<tr>\n';
     html += '<td>-in</td><td>--in=</td><td>' + this.vInput
         + '</td><td>input grammar file name</td>\n';
@@ -153,6 +169,13 @@ module.exports = function() {
     html += '<tr>\n';
     html += '<td>-html</td><td>--HTML=</td><td>' + this.vHTMLDir
         + '</td><td>directory to put the HTML output pages in</td>\n';
+    html += '</tr>\n';
+    html += '<td>-td</td><td>--tree-depth=</td><td>' + this.vTreeDepth
+        + '</td><td>the maximum parse tree depth allowed</td>\n';
+    html += '</tr>\n';
+    html += '<td>-nh</td><td>--node-hits=</td><td>'
+        + this.vNodeHits
+        + '</td><td>the maximum parse tree node hits (opcode function calls) allowed</td>\n';
     html += '</tr>\n';
     html += '<tr>\n';
     html += '<td>-c</td><td>--C=</td><td>' + this.vCLang
@@ -209,7 +232,8 @@ module.exports = function() {
     return text;
   }
 
-  // Text help screen called when `--help` or one of its equivalents is specified.
+  // Text help screen called when `--help` or one of its equivalents is
+  // specified.
   this.helpScreen = function(args) {
     var text = this.displayUsage(args);
     text += "\n";

@@ -1,8 +1,8 @@
 
 ;
-; ABNF for JavaScript APG 2.0.0 SABNF
+; ABNF for JavaScript APG 2.0 SABNF
 ; RFC 5234 with some restrictions and additions.
-; Updated 11/24/2014 for RFC 7405 case-sensitive literal string notation
+; Updated 11/24/2015 for RFC 7405 case-sensitive literal string notation
 ;  - accepts %s"string" as a case-sensitive string
 ;  - accepts %i"string" as a case-insensitive string
 ;  - accepts "string" as a case-insensitive string
@@ -11,7 +11,7 @@
 ;      Indentations on first rule and rules thereafter are not allowed.
 ;   2. Relaxed line endings. CRLF, LF or CR are accepted as valid line ending.
 ;   3. Prose values, <prose value>, are accepted as valid grammar syntax.
-;      However, a working parser cannot and will not be generated from them.
+;      However, a working parser cannot be generated from them.
 ;
 ; Super set (SABNF) additions:
 ;   1. Syntactic predicate operators, & and !, are accepted as element prefixes.
@@ -24,6 +24,7 @@
 ;      would be a valid grammar.
 ;   3. Case-sensitive, single-quoted strings are accepted.
 ;      e.g. 'abc' would be equivalent to %d97.98.99
+;      (kept for backward compatibility, but superseded by %s"abc")  
 ;
 File          = *(BlankLine / Rule / RuleError)
 BlankLine     = *(%d32/%d9) [comment] LineEnd

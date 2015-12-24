@@ -8,15 +8,15 @@
 //    - evaluation of the input grammar's attributes
 //    - if all is OK, writing the generated grammar object to the specified file
 /*
-* COPYRIGHT: Copyright (c) 2015 Lowell D. Thomas, all rights reserved
-*   LICENSE: BSD-3-Clause
-*    AUTHOR: Lowell D. Thomas
-*     EMAIL: lowell@coasttocoastresearch.com
-*   WEBSITE: http://coasttocoastresearch.com/
-*/
+ * COPYRIGHT: Copyright (c) 2015 Lowell D. Thomas, all rights reserved
+ *   LICENSE: BSD-3-Clause
+ *    AUTHOR: Lowell D. Thomas
+ *     EMAIL: lowell@coasttocoastresearch.com
+ *   WEBSITE: http://coasttocoastresearch.com/
+ */
 module.exports = function(args) {
   "use strict";
-  var thisFileName = "generator.js: ";
+  var thisFileName = "apg: ";
   var thisSectionName = "";
   var files = null;
   var nodeUtil;
@@ -51,7 +51,8 @@ module.exports = function(args) {
     }
 
     // Open the HTML output files.
-    // (e.g. after running apg view `html/index.html` and its links to see the output.)
+    // (e.g. after running apg view `html/index.html` and its links to see the
+    // output.)
     thisSectionName = "HTML setup: ";
     files = new htmlFiles();
     files.open(config);
@@ -67,24 +68,21 @@ module.exports = function(args) {
     var grammarResult = grammarAnalysis.analyze(config.fStrict);
     files.writePage("grammar", grammarAnalysis.toHtml());
 
-    // Do line end conversions (`--CRLF` and `--LF` options) here before reporting any grammar validation errors.
+    // Do line end conversions (`--CRLF` and `--LF` options) here before
+    // reporting any grammar validation errors.
     if (config.fCRLF || config.fLF) {
       thisSectionName = "line end conversions: ";
       if (config.fCRLF) {
         var name = config.vInput[0] + ".crlf";
         grammarAnalysis.toCRLF(name);
-        files.writePage("console", "\nconverted input grammar file(s)  to '"
-            + name + "' with CRLF line ends");
-        console.log(thisFileName + "converted input grammar file(s)  to '"
-            + name + "' with CRLF line ends");
+        files.writePage("console", "\nconverted input grammar file(s)  to '" + name + "' with CRLF line ends");
+        console.log(thisFileName + "converted input grammar file(s)  to '" + name + "' with CRLF line ends");
       }
       if (config.fLF) {
         var name = config.vInput[0] + ".lf";
         grammarAnalysis.toLF(name);
-        files.writePage("console", "\nconverted input grammar file(s)  to '"
-            + name + "' with LF line ends");
-        console.log(thisFileName + "converted input grammar file(s)  to '"
-            + name + "' with LF line ends");
+        files.writePage("console", "\nconverted input grammar file(s)  to '" + name + "' with LF line ends");
+        console.log(thisFileName + "converted input grammar file(s)  to '" + name + "' with LF line ends");
       }
     }
     // Exit here if grammar has validation errors.
@@ -103,7 +101,8 @@ module.exports = function(args) {
     //
     // The syntax phase (see `syntax-callbacks.js` for the code that handles
     // this).
-    // Any grammar syntax errors caught are reported to the `html/grammar.html` page.
+    // Any grammar syntax errors caught are reported to the `html/grammar.html`
+    // page.
     thisSectionName = "generater syntax: ";
     grammarResult = sabnf.syntax(grammarAnalysis, config.fStrict);
     files.writePage("state", apglib.utils.stateToHtml(grammarResult.state));
@@ -114,9 +113,11 @@ module.exports = function(args) {
     }
     files.writePage("console", "\ngrammar syntax OK");
 
-    // The semantic phase. The grammar's rules and opcodes are generated here (see
+    // The semantic phase. The grammar's rules and opcodes are generated here
+    // (see
     // `semantic-callbacks.js` for the code that handles this).
-    // Any grammar semantic errors caught are reported to the `html/grammar.html` page.
+    // Any grammar semantic errors caught are reported to the
+    // `html/grammar.html` page.
     thisSectionName = "generater semantics: ";
     grammarResult = sabnf.semantic();
     if (grammarResult.hasErrors) {
@@ -132,7 +133,7 @@ module.exports = function(args) {
     var attrErrors = attrs.getAttributes(grammarResult.rules);
     files.writePage("rules", attrs.rulesWithReferencesToHtml());
     files.writePage("attributes", attrs.ruleAttrsToHtml());
-    if (attrErrors > 0) {
+    if (attrErrors.length > 0) {
       throw "grammar has attribute errors";
     }
     files.writePage("console", "\ngrammar Attributes OK");
@@ -142,26 +143,32 @@ module.exports = function(args) {
     var msg;
     // Generate a grammar object to be used in the user's parser for this
     // input SABNF grammar.
-    if (config.vJSLang !== "") {
-      var filename = sabnf.generateJavaScript(grammarResult.rules,
-          grammarResult.udts, config.vJSLang);
+    if (config.vJSLang !== null) {
+      var filename;
+      if (config.vJSLang === "") {
+        /* if file name is empty, use the first input file name, stripped of any extension */
+        filename = config.vInput[0].replace(/\.[^.$]+$/, '');
+        filename = sabnf.generateJavaScript(grammarResult.rules, grammarResult.udts, filename);
+      } else {
+        filename = sabnf.generateJavaScript(grammarResult.rules, grammarResult.udts, config.vJSLang);
+      }
       msg = "\nJavaScript parser generated: " + filename;
       console.log(msg);
       files.writePage("console", msg);
     }
     // Output in languages other than JavaScript not implemented.
     // Maybe some day.
-    if (config.vCLang !== "") {
+    if (config.vCLang !== null) {
       msg = "\nC language generator: not yet implemented";
       console.log(msg);
       files.writePage("console", msg);
     }
-    if (config.vCppLang !== "") {
+    if (config.vCppLang !== null) {
       msg = "\nC++ language generator: not yet implemented";
       console.log(msg);
       files.writePage("console", msg);
     }
-    if (config.vJavaLang !== "") {
+    if (config.vJavaLang !== null) {
       msg = "\nJava language generator: not yet implemented";
       console.log(msg);
       files.writePage("console", msg);

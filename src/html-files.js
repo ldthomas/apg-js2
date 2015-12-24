@@ -230,7 +230,7 @@ module.exports = function() {
     html += '<div id="header">\n';
     html += '<div class="superHeader"></div>\n';
     html += '<div class="midHeader">\n';
-    html += '<h1 class="headerTitle"> JavaScript <strong>APG</strong> 2.0.0</h1>\n';
+    html += '<h1 class="headerTitle"> JavaScript <strong>APG</strong> 2.0</h1>\n';
     html += '</div>\n';
     html += '<div class="subHeader">&nbsp;</div>\n';
     html += '</div>\n';
