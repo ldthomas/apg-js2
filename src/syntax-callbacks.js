@@ -155,6 +155,64 @@ module.exports = function(){
 			break;
 		}
 	}
+  var synBkaOp = function(result, chars, phraseIndex, data) {
+    switch (result.state) {
+    case id.ACTIVE:
+      break;
+    case id.EMPTY:
+      break;
+    case id.NOMATCH:
+      break;
+    case id.MATCH:
+      if(data.strict){
+        data.errors.push({
+          line: data.findLine(phraseIndex),
+          char: phraseIndex,
+          msg: "Positive look-behind operator, .&, found - strict ABNF specified."
+        });
+      }
+      break;
+    }
+  }
+  var synBknOp = function(result, chars, phraseIndex, data) {
+    switch (result.state) {
+    case id.ACTIVE:
+      break;
+    case id.EMPTY:
+      break;
+    case id.NOMATCH:
+      break;
+    case id.MATCH:
+      if(data.strict){
+        data.errors.push({
+          line: data.findLine(phraseIndex),
+          char: phraseIndex,
+          msg: "Negative look-behind operator, .!, found - strict ABNF specified."
+        });
+      }
+      break;
+    }
+  }
+  var synBkrOp = function(result, chars, phraseIndex, data) {
+    switch (result.state) {
+    case id.ACTIVE:
+      break;
+    case id.EMPTY:
+      break;
+    case id.NOMATCH:
+      break;
+    case id.MATCH:
+      if(data.strict){
+        var name = apglib.utils.charsToString(chars, phraseIndex, result.phraseLength);
+        data.errors.push({
+          line: data.findLine(phraseIndex),
+          char: phraseIndex,
+          msg: "Back reference operator, '"+name+"', found - strict ABNF specified."
+        });
+      }
+      break;
+    }
+  }
 	var synUdtOp = function(result, chars, phraseIndex, data) {
 		switch (result.state) {
 		case id.ACTIVE:
@@ -496,7 +554,7 @@ module.exports = function(){
 	}
     this.callbacks = [];
     this.callbacks['andop'] = synAndOp;
-    this.callbacks['basicelementerror'] = synBasicElementError;
+    this.callbacks['basicelementerr'] = synBasicElementError;
     this.callbacks['clsclose'] = synClsClose;
     this.callbacks['clsopen'] = synClsOpen;
     this.callbacks['clsstring'] = synClsString;
@@ -520,4 +578,7 @@ module.exports = function(){
     this.callbacks['tlsopen'] = synTlsOpen;
     this.callbacks['tlsstring'] = synTlsString;
     this.callbacks['udtop'] = synUdtOp;
+    this.callbacks['bkaop'] = synBkaOp;
+    this.callbacks['bknop'] = synBknOp;
+    this.callbacks['bkrop'] = synBkrOp;
 }

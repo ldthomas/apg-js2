@@ -31,13 +31,13 @@ module.exports = function() {
   parser.stats = new apglib.stats();
   parser.callbacks = syn.callbacks;
   parser.ast.callbacks = sem.callbacks;
-
+  
   // If errors are found during parsing, this function will convert the
   // error messages to a
   // string suitable for `console.log()`.
   this.errorsToString = function(title) {
     var str = "";
-    if (typeof (title) === "string" || title !== "") {
+    if (typeof (title) === "string") {
       str += title + "\n";
     }
     errors.forEach(function(val, index) {
@@ -206,12 +206,14 @@ module.exports = function() {
   // the designated file name.
   this.generateJavaScript = function(rules, udts, fileName) {
     var i;
+    var bkrname;
     var opcodeCount = 0;
     var charCodeMin = Infinity;
     var charCodeMax = 0;
     var ruleNames = [];
     var udtNames = [];
     var alt = 0, cat = 0, rnm = 0, udt = 0, rep = 0, and = 0, not = 0, tls = 0, tbs = 0, trg = 0;
+    var bkr = 0, bka = 0, bkn = 0;
     rules.forEach(function(rule) {
       ruleNames.push(rule.lower);
       opcodeCount += rule.opcodes.length;
@@ -237,6 +239,15 @@ module.exports = function() {
           break;
         case id.NOT:
           not += 1;
+          break;
+        case id.BKA:
+          bka += 1;
+          break;
+        case id.BKN:
+          bkn += 1;
+          break;
+        case id.BKR:
+          bkr += 1;
           break;
         case id.TLS:
           tls += 1;
@@ -299,9 +310,12 @@ module.exports = function() {
       fs.writeSync(fd, "  //        CAT = " + cat + "\n");
       fs.writeSync(fd, "  //        RNM = " + rnm + "\n");
       fs.writeSync(fd, "  //        UDT = " + udt + "\n");
+      fs.writeSync(fd, "  //        BKR = " + bkr + "\n");
       fs.writeSync(fd, "  //        REP = " + rep + "\n");
       fs.writeSync(fd, "  //        AND = " + and + "\n");
       fs.writeSync(fd, "  //        NOT = " + not + "\n");
+      fs.writeSync(fd, "  //        BKA = " + bka + "\n");
+      fs.writeSync(fd, "  //        BKN = " + bkn + "\n");
       fs.writeSync(fd, "  //        TLS = " + tls + "\n");
       fs.writeSync(fd, "  //        TBS = " + tbs + "\n");
       fs.writeSync(fd, "  //        TRG = " + trg + "\n");
@@ -337,7 +351,7 @@ module.exports = function() {
       fs.writeSync(fd, "  this.rules = [];\n");
       rules.forEach(function(rule, i) {
         fs.writeSync(fd, "  this.rules[" + i + "] = {name: '" + rule.name
-            + "', lower: '" + rule.lower + "', index: " + rule.index + "};\n");
+            + "', lower: '" + rule.lower + "', index: " + rule.index + ", bkr: " + rule.bkr + "};\n");
       });
       fs.writeSync(fd, "\n");
       fs.writeSync(fd, "  /* UDTS */\n");
@@ -345,8 +359,8 @@ module.exports = function() {
       if (udts.length > 0) {
         udts.forEach(function(udt, i) {
           fs.writeSync(fd, "  this.udts[" + i + "] = {name: '" + udt.name
-              + "', lower: '" + udt.lower + "', empty: " + udt.empty
-              + ", index: " + udt.index + "};\n");
+              + "', lower: '" + udt.lower+ "', index: " + udt.index + ", empty: " + udt.empty
+               + ", bkr: " + udt.bkr + "};\n");
         });
       }
       fs.writeSync(fd, "\n");
@@ -374,6 +388,16 @@ module.exports = function() {
                 + opIndex + "] = {type: " + op.type + ", index: " + op.index
                 + "};// RNM(" + rules[op.index].name + ")\n");
             break;
+          case id.BKR:
+            if(op.index >= rules.length){
+              bkrname = udts[op.index - rules.length].name;
+            }else{
+              bkrname = rules[op.index].name;
+            }
+            fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
+                + opIndex + "] = {type: " + op.type + ", index: " + op.index
+                + "};// BKR(\\" + bkrname + ")\n");
+            break;
           case id.UDT:
             fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
                 + opIndex + "] = {type: " + op.type + ", empty: " + op.empty
@@ -392,6 +416,14 @@ module.exports = function() {
           case id.NOT:
             fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
                 + opIndex + "] = {type: " + op.type + "};// NOT\n");
+            break;
+          case id.BKA:
+            fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
+                + opIndex + "] = {type: " + op.type + "};// BKA\n");
+            break;
+          case id.BKN:
+            fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
+                + opIndex + "] = {type: " + op.type + "};// BKN\n");
             break;
           case id.TLS:
             fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
@@ -436,6 +468,9 @@ module.exports = function() {
           case 34:
             str = '\\"';
             break;
+          case 92:
+            str = '\\\\';
+            break;
           default:
             str = String.fromCharCode(grammarAnalysisParser.chars[i]);
             break;
@@ -474,36 +509,39 @@ module.exports = function() {
   // This will be the same object as if the file written by the function
   // `generateJavaScript()`
   // had been loaded (`require()`) and constructed with the `new` operator.
-  this.generateObject = function(rules, udts, input) {
+  this.generateObject = function(rules, udts) {
     var obj = {};
-    var ruleNames = [];
-    var udtNames = [];
-    obj.grammarObject = 'grammarObject';
-    rules.forEach(function(rule) {
-      ruleNames.push(rule.lower);
-    });
-    ruleNames.sort();
-    if (udts.length > 0) {
-      udts.forEach(function(udt) {
-        udtNames.push(udt.lower);
+    if(grammarAnalysisParser){
+      var ruleNames = [];
+      var udtNames = [];
+      var string = grammarAnalysisParser.originalString.slice(0);
+      obj.grammarObject = 'grammarObject';
+      rules.forEach(function(rule) {
+        ruleNames.push(rule.lower);
       });
-      udtNames.sort();
-    }
+      ruleNames.sort();
+      if (udts.length > 0) {
+        udts.forEach(function(udt) {
+          udtNames.push(udt.lower);
+        });
+        udtNames.sort();
+      }
 
-    /* the callback prototype list */
-    obj.callbacks = [];
-    ruleNames.forEach(function(name) {
-      obj.callbacks[name] = false;
-    });
-    if (udts.length > 0) {
-      udtNames.forEach(function(name) {
+      /* the callback prototype list */
+      obj.callbacks = [];
+      ruleNames.forEach(function(name) {
         obj.callbacks[name] = false;
       });
-    }
-    obj.rules = rules;
-    obj.udts = udts;
-    obj.toString = function() {
-      return input;
+      if (udts.length > 0) {
+        udtNames.forEach(function(name) {
+          obj.callbacks[name] = false;
+        });
+      }
+      obj.rules = rules;
+      obj.udts = udts;
+      obj.toString = function() {
+        return string;
+      }
     }
     return obj;
   }

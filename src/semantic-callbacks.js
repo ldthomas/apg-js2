@@ -81,24 +81,16 @@ module.exports = function(grammar) {
    * job and all arguments are input supplied to the callback function by the
    * translator.
    * 
-   * @param {number}
-   *          state - the translator state (id.SEM_PRE for downward traversal of
-   *          the AST, id.SEM_POST for upward traversal)
-   * @param {array}
-   *          chars - the array of character codes for the input string
-   * @param {number}
-   *          phraseIndex - index into the chars array to the first character of
-   *          the phrase associated with this node
-   * @param {number}
-   *          phraseCount - the number of characters in the phrase
-   * @param {any}
-   *          data - user-defined data passed to the translator for use by the
-   *          callback functions. Set in call to the function
-   *          "semanticAnalysis()".
-   * @return id.SEM_OK, normal return. id.SEM_SKIP in state id.SEM_PRE will skip
-   *         the branch below. Any thing else is an error which will stop the
-   *         translation.
-   * @memberof Example
+   * @param {number} state - the translator state (id.SEM_PRE for downward
+   * traversal of the AST, id.SEM_POST for upward traversal) @param {array}
+   * chars - the array of character codes for the input string @param {number}
+   * phraseIndex - index into the chars array to the first character of the
+   * phrase associated with this node @param {number} phraseCount - the number
+   * of characters in the phrase @param {any} data - user-defined data passed to
+   * the translator for use by the callback functions. Set in call to the
+   * function "semanticAnalysis()". @return id.SEM_OK, normal return.
+   * id.SEM_SKIP in state id.SEM_PRE will skip the branch below. Any thing else
+   * is an error which will stop the translation. @memberof Example
    */
   function semCallbackPrototype(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
@@ -123,6 +115,7 @@ module.exports = function(grammar) {
       /* validate RNM rule names and set opcode rule index */
       var nameObj;
       data.rules.forEach(function(rule, index) {
+        rule.bkr = false;
         rule.opcodes.forEach(function(op, iop) {
           if (op.type === id.RNM) {
             nameObj = data.ruleNames.get(op.index.name);
@@ -135,6 +128,35 @@ module.exports = function(grammar) {
               op.index = -1;
             } else {
               op.index = nameObj.index;
+            }
+          }
+        });
+      });
+
+      /* validate BKR rule names and set opcode rule index */
+      data.udts.forEach(function(udt) {
+        udt.bkr = false;
+      });
+      data.rules.forEach(function(rule, index) {
+        rule.opcodes.forEach(function(op, iop) {
+          if (op.type === id.BKR) {
+            nameObj = data.ruleNames.get(op.index.name);
+            if (nameObj !== -1) {
+              op.index = nameObj.index;
+              data.rules[nameObj.index].bkr = true;
+            } else {
+              nameObj = data.udtNames.get(op.index.name);
+              if (nameObj !== -1) {
+                op.index = data.rules.length + nameObj.index;
+                data.udts[nameObj.index].bkr = true;
+              } else {
+                data.errors.push({
+                  line : data.findLine(op.index.phraseIndex),
+                  char : op.index.phraseIndex,
+                  msg : "Back reference name '" + op.index.name + "' refers to undefined rule or unamed UDT."
+                });
+                op.index = -1;
+              }
             }
           }
         });
@@ -185,8 +207,7 @@ module.exports = function(grammar) {
           data.errors.push({
             line : data.findLine(phraseIndex),
             char : phraseIndex,
-            msg : "Rule name '" + data.ruleName
-                + "' for incremental alternate not previously defined."
+            msg : "Rule name '" + data.ruleName + "' for incremental alternate not previously defined."
           });
         } else {
           data.topRule = data.rules[ruleName.index];
@@ -288,8 +309,7 @@ module.exports = function(grammar) {
   function semRuleName(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
-      data.ruleName = apglib.utils.charsToString(chars, phraseIndex,
-          phraseCount);
+      data.ruleName = apglib.utils.charsToString(chars, phraseIndex, phraseCount);
     } else if (state == id.SEM_POST) {
     }
     return ret;
@@ -326,8 +346,7 @@ module.exports = function(grammar) {
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "repetition min cannot be greater than max: min: " + data.min
-              + ": max: " + data.max
+          msg : "repetition min cannot be greater than max: min: " + data.min + ": max: " + data.max
         });
       }
       data.topRep.min = data.min;
@@ -386,11 +405,53 @@ module.exports = function(grammar) {
     } else if (state == id.SEM_POST) {
       data.opcodes.push({
         type : id.RNM,
-        /* NOTE: this is temporary info, index will be replaced with integer later */
+        /*
+         * NOTE: this is temporary info, index will be replaced with integer
+         * later
+         */
         /* probably not the best coding practice but here you go */
         index : {
           phraseIndex : phraseIndex,
           name : apglib.utils.charsToString(chars, phraseIndex, phraseCount)
+        }
+      });
+    }
+    return ret;
+  }
+  function semBkaOp(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.opcodes.push({
+        type : id.BKA,
+      });
+    }
+    return ret;
+  }
+  function semBknOp(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.opcodes.push({
+        type : id.BKN,
+      });
+    }
+    return ret;
+  }
+  function semBkrOp(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.opcodes.push({
+        type : id.BKR,
+        /*
+         * NOTE: this is temporary info, index will be replaced with integer
+         * later
+         */
+        /* probably not the best coding practice but here you go */
+        index : {
+          phraseIndex : phraseIndex,
+          name : apglib.utils.charsToString(chars, phraseIndex + 1, phraseCount - 1)
         }
       });
     }
@@ -464,8 +525,8 @@ module.exports = function(grammar) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
     } else if (state == id.SEM_POST) {
-      if(phraseCount > 0 && (chars[phraseIndex + 1] === 83 || chars[phraseIndex + 1] === 115)){
-        data.tlscase = false;  /* set to case sensitive */
+      if (phraseCount > 0 && (chars[phraseIndex + 1] === 83 || chars[phraseIndex + 1] === 115)) {
+        data.tlscase = false; /* set to case sensitive */
       }
     }
     return ret;
@@ -474,7 +535,7 @@ module.exports = function(grammar) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
     } else if (state == id.SEM_POST) {
-      if(data.tlscase){
+      if (data.tlscase) {
         var str = chars.slice(phraseIndex, phraseIndex + phraseCount);
         for (var i = 0; i < str.length; i += 1) {
           if (str[i] >= 65 && str[i] <= 90) {
@@ -485,11 +546,10 @@ module.exports = function(grammar) {
           type : id.TLS,
           string : str,
         });
-      }else{
+      } else {
         data.opcodes.push({
           type : id.TBS,
-          string : chars.slice(phraseIndex,
-              (phraseIndex + phraseCount))
+          string : chars.slice(phraseIndex, (phraseIndex + phraseCount))
         });
       }
     }
@@ -508,8 +568,7 @@ module.exports = function(grammar) {
       } else {
         data.opcodes.push({
           type : id.TBS,
-          string : chars.slice((phraseIndex + 1),
-              (phraseIndex + phraseCount - 1))
+          string : chars.slice((phraseIndex + 1), (phraseIndex + phraseCount - 1))
         });
       }
     }
@@ -537,8 +596,7 @@ module.exports = function(grammar) {
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "TRG, (%dmin-max), min cannot be greater than max: min: "
-              + data.min + ": max: " + data.max
+          msg : "TRG, (%dmin-max), min cannot be greater than max: min: " + data.min + ": max: " + data.max
         });
       }
       data.opcodes.push({
@@ -626,6 +684,9 @@ module.exports = function(grammar) {
   this.callbacks['andop'] = semAndOp;
   this.callbacks['bmax'] = semBmax;
   this.callbacks['bmin'] = semBmin;
+  this.callbacks['bkaop'] = semBkaOp;
+  this.callbacks['bknop'] = semBknOp;
+  this.callbacks['bkrop'] = semBkrOp;
   this.callbacks['bstring'] = semBstring;
   this.callbacks['clsop'] = semClsOp;
   this.callbacks['concatenation'] = semConcatenation;

@@ -16,6 +16,7 @@ module.exports = function() {
   var Grammar = require("./input-analysis-grammar.js");
   var that = this;
   this.hasInvalidCharacters = false;
+  this.originalString = "";
   this.chars = [];
   this.lines = [];
   var CRLF = new Buffer([ 13, 10 ]);
@@ -131,6 +132,7 @@ module.exports = function() {
         for (var i = 0; i < buf.length; i += 1) {
           this.chars.push(buf[i]);
         }
+        this.originalString = apglib.utils.charsToString(this.chars);
       }
     } catch (e) {
       throw new Error(thisFileName
@@ -141,6 +143,7 @@ module.exports = function() {
     if(typeof(str) !== "string" || str === ""){
       throw new Error(thisFileName + 'getString(): input not a valid string: "' + str + '"');
     }
+    this.originalString = str.slice(0);
     this.chars.length = 0;
     this.lines.length = 0;
     this.chars = apglib.utils.stringToChars(str);
