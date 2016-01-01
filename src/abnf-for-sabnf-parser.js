@@ -207,6 +207,7 @@ module.exports = function() {
   this.generateJavaScript = function(rules, udts, fileName) {
     var i;
     var bkrname;
+    var bkrlower;
     var opcodeCount = 0;
     var charCodeMin = Infinity;
     var charCodeMax = 0;
@@ -351,7 +352,7 @@ module.exports = function() {
       fs.writeSync(fd, "  this.rules = [];\n");
       rules.forEach(function(rule, i) {
         fs.writeSync(fd, "  this.rules[" + i + "] = {name: '" + rule.name
-            + "', lower: '" + rule.lower + "', index: " + rule.index + ", bkr: " + rule.bkr + "};\n");
+            + "', lower: '" + rule.lower + "', index: " + rule.index + ", isBkr: " + rule.isBkr + ", hasBkr: " + rule.hasBkr  + "};\n");
       });
       fs.writeSync(fd, "\n");
       fs.writeSync(fd, "  /* UDTS */\n");
@@ -360,7 +361,7 @@ module.exports = function() {
         udts.forEach(function(udt, i) {
           fs.writeSync(fd, "  this.udts[" + i + "] = {name: '" + udt.name
               + "', lower: '" + udt.lower+ "', index: " + udt.index + ", empty: " + udt.empty
-               + ", bkr: " + udt.bkr + "};\n");
+               + ", isBkr: " + udt.isBkr + "};\n");
         });
       }
       fs.writeSync(fd, "\n");
@@ -391,11 +392,20 @@ module.exports = function() {
           case id.BKR:
             if(op.index >= rules.length){
               bkrname = udts[op.index - rules.length].name;
+              bkrlower = udts[op.index - rules.length].lower;
             }else{
               bkrname = rules[op.index].name;
+              bkrlower = rules[op.index].lower;
+            }
+            if(op.insensitive){
+              bkrname = "%i" + bkrname;
+            }else{
+              bkrname = "%s" + bkrname;
             }
             fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
-                + opIndex + "] = {type: " + op.type + ", index: " + op.index
+                + opIndex + "] = {type: " + op.type + ", index: " + op.index 
+                + ", lower: '" + bkrlower + "'"
+                + ", insensitive: " + op.insensitive
                 + "};// BKR(\\" + bkrname + ")\n");
             break;
           case id.UDT:

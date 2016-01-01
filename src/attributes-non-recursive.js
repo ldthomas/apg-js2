@@ -166,6 +166,11 @@ module.exports = function(rules) {
       attr.empty = false;
       attr.notEmpty = true;
       break;
+    case id.BKR:
+      attr.finite = true;
+      attr.empty = true;
+      attr.notEmpty = true;
+      break;
     case id.TRG:
       attr.finite = true;
       attr.empty = false;

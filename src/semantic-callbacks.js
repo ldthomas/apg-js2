@@ -115,7 +115,8 @@ module.exports = function(grammar) {
       /* validate RNM rule names and set opcode rule index */
       var nameObj;
       data.rules.forEach(function(rule, index) {
-        rule.bkr = false;
+        rule.isBkr = false;
+        rule.hasBkr = false;
         rule.opcodes.forEach(function(op, iop) {
           if (op.type === id.RNM) {
             nameObj = data.ruleNames.get(op.index.name);
@@ -135,20 +136,21 @@ module.exports = function(grammar) {
 
       /* validate BKR rule names and set opcode rule index */
       data.udts.forEach(function(udt) {
-        udt.bkr = false;
+        udt.isBkr = false;
       });
       data.rules.forEach(function(rule, index) {
         rule.opcodes.forEach(function(op, iop) {
           if (op.type === id.BKR) {
+            rule.hasBkr = true;
             nameObj = data.ruleNames.get(op.index.name);
             if (nameObj !== -1) {
               op.index = nameObj.index;
-              data.rules[nameObj.index].bkr = true;
+              data.rules[nameObj.index].isBkr = true;
             } else {
               nameObj = data.udtNames.get(op.index.name);
               if (nameObj !== -1) {
                 op.index = data.rules.length + nameObj.index;
-                data.udts[nameObj.index].bkr = true;
+                data.udts[nameObj.index].isBkr = true;
               } else {
                 data.errors.push({
                   line : data.findLine(op.index.phraseIndex),
@@ -407,9 +409,8 @@ module.exports = function(grammar) {
         type : id.RNM,
         /*
          * NOTE: this is temporary info, index will be replaced with integer
-         * later
+         * later. Probably not the best coding practice but here you go.
          */
-        /* probably not the best coding practice but here you go */
         index : {
           phraseIndex : phraseIndex,
           name : apglib.utils.charsToString(chars, phraseIndex, phraseCount)
@@ -441,19 +442,28 @@ module.exports = function(grammar) {
   function semBkrOp(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
+      data.tlscase = true; /* default to case insensitive */
     } else if (state == id.SEM_POST) {
       data.opcodes.push({
         type : id.BKR,
+        insensitive : data.tlscase,
         /*
          * NOTE: this is temporary info, index will be replaced with integer
-         * later
+         * later. Probably not the best coding practice but here you go.
          */
-        /* probably not the best coding practice but here you go */
         index : {
-          phraseIndex : phraseIndex,
-          name : apglib.utils.charsToString(chars, phraseIndex + 1, phraseCount - 1)
+          phraseIndex : data.bkrname.phraseIndex,
+          name : apglib.utils.charsToString(chars, data.bkrname.phraseIndex, data.bkrname.phraseLength)
         }
       });
+    }
+    return ret;
+  }
+  function semBkrName(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.bkrname = {phraseIndex: phraseIndex, phraseLength: phraseCount};
     }
     return ret;
   }
@@ -687,6 +697,7 @@ module.exports = function(grammar) {
   this.callbacks['bkaop'] = semBkaOp;
   this.callbacks['bknop'] = semBknOp;
   this.callbacks['bkrop'] = semBkrOp;
+  this.callbacks['bkr-name'] = semBkrName;
   this.callbacks['bstring'] = semBstring;
   this.callbacks['clsop'] = semClsOp;
   this.callbacks['concatenation'] = semConcatenation;
