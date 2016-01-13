@@ -152,6 +152,8 @@ module.exports = function(rules) {
       break;
     case id.AND:
     case id.NOT:
+    case id.BKA:
+    case id.BKN:
       attr.finite = true;
       attr.empty = true;
       attr.notEmpty = false;

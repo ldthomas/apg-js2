@@ -15,8 +15,8 @@
 ;
 ; Super set (SABNF) additions:
 ;   1. Look-ahead (syntactic predicate) operators are accepted as element prefixes.
-;      & or &. is the positive look-ahead operator, succeeds and backtracks if the look-ahead phrase is found
-;      ! or !. is the negative look-ahead operator, succeeds and backtracks if the look-ahead phrase is NOT found
+;      & is the positive look-ahead operator, succeeds and backtracks if the look-ahead phrase is found
+;      ! is the negative look-ahead operator, succeeds and backtracks if the look-ahead phrase is NOT found
 ;      e.g. &%d13 or &rule or !(A / B)
 ;   2. User-Defined Terminals (UDT) of the form, u_name and e_name are accepted.
 ;      'name' is alpha followed by alpha/num/hyphen just like a rule name.
@@ -29,12 +29,15 @@
 ;      (kept for backward compatibility, but superseded by %s"abc")  
 ; New 12/26/2015
 ;   4. Look-behind operators are accepted as element prefixes.
-;      .& is the positive look-behind operator, succeeds and backtracks if the look-behind phrase is found
-;      .! is the negative look-behind operator, succeeds and backtracks if the look-behind phrase is NOT found
-;      e.g. .&%d13 or .&rule or .!(A / B)
+;      && is the positive look-behind operator, succeeds and backtracks if the look-behind phrase is found
+;      !! is the negative look-behind operator, succeeds and backtracks if the look-behind phrase is NOT found
+;      e.g. &&%d13 or &&rule or !!(A / B)
 ;   5. Back reference operators, i.e. \rulename, are accepted.
 ;      A back reference operator acts like a TLS or TBS terminal except that the phrase it attempts
 ;      to match is the phrase most recently matched by the rule 'rulename'.
+;      The case-sensitive, -insensitive modifiers can be used similare to literal strings.
+;      \A or \%iA will do a case-insensitive match to the previous match to rule A. 
+;      \%sA will do a case-sensitive match to the previous match to rule A. 
 ;
 File            = *(BlankLine / Rule / RuleError)
 BlankLine       = *(%d32/%d9) [comment] LineEnd
@@ -95,12 +98,10 @@ RepOp           = (rep-min StarOp rep-max)
 AltOp           = %d47 owsp
 CatOp           = wsp
 StarOp          = %d42
-AndOp           = %d38.46
-                / %d38
-NotOp           = %d33.46
-                / %d33
-BkaOp           = %d46.38
-BknOp           = %d46.33
+AndOp           = %d38
+NotOp           = %d33
+BkaOp           = %d38.38
+BknOp           = %d33.33
 TrgOp           = %d37 ((Dec dmin %d45 dmax) / (Hex xmin %d45 xmax) / (Bin bmin %d45 bmax))
 TbsOp           = %d37 ((Dec dString *(%d46 dString)) / (Hex xString *(%d46 xString)) / (Bin bString *(%d46 bString)))
 TlsOp           = TlsCase TlsOpen TlsString TlsClose

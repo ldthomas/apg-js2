@@ -5,8 +5,8 @@ module.exports = function(){
   // SUMMARY
   //      rules = 88
   //       udts = 0
-  //    opcodes = 342
-  //        ALT = 40
+  //    opcodes = 338
+  //        ALT = 38
   //        CAT = 44
   //        RNM = 135
   //        UDT = 0
@@ -17,7 +17,7 @@ module.exports = function(){
   //        BKA = 0
   //        BKN = 0
   //        TLS = 2
-  //        TBS = 57
+  //        TBS = 55
   //        TRG = 35
   // characters = [9 - 126]
   //```
@@ -522,23 +522,19 @@ module.exports = function(){
 
   /* AndOp */
   this.rules[42].opcodes = [];
-  this.rules[42].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[42].opcodes[1] = {type: 10, string: [38,46]};// TBS
-  this.rules[42].opcodes[2] = {type: 10, string: [38]};// TBS
+  this.rules[42].opcodes[0] = {type: 10, string: [38]};// TBS
 
   /* NotOp */
   this.rules[43].opcodes = [];
-  this.rules[43].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[43].opcodes[1] = {type: 10, string: [33,46]};// TBS
-  this.rules[43].opcodes[2] = {type: 10, string: [33]};// TBS
+  this.rules[43].opcodes[0] = {type: 10, string: [33]};// TBS
 
   /* BkaOp */
   this.rules[44].opcodes = [];
-  this.rules[44].opcodes[0] = {type: 10, string: [46,38]};// TBS
+  this.rules[44].opcodes[0] = {type: 10, string: [38,38]};// TBS
 
   /* BknOp */
   this.rules[45].opcodes = [];
-  this.rules[45].opcodes[0] = {type: 10, string: [46,33]};// TBS
+  this.rules[45].opcodes[0] = {type: 10, string: [33,33]};// TBS
 
   /* TrgOp */
   this.rules[46].opcodes = [];
@@ -836,8 +832,8 @@ module.exports = function(){
     str += ";\n";
     str += "; Super set (SABNF) additions:\n";
     str += ";   1. Look-ahead (syntactic predicate) operators are accepted as element prefixes.\n";
-    str += ";      & or &. is the positive look-ahead operator, succeeds and backtracks if the look-ahead phrase is found\n";
-    str += ";      ! or !. is the negative look-ahead operator, succeeds and backtracks if the look-ahead phrase is NOT found\n";
+    str += ";      & is the positive look-ahead operator, succeeds and backtracks if the look-ahead phrase is found\n";
+    str += ";      ! is the negative look-ahead operator, succeeds and backtracks if the look-ahead phrase is NOT found\n";
     str += ";      e.g. &%d13 or &rule or !(A / B)\n";
     str += ";   2. User-Defined Terminals (UDT) of the form, u_name and e_name are accepted.\n";
     str += ";      'name' is alpha followed by alpha/num/hyphen just like a rule name.\n";
@@ -850,12 +846,15 @@ module.exports = function(){
     str += ";      (kept for backward compatibility, but superseded by %s\"abc\")  \n";
     str += "; New 12/26/2015\n";
     str += ";   4. Look-behind operators are accepted as element prefixes.\n";
-    str += ";      .& is the positive look-behind operator, succeeds and backtracks if the look-behind phrase is found\n";
-    str += ";      .! is the negative look-behind operator, succeeds and backtracks if the look-behind phrase is NOT found\n";
-    str += ";      e.g. .&%d13 or .&rule or .!(A / B)\n";
+    str += ";      && is the positive look-behind operator, succeeds and backtracks if the look-behind phrase is found\n";
+    str += ";      !! is the negative look-behind operator, succeeds and backtracks if the look-behind phrase is NOT found\n";
+    str += ";      e.g. &&%d13 or &&rule or !!(A / B)\n";
     str += ";   5. Back reference operators, i.e. \\rulename, are accepted.\n";
     str += ";      A back reference operator acts like a TLS or TBS terminal except that the phrase it attempts\n";
     str += ";      to match is the phrase most recently matched by the rule 'rulename'.\n";
+    str += ";      The case-sensitive, -insensitive modifiers can be used similare to literal strings.\n";
+    str += ";      \\A or \\%iA will do a case-insensitive match to the previous match to rule A. \n";
+    str += ";      \\%sA will do a case-sensitive match to the previous match to rule A. \n";
     str += ";\n";
     str += "File            = *(BlankLine / Rule / RuleError)\n";
     str += "BlankLine       = *(%d32/%d9) [comment] LineEnd\n";
@@ -916,12 +915,10 @@ module.exports = function(){
     str += "AltOp           = %d47 owsp\n";
     str += "CatOp           = wsp\n";
     str += "StarOp          = %d42\n";
-    str += "AndOp           = %d38.46\n";
-    str += "                / %d38\n";
-    str += "NotOp           = %d33.46\n";
-    str += "                / %d33\n";
-    str += "BkaOp           = %d46.38\n";
-    str += "BknOp           = %d46.33\n";
+    str += "AndOp           = %d38\n";
+    str += "NotOp           = %d33\n";
+    str += "BkaOp           = %d38.38\n";
+    str += "BknOp           = %d33.33\n";
     str += "TrgOp           = %d37 ((Dec dmin %d45 dmax) / (Hex xmin %d45 xmax) / (Bin bmin %d45 bmax))\n";
     str += "TbsOp           = %d37 ((Dec dString *(%d46 dString)) / (Hex xString *(%d46 xString)) / (Bin bString *(%d46 bString)))\n";
     str += "TlsOp           = TlsCase TlsOpen TlsString TlsClose\n";

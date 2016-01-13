@@ -183,8 +183,7 @@ module.exports = function() {
       // Remove unneeded operators.
       // ALT operators with a single alternate as well as
       // CAT operators with a single phrase to concatenate are not needed.
-      // Similarly, REP(1,1) (e.g. `1*1RuleName` or `1RuleName` is the same as
-      // just `RuleName`.)
+      // Similarly, REP(1,1) (e.g. `1*1RuleName` or `1RuleName` is the same as just `RuleName`.)
       ret.rules = reduceOpcodes(data.rules);
       ret.rules = data.rules;
       ret.udts = data.udts;
