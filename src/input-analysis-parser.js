@@ -292,13 +292,11 @@ module.exports = function() {
         "Grammar Validation Errors");
   }
   // Generate an HTML table of the lines.
-  this.toHtml = function(className) {
-    var html = "<p>";
-    if (typeof (className) === "string") {
-      html += '<table class="' + className + '">\n';
-    } else {
-      html += '<table class="apg-table">\n';
-    }
+  this.toHtml = function() {
+    var html = "";
+//    html += apglib.utils.styleApgTable();
+    html += "<p>";
+    html += '<table class="apg-table">\n';
     var title = "Annotated Input Grammar File";
     if (inputFileCount > 1) {
       title += "s(" + inputFileCount + ")"

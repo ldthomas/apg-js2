@@ -86,10 +86,6 @@ module.exports = function() {
   this.vCppLang = null;
   this.vJSLang = null;
   this.vJavaLang = null;
-//  this.vCLang = "";
-//  this.vCppLang = "";
-//  this.vJSLang = "";
-//  this.vJavaLang = "";
 
   // A function to display the configuration in text format suitable for
   // `console.log()` output.
@@ -107,15 +103,12 @@ module.exports = function() {
     text += "\n";
     text += "-L, --LF: " + this.fLF;
     text += "\n";
-    text += "-k, --call-stack: " + this.fCallStack;
-    text += "\n";
-    text += "--in: '" + this.vInput + "'";
+    text += "--in: '" + this.vInput[0] + "'";
+    for(var i = 1; i < this.vInput.length; i += 1){
+      text += "--in: '" + this.vInput[i] + "'";
+    }
     text += "\n";
     text += "--HTML: '" + this.vHTMLDir + "'";
-    text += "\n";
-    text += "--node-hits: '" + this.vNodeHits + "'";
-    text += "\n";
-    text += "--tree-depth: '" + this.vTreeDepth + "'";
     text += "\n";
     text += "--C: '" + this.vCLang + "'";
     text += "\n";
@@ -132,6 +125,9 @@ module.exports = function() {
   // This function is used to generate the `html/configuration.html` output
   // page.
   this.displayHtml = function() {
+    var base, place;
+    var nobase = "";
+    var noplace = "*";
     var html = '<table id="config-table">\n';
     html += '<tr>\n';
     html += '<th>short<br>name</th><th>long<br>name</th><th>value</th><th>description</th>\n';
@@ -158,47 +154,56 @@ module.exports = function() {
     html += '<td>-L</td><td>--LF</td><td>' + this.fLF
         + '</td><td>convert all line endings to LF, including last line</td>\n';
     html += '</tr>\n';
-    html += '<td>-k</td><td>--call-stack</td><td>'
-        + this.fCallStack
-        + '</td><td>display the maximum call stack depth for this JavaScript engine</td>\n';
-    html += '</tr>\n';
-    html += '<tr>\n';
-    html += '<td>-in</td><td>--in=</td><td>' + this.vInput
-        + '</td><td>input grammar file name</td>\n';
-    html += '</tr>\n';
     html += '<tr>\n';
     html += '<td>-html</td><td>--HTML=</td><td>' + this.vHTMLDir
         + '</td><td>directory to put the HTML output pages in</td>\n';
     html += '</tr>\n';
-    html += '<td>-td</td><td>--tree-depth=</td><td>' + this.vTreeDepth
-        + '</td><td>the maximum parse tree depth allowed</td>\n';
+    html += '<tr>\n';
+    html += '<td>-in</td><td>--in=</td><td>' + this.vInput[0]
+        + '</td><td>input grammar file name</td>\n';
     html += '</tr>\n';
-    html += '<td>-nh</td><td>--node-hits=</td><td>'
-        + this.vNodeHits
-        + '</td><td>the maximum parse tree node hits (opcode function calls) allowed</td>\n';
+    for (var i = 1; i < this.vInput.length; i += 1){
+      html += '<tr>\n';
+      html += '<td></td><td></td><td>' + this.vInput[i]
+          + '</td><td>additional input grammar file name</td>\n';
+      html += '</tr>\n';
+    }
+    html += '<tr>\n';
+    html += '<td>-c</td><td>--C=</td>';
+    if(this.vCLang === null){
+      html += '<td></td><td>base name for the generated C-lanugage parser.</td>';
+    }else{
+      html += '<td>'+this.vCLang+'</td><td>base name for the generated C-lanugage parser. \'';
+      html += this.vCLang + '.h\' and \'' + this.vCLang
+      + '.c\' files will be created</td>\n';
+    }
     html += '</tr>\n';
     html += '<tr>\n';
-    html += '<td>-c</td><td>--C=</td><td>' + this.vCLang
-        + '</td><td>base name for the generated C-lanugage parser. \'';
-    html += this.vCLang + '.h\' and \'' + this.vCLang
-        + '.c\' files will be created</td>\n';
+    html += '<td>-cpp</td><td>--Cpp=</td>';
+    if(this.vCppLang === null){
+      html += '<td></td><td>base name for the generated C++-lanugage parser.</td>';
+    }else{
+      html += '<td>'+this.vCppLang+'</td><td>base name for the generated C++-lanugage parser. \'';
+      html += this.vCppLang + '.h\' and \'' + this.vCppLang
+      + '.cpp\' files will be created</td>\n';
+    }
+    html += '<tr>\n';
+    html += '<td>-js</td><td>--JavaScript=</td>';
+    if(this.vJSLang === null){
+      html += '<td></td><td>base name for the generated JavaScript-lanugage parser.</td>';
+    }else{
+      html += '<td>'+this.vJSLang+'</td><td>base name for the generated JavaScript-lanugage parser.';
+      html += ' A \'' +this.vJSLang + '.js\' file will be created</td>\n';
+    }
     html += '</tr>\n';
     html += '<tr>\n';
-    html += '<td>-cpp=</td><td>--Cpp=</td><td>' + this.vCppLang
-        + '</td><td>base name for the generated C++-lanugage parser. \'';
-    html += this.vCppLang + '.h\' and \'' + this.vCppLang
-        + '.cpp\' files will be created</td>\n';
-    html += '</tr>\n';
-    html += '<tr>\n';
-    html += '<td>-js=</td><td>--JavaScript=</td><td>'
-        + this.vJSLang
-        + '</td><td>base name for the generated JavaScript-lanugage parser. A \'';
-    html += this.vJSLang + '.js\' file will be created</td>\n';
-    html += '</tr>\n';
-    html += '<tr>\n';
-    html += '<td>-java</td><td>--Java=</td><td>' + this.vJavaLang
-        + '</td><td>base name for the generated Java-lanugage parser. A \'';
-    html += this.vJavaLang + '.java\' file will be created</td>\n';
+    html += '<td>-java</td><td>--Java=</td>';
+    if(this.vJavaLang === null){
+      html += '<td></td><td>base name for the generated Java-lanugage parser.</td>';
+    }else{
+      html += '<td>'+this.vJavaLang+'</td><td>base name for the generated Java-lanugage parser.';
+      html += ' A \'' +this.vJavaLang + '.java\' file will be created</td>\n';
+    }
     html += '</tr>\n';
     html += '</table>\n';
     return html

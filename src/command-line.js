@@ -79,6 +79,23 @@ module.exports = function(commandlineArgs) {
     config.fDisplayState = true;
     config.fDisplayWarnings = true;
   }
+  var replace = config.vInput[0].replace(/\.[^.$]+$/, '');
+  if (config.vJSLang === "") {
+    /* if file name is empty, use the first input file name, stripped of any extension */
+    config.vJSLang = replace;
+  }
+  if (config.vCLang === "") {
+    /* if file name is empty, use the first input file name, stripped of any extension */
+    config.vCLang = replace;
+  }
+  if (config.vCppLang === "") {
+    /* if file name is empty, use the first input file name, stripped of any extension */
+    config.vCppLang = replace;
+  }
+  if (config.vJavaLang === "") {
+    /* if file name is empty, use the first input file name, stripped of any extension */
+    config.vJavaLang = replace;
+  }
   // Return the `config` object to the caller.
   return config;
 }

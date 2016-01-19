@@ -16,6 +16,7 @@
  */
 module.exports = function(args) {
   "use strict";
+  debugger;
   var thisFileName = "apg: ";
   var thisSectionName = "";
   var files = null;
@@ -106,7 +107,7 @@ module.exports = function(args) {
     thisSectionName = "generater syntax: ";
     grammarResult = sabnf.syntax(grammarAnalysis, config.fStrict);
     files.writePage("state", apglib.utils.stateToHtml(grammarResult.state));
-    files.writePage("grammarStats", grammarResult.stats.displayHtml("ops"));
+    files.writePage("grammarStats", grammarResult.stats.toHtml("ops"));
     if (grammarResult.hasErrors) {
       files.writePage("grammar", sabnf.errorsToHtml("Grammar Syntax Errors"));
       throw "grammar has syntax errors";
@@ -146,8 +147,8 @@ module.exports = function(args) {
     if (config.vJSLang !== null) {
       var filename;
       if (config.vJSLang === "") {
-        /* if file name is empty, use the first input file name, stripped of any extension */
-        filename = config.vInput[0].replace(/\.[^.$]+$/, '');
+//        /* if file name is empty, use the first input file name, stripped of any extension */
+//        filename = config.vInput[0].replace(/\.[^.$]+$/, '');
         filename = sabnf.generateJavaScript(grammarResult.rules, grammarResult.udts, filename);
       } else {
         filename = sabnf.generateJavaScript(grammarResult.rules, grammarResult.udts, config.vJSLang);

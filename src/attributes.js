@@ -40,10 +40,12 @@
 module.exports = function() {
   "use strict";
   var thisFileName = "attributes.js: ";
-  var id = require("apg-lib").ids;
+  var apglib = require("apg-lib");
+  var id = apglib.ids;
   var attrTypes = require("./attribute-types.js");
   var attrNonRecursive = require("./attributes-non-recursive.js");
   var attrRecursive = require("./attributes-recursive.js");
+  var htmlSources = require("./html-files-sources.js");
   var that = this;
   var rules = null;
   var ruleErrorCount = 0;
@@ -249,7 +251,7 @@ module.exports = function() {
       attr.right = this.right;
       attr.cyclic = this.cyclic;
     }
-  }
+  };
 
   // Name list object constructor.
   // Used to keep the list of rule names referenced by each rule.
@@ -287,7 +289,7 @@ module.exports = function() {
     this.clear = function() {
       list.length = 0;
     }
-  }
+  };
 
   // Convert a list of rule dependencies to a human-readable list.
   this.ruleDependenciesToString = function() {
@@ -409,5 +411,5 @@ module.exports = function() {
       }
     });
     return attrErrors;
-  }
+  };
 }

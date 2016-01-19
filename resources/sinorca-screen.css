@@ -283,30 +283,6 @@ dd {
 }
 
 /* #### Grammar Page #### */
-table.apg-table,
-.apg-table th,
-.apg-table td{text-align:right;border:1px solid black;border-collapse:collapse;}
-.apg-table th:last-child{text-align:left;}
-.apg-table td:last-child{text-align:left;}
-.apg-table b, /*match*/
-.apg-table i, /* empty */
-.apg-table kbd, /* no-match */
-.apg-table em, /* invalid characters */
-.apg-table code, /*control characters*/
-.apg-table strong, /* bold */
-.apg-table samp,
-.apg-table var
-{font-family:monospace;font-size:100%;font-style:normal;font-weight:normal;}
-.apg-table caption
-{font-family:monospace;font-size:125%;font-style:normal;font-weight:bold;text-align:left;}
-.apg-table b{color:#0000ff;}
-.apg-table i{color:#00ff00;}
-.apg-table kbd{color:#ff0000;}
-.apg-table em{color:#cc0000;font-style:italic;font-weight:bold;}
-.apg-table strong{font-weight:bold;}
-.apg-table code{color:blue;font-style:italic;font-weight:bold;font-size:75%;}
-.apg-table samp{background-color:#b2ffb2;color:#008000;}
-.apg-table var{color:#cc0000;font-weight:bold;}
 table.attr-table,
 .attr-table th,
 .attr-table td{text-align:center;border:1px solid black;border-collapse:collapse;}

@@ -27,6 +27,8 @@ module.exports = function() {
   var that = this;
   var fs = require("fs");
   var resources = require("./html-files-sources.js");
+  var apglib = require("apg-lib");
+  var apgTable = apglib.utils.styleApgTable();
 
   /* format a file error message */
   var fsmsg = function(name, msg, e) {
@@ -49,9 +51,8 @@ module.exports = function() {
       name : 'Attributes',
       pageName : 'attributes.html',
       fd : null,
-      scripts : [
-          "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",
-          "attr-sort.js" ]
+      scripts : [ '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>\n',
+                  resources.attrsort, resources.attrTable]
     },
     configuration : {
       name : 'Configuration',
@@ -63,150 +64,76 @@ module.exports = function() {
       name : 'Grammar',
       pageName : 'grammar.html',
       fd : null,
-      scripts : []
+      scripts : [apgTable]
     },
     grammarStats : {
       name : 'Grammar Statistics',
       pageName : 'grammar-statistics.html',
       fd : null,
-      scripts : []
+      scripts : [apgTable]
     },
     rules : {
       name : 'Rules',
       pageName : 'rules.html',
       fd : null,
-      scripts : [
-          "https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js",
-          "rule-sort.js" ]
+      scripts : [ '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>\n',
+                  resources.rulesort, apgTable]
     },
     state : {
       name : 'State',
       pageName : 'state.html',
       fd : null,
-      scripts : []
+      scripts : [apgTable]
     },
-  }
-  /* from html-files-sources.js */
-  var htmlResources = {
-    attrSort : {
-      filename : 'attr-sort.js',
-      value : ''
-    },
-    ruleSort : {
-      filename : 'rule-sort.js',
-      value : ''
-    },
-    printCss : {
-      filename : 'sinorca-print.css',
-      value : ''
-    },
-    screenCss : {
-      filename : 'sinorca-screen.css',
-      value : ''
-    }
-  }
-  /* copy resources to the `./html` directory if they don't already exist */
-  var copyResource = function(dstName, src) {
-    var functionName = thisFileName + "copyResource(): ";
-    var fd;
-    try {
-      fd = fs.openSync(dstName, "r");
-      /* resource file exists - do nothing */
-      fs.closeSync(fd);
-    } catch (e) {
-      if (e.code === "ENOENT") {
-        /* resource file does not exist - copy it over */
-        try {
-          fd = fs.openSync(dstName, "w");
-        } catch (ex) {
-          throw new Error(functionName + "can't open destination css file\n"
-              + ex.message);
-        }
-        try {
-          fs.writeSync(fd, src);
-          fs.closeSync(fd);
-        } catch (ex) {
-          throw new Error(functionName
-              + "can't copy resource css file do destination\n" + ex.message);
-        }
-      } else {
-        /* some other error */
-        throw new Error(functionName + "css file error\n" + e.message);
-      }
-    }
-  }
-  /* driver function to get the resources into the `./html` directory */
-  var getResources = function(config) {
-    var htmlDir = config.vHTMLDir + config.getFileDivider();
-    var dstName;
-    dstName = htmlDir + htmlResources.printCss.filename;
-    copyResource(dstName, resources.printcss);
-    dstName = htmlDir + htmlResources.screenCss.filename;
-    copyResource(dstName, resources.screencss);
-    dstName = htmlDir + htmlResources.attrSort.filename;
-    copyResource(dstName, resources.attrsort);
-    dstName = htmlDir + htmlResources.ruleSort.filename;
-    copyResource(dstName, resources.rulesort);
   }
   /* create the menu on each page with the current page highligted */
   var writeMenuItems = function(config, page, fd) {
     var line;
     fs.writeSync(fd, '<div><p class="sideBarTitle">Generator Output</p><ul>\n');
     if (page === htmlPageItems.console.pageName) {
-      line = '<li><span class="thisPage">&rsaquo; '
-          + htmlPageItems.console.name + '</span></li>\n';
+      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.console.name + '</span></li>\n';
     } else {
-      line = '<li><a href="' + htmlPageItems.console.pageName + '">&rsaquo; '
-          + htmlPageItems.console.name + '</a></li>\n';
+      line = '<li><a href="' + htmlPageItems.console.pageName + '">&rsaquo; ' + htmlPageItems.console.name + '</a></li>\n';
     }
     fs.writeSync(fd, line);
     if (page === htmlPageItems.attributes.pageName) {
-      line = '<li><span class="thisPage">&rsaquo; '
-          + htmlPageItems.attributes.name + '</span></li>\n';
+      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.attributes.name + '</span></li>\n';
     } else {
-      line = '<li><a href="' + htmlPageItems.attributes.pageName
-          + '">&rsaquo; ' + htmlPageItems.attributes.name + '</a></li>\n';
+      line = '<li><a href="' + htmlPageItems.attributes.pageName + '">&rsaquo; ' + htmlPageItems.attributes.name
+          + '</a></li>\n';
     }
     fs.writeSync(fd, line);
     if (page === htmlPageItems.configuration.pageName) {
-      line = '<li><span class="thisPage">&rsaquo; '
-          + htmlPageItems.configuration.name + '</span></li>\n';
+      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.configuration.name + '</span></li>\n';
     } else {
-      line = '<li><a href="' + htmlPageItems.configuration.pageName
-          + '">&rsaquo; ' + htmlPageItems.configuration.name + '</a></li>\n';
+      line = '<li><a href="' + htmlPageItems.configuration.pageName + '">&rsaquo; ' + htmlPageItems.configuration.name
+          + '</a></li>\n';
     }
     fs.writeSync(fd, line);
     if (page === htmlPageItems.grammar.pageName) {
-      line = '<li><span class="thisPage">&rsaquo; '
-          + htmlPageItems.grammar.name + '</span></li>\n';
+      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.grammar.name + '</span></li>\n';
     } else {
-      line = '<li><a href="' + htmlPageItems.grammar.pageName + '">&rsaquo; '
-          + htmlPageItems.grammar.name + '</a></li>\n';
+      line = '<li><a href="' + htmlPageItems.grammar.pageName + '">&rsaquo; ' + htmlPageItems.grammar.name + '</a></li>\n';
     }
     fs.writeSync(fd, line);
     if (page === htmlPageItems.grammarStats.pageName) {
-      line = '<li><span class="thisPage">&rsaquo; '
-          + htmlPageItems.grammarStats.name + '</span></li>\n';
+      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.grammarStats.name + '</span></li>\n';
     } else {
-      line = '<li><a href="' + htmlPageItems.grammarStats.pageName
-          + '">&rsaquo; ' + htmlPageItems.grammarStats.name + '</a></li>\n';
+      line = '<li><a href="' + htmlPageItems.grammarStats.pageName + '">&rsaquo; ' + htmlPageItems.grammarStats.name
+          + '</a></li>\n';
 
     }
     fs.writeSync(fd, line);
     if (page === htmlPageItems.rules.pageName) {
-      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.rules.name
-          + '</span></li>\n';
+      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.rules.name + '</span></li>\n';
     } else {
-      line = '<li><a href="' + htmlPageItems.rules.pageName + '">&rsaquo; '
-          + htmlPageItems.rules.name + '</a></li>\n';
+      line = '<li><a href="' + htmlPageItems.rules.pageName + '">&rsaquo; ' + htmlPageItems.rules.name + '</a></li>\n';
     }
     fs.writeSync(fd, line);
     if (page === htmlPageItems.state.pageName) {
-      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.state.name
-          + '</span></li>\n';
+      line = '<li><span class="thisPage">&rsaquo; ' + htmlPageItems.state.name + '</span></li>\n';
     } else {
-      line = '<li><a href="' + htmlPageItems.state.pageName + '">&rsaquo; '
-          + htmlPageItems.state.name + '</a></li>\n';
+      line = '<li><a href="' + htmlPageItems.state.pageName + '">&rsaquo; ' + htmlPageItems.state.name + '</a></li>\n';
     }
     fs.writeSync(fd, line);
     fs.writeSync(fd, '</ul></div>\n');
@@ -220,10 +147,10 @@ module.exports = function() {
     html += '<title>' + pageItem.name + '</title>\n';
     html += '<meta http-equiv="content-type"	content="application/xhtml+xml; charset=UTF-8" />\n';
     html += '<meta name="JavaScript APG 2.0" content="Lowell D. Thomas" />\n';
-    html += '<link rel="stylesheet" type="text/css" href="sinorca-screen.css" media="screen" title="Sinorca (screen)" />\n';
-    html += '<link rel="stylesheet" type="text/css" href="sinorca-print.css"	media="print" />\n';
+    html += resources.screencss;
+    html += resources.printcss;
     for (var i = 0; i < pageItem.scripts.length; i += 1) {
-      html += '<script src="' + pageItem.scripts[i] + '"></script>\n';
+      html += pageItem.scripts[i];
     }
     html += '</head>\n';
     html += '<body>\n';
@@ -240,15 +167,13 @@ module.exports = function() {
   /* open a named page */
   var openPage = function(config, pageItem) {
     var fd, filename, line, date;
-    fd = fs.openSync(config.vHTMLDir + config.getFileDivider()
-        + pageItem.pageName, "w");
+    fd = fs.openSync(config.vHTMLDir + config.getFileDivider() + pageItem.pageName, "w");
     fs.writeSync(fd, header(pageItem));
     writeMenuItems(config, pageItem.pageName, fd);
     fs.writeSync(fd, '</div>\n');
     date = new Date();
     line = '<div id="main-copy"><p></p><a class="topOfPage" href="#bottom" title="Go to the bottom of this page">';
-    line += date.toString()
-        + '&nbsp;&nbsp;:&nbsp;&nbsp;<strong>&#8659;</strong>BOTTOM</a>';
+    line += date.toString() + '&nbsp;&nbsp;:&nbsp;&nbsp;<strong>&#8659;</strong>BOTTOM</a>';
     line += '<h1 id="top">' + pageItem.name + '</h1>\n';
     fs.writeSync(fd, line);
     pageItem.fd = fd;
@@ -285,7 +210,6 @@ module.exports = function() {
         throw new Error(fsmsg(functionName, "can't create HTML directory", e));
       }
     }
-    getResources(config);
     try {
       openPage(config, htmlPageItems.console);
       this.writePage("console", '<pre>\n');
@@ -296,8 +220,7 @@ module.exports = function() {
       openPage(config, htmlPageItems.rules);
       openPage(config, htmlPageItems.state);
     } catch (e) {
-      throw new Error(fsmsg(functionName,
-          "error opening Generator HTML output pages", e));
+      throw new Error(fsmsg(functionName, "error opening Generator HTML output pages", e));
     }
   }
   // Close all pages.
@@ -316,11 +239,9 @@ module.exports = function() {
     var functionName = thisFileName + "writePage(): ";
     var item = htmlPageItems[pageName];
     if (typeof (item) !== "object") {
-      throw new Error(functionName + "page name '" + pageName
-          + "': the page does not exist");
+      throw new Error(functionName + "page name '" + pageName + "': the page does not exist");
     } else if (item.fd === null) {
-      throw new Error(functionName + "page name '" + pageName
-          + "': the page file is not open");
+      throw new Error(functionName + "page name '" + pageName + "': the page file is not open");
     } else {
       try {
         fs.writeSync(item.fd, text);
