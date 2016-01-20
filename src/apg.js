@@ -16,7 +16,6 @@
  */
 module.exports = function(args) {
   "use strict";
-  debugger;
   var thisFileName = "apg: ";
   var thisSectionName = "";
   var files = null;
@@ -106,10 +105,12 @@ module.exports = function(args) {
     // page.
     thisSectionName = "generater syntax: ";
     grammarResult = sabnf.syntax(grammarAnalysis, config.fStrict);
-    files.writePage("state", apglib.utils.stateToHtml(grammarResult.state));
+    files.writePage("state", apglib.utils.parserResultToHtml(grammarResult.state));
     files.writePage("grammarStats", grammarResult.stats.toHtml("ops"));
     if (grammarResult.hasErrors) {
       files.writePage("grammar", sabnf.errorsToHtml("Grammar Syntax Errors"));
+      files.writePage("rules", "<h3>Rules not generated due to grammar syntax errors.</h3>");
+      files.writePage("attributes", "<h3>Attributes not generated due to grammar syntax errors.</h3>");
       throw "grammar has syntax errors";
     }
     files.writePage("console", "\ngrammar syntax OK");
@@ -123,6 +124,8 @@ module.exports = function(args) {
     grammarResult = sabnf.semantic();
     if (grammarResult.hasErrors) {
       files.writePage("grammar", sabnf.errorsToHtml("Grammar Semantic Errors"));
+      files.writePage("rules", "<h3>Rules not generated due to grammar semantic errors.</h3>");
+      files.writePage("attributes", "<h3>Attributes not generated due to grammar semantic errors.</h3>");
       throw "grammar has semantic errors";
     }
     files.writePage("console", "\ngrammar semantics OK");
@@ -147,8 +150,6 @@ module.exports = function(args) {
     if (config.vJSLang !== null) {
       var filename;
       if (config.vJSLang === "") {
-//        /* if file name is empty, use the first input file name, stripped of any extension */
-//        filename = config.vInput[0].replace(/\.[^.$]+$/, '');
         filename = sabnf.generateJavaScript(grammarResult.rules, grammarResult.udts, filename);
       } else {
         filename = sabnf.generateJavaScript(grammarResult.rules, grammarResult.udts, config.vJSLang);

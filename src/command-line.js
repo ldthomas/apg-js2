@@ -34,7 +34,7 @@
 
 module.exports = function(commandlineArgs) {
   "use strict";
-  var thisFileName = "command-line.js";
+  var thisFileName = "command-line.js: ";
   var asp = new (require("./arg-string-parser.js"))();
   var fcp = new (require("./file-content-parser.js"))();
   var args, argString = "";
@@ -79,7 +79,7 @@ module.exports = function(commandlineArgs) {
     config.fDisplayState = true;
     config.fDisplayWarnings = true;
   }
-  var replace = config.vInput[0].replace(/\.[^.$]+$/, '');
+  var replace = (config.vInput.length > 0) ? config.vInput[0].replace(/\.[^.$]+$/, '') : "";
   if (config.vJSLang === "") {
     /* if file name is empty, use the first input file name, stripped of any extension */
     config.vJSLang = replace;

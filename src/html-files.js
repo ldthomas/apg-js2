@@ -26,9 +26,13 @@ module.exports = function() {
   var thisFileName = "html-files.js: ";
   var that = this;
   var fs = require("fs");
-  var resources = require("./html-files-sources.js");
   var apglib = require("apg-lib");
-  var apgTable = apglib.utils.styleApgTable();
+  var left0Table = apglib.utils.styleLeft0Table();
+  var left1Table = apglib.utils.styleLeft1Table();
+  var resources = require("./html-files-sources.js");
+  var attrsStyle = resources.attrsStyle();
+  var rulesort = resources.rulesSort(apglib.utils.styleNames.CLASS_LEFT1TABLE);
+  var attrsort = resources.attrsSort(apglib.utils.styleNames.CLASS_NOMATCH);
 
   /* format a file error message */
   var fsmsg = function(name, msg, e) {
@@ -52,7 +56,7 @@ module.exports = function() {
       pageName : 'attributes.html',
       fd : null,
       scripts : [ '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>\n',
-                  resources.attrsort, resources.attrTable]
+                  attrsStyle, attrsort]
     },
     configuration : {
       name : 'Configuration',
@@ -64,26 +68,26 @@ module.exports = function() {
       name : 'Grammar',
       pageName : 'grammar.html',
       fd : null,
-      scripts : [apgTable]
+      scripts : [left1Table]
     },
     grammarStats : {
       name : 'Grammar Statistics',
       pageName : 'grammar-statistics.html',
       fd : null,
-      scripts : [apgTable]
+      scripts : [left0Table]
     },
     rules : {
       name : 'Rules',
       pageName : 'rules.html',
       fd : null,
       scripts : [ '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>\n',
-                  resources.rulesort, apgTable]
+                  left1Table, rulesort]
     },
     state : {
       name : 'State',
       pageName : 'state.html',
       fd : null,
-      scripts : [apgTable]
+      scripts : [left1Table]
     },
   }
   /* create the menu on each page with the current page highligted */
@@ -147,8 +151,9 @@ module.exports = function() {
     html += '<title>' + pageItem.name + '</title>\n';
     html += '<meta http-equiv="content-type"	content="application/xhtml+xml; charset=UTF-8" />\n';
     html += '<meta name="JavaScript APG 2.0" content="Lowell D. Thomas" />\n';
-    html += resources.screencss;
-    html += resources.printcss;
+    html += resources.screenCss();
+    html += resources.printCss();
+    html += apglib.utils.styleClasses();
     for (var i = 0; i < pageItem.scripts.length; i += 1) {
       html += pageItem.scripts[i];
     }

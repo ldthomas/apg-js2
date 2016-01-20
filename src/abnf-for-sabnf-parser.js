@@ -33,20 +33,6 @@ module.exports = function() {
   parser.ast.callbacks = sem.callbacks;
   
   // If errors are found during parsing, this function will convert the
-  // error messages to a
-  // string suitable for `console.log()`.
-  this.errorsToString = function(title) {
-    var str = "";
-    if (typeof (title) === "string") {
-      str += title + "\n";
-    }
-    errors.forEach(function(val, index) {
-      str += "error: " + index + ": line: " + val.line + ": char: " + val.char
-          + ": msg: " + val.msg + "\n";
-    });
-    return str;
-  }
-  // If errors are found during parsing, this function will convert the
   // error messages to
   // HTML suitable for display on an HTML page.
   this.errorsToHtml = function(title) {
@@ -193,14 +179,14 @@ module.exports = function() {
   }
   // Error messages, if any, are converted to a string suitable for
   // `console.log()`.
-  this.displayErrors = function() {
-    return errorsToString(thisFileName + ": displayErrors()", errors);
-  }
+//  this.displayErrors = function() {
+//    return errorsToString(thisFileName + ": displayErrors()", errors);
+//  }
   // Error messages, if any, are converted to HTML for display on the
   // `html/grammr.html` output page.
-  this.displayErrorsHtml = function(className) {
-    return errorsToHtml(thisFileName + ": displayErrors()", errors);
-  }
+//  this.displayErrorsHtml = function(className) {
+//    return errorsToHtml(thisFileName + ": displayErrors()", errors);
+//  }
   // Iterate through the rules, UDTs and opcodes, writing a `node.js` module to
   // the designated file name.
   this.generateJavaScript = function(rules, udts, fileName) {

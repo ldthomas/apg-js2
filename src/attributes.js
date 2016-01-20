@@ -41,6 +41,7 @@ module.exports = function() {
   "use strict";
   var thisFileName = "attributes.js: ";
   var apglib = require("apg-lib");
+  var style = apglib.utils.styleNames;
   var id = apglib.ids;
   var attrTypes = require("./attribute-types.js");
   var attrNonRecursive = require("./attributes-non-recursive.js");
@@ -100,10 +101,8 @@ module.exports = function() {
 
   // Array.sort() callback, sort putting errors at top.
   var sortByError = function(r, l) {
-    var rerror = (r.attr.left === true || r.attr.cyclic === true || r.attr.finite === false) ? true
-        : false;
-    var lerror = (l.attr.left === true || l.attr.cyclic === true || l.attr.finite === false) ? true
-        : false;
+    var rerror = (r.attr.left === true || r.attr.cyclic === true || r.attr.finite === false) ? true : false;
+    var lerror = (l.attr.left === true || l.attr.cyclic === true || l.attr.finite === false) ? true : false;
 
     if (rerror === false && lerror === true) {
       return 1;
@@ -159,13 +158,13 @@ module.exports = function() {
 
   // Convert an attribute to an HTML `<script>` of JavaScript data.
   // Used by the click-to-sort anchors.
-  var attrsToHtml = function(rules, title, className) {
+  // Uses `attrsort` below.
+  var attrsToHtml = function(rules, title) {
     var html = '';
     var error, attr;
     var hasErrors = false;
-    var className = "apg-table";
     var title = "Grammar Attributes";
-    html += "<script>\n";
+    html += '<script type="text/javascript">\n';
     html += 'var attrSortCol = "index"\n';
     html += 'var attrSortErrors = true\n';
     html += 'var attrSortDir = 0\n';
@@ -184,14 +183,10 @@ module.exports = function() {
         error = true;
         hasErrors = true;
       }
-      html += '{error: ' + error + ', index: ' + rule.index + ', rule: "'
-          + rule.name + '", lower: "' + rule.lower + '"';
-      html += ', type: ' + rule.ctrl.type + ', typename: "'
-          + attrTypeToString(rule.ctrl) + '"';
-      html += ', left: ' + attr.left + ', nested: ' + attr.nested + ', right: '
-          + attr.right + ', cyclic: ' + attr.cyclic;
-      html += ', finite: ' + attr.finite + ', empty: ' + attr.empty
-          + ', notempty: ' + attr.notEmpty;
+      html += '{error: ' + error + ', index: ' + rule.index + ', rule: "' + rule.name + '", lower: "' + rule.lower + '"';
+      html += ', type: ' + rule.ctrl.type + ', typename: "' + attrTypeToString(rule.ctrl) + '"';
+      html += ', left: ' + attr.left + ', nested: ' + attr.nested + ', right: ' + attr.right + ', cyclic: ' + attr.cyclic;
+      html += ', finite: ' + attr.finite + ', empty: ' + attr.empty + ', notempty: ' + attr.notEmpty;
       html += '}';
     });
     html += '\n]\n';
@@ -202,7 +197,7 @@ module.exports = function() {
 
     return html;
   }
-  
+
   // Attribute control object constructor.
   var AttrCtrl = function(emptyArray) {
     this.isOpen = false;
@@ -306,40 +301,38 @@ module.exports = function() {
 
     return ret;
   }
-  
+
   // Convert the list of rule dependencies to an HTML `<script>` of JavaScript data.
   // Used by the click-to-hide/show anchors.
+  // Uses `rulesort` below.
   this.rulesWithReferencesToHtml = function() {
     var html = '';
-    var className = "apg-table";
     var title = "Grammar Rules with Dependencies";
-    html += "<script>\n";
+    html += '<script type="text/javascript">\n';
     html += 'var tableData= {indexSort: "up", nameSort: "up", rows: [\n';
     var rcount = 0;
-    rules
-        .forEach(function(rule) {
-          if (rcount === 0) {
-            rcount += 1;
+    rules.forEach(function(rule) {
+      if (rcount === 0) {
+        rcount += 1;
+      } else {
+        html += ',';
+      }
+      html += '{name: "' + rule.name + '", lower: "' + rule.lower + '", index: ' + rule.index;
+      html += ', indexSort: "up", nameSort: "up", visible: true, dependents: [';
+      var icount = 0;
+      for (var i = 0; i < rules.length; i += 1) {
+        if (rule.ctrl.refCount[i] > 0) {
+          if (icount === 0) {
+            html += '{name: "' + rules[i].name + '", index: ' + i + '}'
+            icount += 1;
           } else {
             html += ',';
+            html += '{name: "' + rules[i].name + '", index: ' + i + '}'
           }
-          html += '{name: "' + rule.name + '", lower: "' + rule.lower
-              + '", index: ' + rule.index;
-          html += ', indexSort: "up", nameSort: "up", visible: true, dependents: [';
-          var icount = 0;
-          for (var i = 0; i < rules.length; i += 1) {
-            if (rule.ctrl.refCount[i] > 0) {
-              if (icount === 0) {
-                html += '{name: "' + rules[i].name + '", index: ' + i + '}'
-                icount += 1;
-              } else {
-                html += ',';
-                html += '{name: "' + rules[i].name + '", index: ' + i + '}'
-              }
-            }
-          }
-          html += ']}\n';
-        });
+        }
+      }
+      html += ']}\n';
+    });
     html += ']};\n';
     html += "</script>\n";
     html += '<div id="sort-links" >\n';
@@ -347,7 +340,7 @@ module.exports = function() {
 
     return html;
   }
-  
+
   // Perform the initial sorting of the rule names.
   // The actual work is done by the Array.sort() callbacks.
   this.ruleAttrsToHtml = function() {
@@ -380,8 +373,7 @@ module.exports = function() {
 
     attrTypes(rules);
     rules.forEach(function(rule) {
-      if (rule.ctrl.type === id.ATTR_R || rule.ctrl.type === id.ATTR_MR
-          || rule.ctrl.type === id.ATTR_RMR) {
+      if (rule.ctrl.type === id.ATTR_R || rule.ctrl.type === id.ATTR_MR || rule.ctrl.type === id.ATTR_RMR) {
         rule.attr = new Attr(true);
       } else {
         rule.attr = new Attr();
@@ -397,17 +389,26 @@ module.exports = function() {
       if (rule.attr.left === true) {
         rule.error = true;
         ruleErrorCount += 1;
-        attrErrors.push({name: rule.name, error: "left recursive"});
+        attrErrors.push({
+          name : rule.name,
+          error : "left recursive"
+        });
       }
       if (rule.attr.finite === false) {
         rule.error = true;
         ruleErrorCount += 1;
-        attrErrors.push({name: rule.name, error: "infinite"});
+        attrErrors.push({
+          name : rule.name,
+          error : "infinite"
+        });
       }
       if (rule.attr.cyclic === true) {
         rule.error = true;
         ruleErrorCount += 1;
-        attrErrors.push({name: rule.name, error: "cyclic"});
+        attrErrors.push({
+          name : rule.name,
+          error : "cyclic"
+        });
       }
     });
     return attrErrors;

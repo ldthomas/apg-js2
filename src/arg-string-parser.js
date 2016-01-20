@@ -66,9 +66,6 @@ module.exports = function() {
         case 108: // 'l'
           data.config.fLF = true;
           break;
-        case 107: // 'k'
-          data.config.fCallStack = true;
-          break;
         default:
           data.errors.push("unrecognized command line argument flag: "
               + String.fromCharCode(chars[phraseIndex + i]));

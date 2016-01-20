@@ -288,15 +288,13 @@ module.exports = function() {
   }
   // Format the error messages to HTML, for page display.
   this.errorsToHtml = function() {
-    return apglib.utils.errorsToHtml(this.chars, this.lines, errors,
-        "Grammar Validation Errors");
+    return apglib.utils.errorsToHtml(this.chars, this.lines, errors, "Grammar Validation Errors");
   }
   // Generate an HTML table of the lines.
   this.toHtml = function() {
     var html = "";
-//    html += apglib.utils.styleApgTable();
     html += "<p>";
-    html += '<table class="apg-table">\n';
+    html += '<table class="'+apglib.utils.styleNames.CLASS_LEFT1TABLE+'">\n';
     var title = "Annotated Input Grammar File";
     if (inputFileCount > 1) {
       title += "s(" + inputFileCount + ")"
