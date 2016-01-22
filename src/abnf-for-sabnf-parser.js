@@ -336,17 +336,38 @@ module.exports = function() {
       fs.writeSync(fd, "  /* RULES */\n");
       fs.writeSync(fd, "  this.rules = [];\n");
       rules.forEach(function(rule, i) {
-        fs.writeSync(fd, "  this.rules[" + i + "] = {name: '" + rule.name
-            + "', lower: '" + rule.lower + "', index: " + rule.index + ", isBkr: " + rule.isBkr + ", hasBkr: " + rule.hasBkr  + "};\n");
+        var thisRule = "  this.rules[";
+        thisRule += i;
+        thisRule += "] = {name: '";
+        thisRule += rule.name;
+        thisRule += "', lower: '";
+        thisRule += rule.lower;
+        thisRule += "', index: ";
+        thisRule += rule.index;
+        thisRule += ", isBkr: ";
+        thisRule += rule.isBkr;
+        thisRule += "};\n";
+        fs.writeSync(fd, thisRule);
       });
       fs.writeSync(fd, "\n");
       fs.writeSync(fd, "  /* UDTS */\n");
       fs.writeSync(fd, "  this.udts = [];\n");
       if (udts.length > 0) {
         udts.forEach(function(udt, i) {
-          fs.writeSync(fd, "  this.udts[" + i + "] = {name: '" + udt.name
-              + "', lower: '" + udt.lower+ "', index: " + udt.index + ", empty: " + udt.empty
-               + ", isBkr: " + udt.isBkr + "};\n");
+          var thisUdt = "  this.udts[";
+          thisUdt += i;
+          thisUdt += "] = {name: '";
+          thisUdt += udt.name;
+          thisUdt += "', lower: '";
+          thisUdt += udt.lower;
+          thisUdt += "', index: ";
+          thisUdt += udt.index;
+          thisUdt += "', empty: ";
+          thisUdt += udt.empty;
+          thisUdt += ", isBkr: ";
+          thisUdt += udt.isBkr;
+          thisUdt += "};\n";
+          fs.writeSync(fd, thisUdt);
         });
       }
       fs.writeSync(fd, "\n");
@@ -382,15 +403,21 @@ module.exports = function() {
               bkrname = rules[op.index].name;
               bkrlower = rules[op.index].lower;
             }
-            if(op.insensitive){
-              bkrname = "%i" + bkrname;
-            }else{
-              bkrname = "%s" + bkrname;
+            var prefix = "%i";
+            if(op.bkrCase === id.BKR_MODE_CS){
+              prefix = "%s";
             }
+            if(op.bkrMode === id.BKR_MODE_UM){
+              prefix += "%u";
+            }else{
+              prefix += "%p";
+            }
+            bkrname = prefix + bkrname;
             fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
                 + opIndex + "] = {type: " + op.type + ", index: " + op.index 
                 + ", lower: '" + bkrlower + "'"
-                + ", insensitive: " + op.insensitive
+                + ", bkrCase: " + op.bkrCase
+                + ", bkrMode: " + op.bkrMode
                 + "};// BKR(\\" + bkrname + ")\n");
             break;
           case id.UDT:

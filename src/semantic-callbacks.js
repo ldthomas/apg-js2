@@ -11,8 +11,8 @@ module.exports = function(grammar) {
   var NameList = function() {
     this.names = [];
     /*
-     * Adds a new rule name object to the list. Returns -1 if the name already
-     * exists. Returns the added name object if the name does not already exist.
+     * Adds a new rule name object to the list. Returns -1 if the name already exists. Returns the added name object if the name
+     * does not already exist.
      */
     this.add = function(name) {
       var ret = -1;
@@ -76,21 +76,15 @@ module.exports = function(grammar) {
   }
 
   /*
-   * This is the prototype for all semantic analysis callback functions.<br>
-   * Note that at the point these functions are called the parser has done its
-   * job and all arguments are input supplied to the callback function by the
-   * translator.
+   * This is the prototype for all semantic analysis callback functions.<br> Note that at the point these functions are called
+   * the parser has done its job and all arguments are input supplied to the callback function by the translator.
    * 
-   * @param {number} state - the translator state (id.SEM_PRE for downward
-   * traversal of the AST, id.SEM_POST for upward traversal) @param {array}
-   * chars - the array of character codes for the input string @param {number}
-   * phraseIndex - index into the chars array to the first character of the
-   * phrase associated with this node @param {number} phraseCount - the number
-   * of characters in the phrase @param {any} data - user-defined data passed to
-   * the translator for use by the callback functions. Set in call to the
-   * function "semanticAnalysis()". @return id.SEM_OK, normal return.
-   * id.SEM_SKIP in state id.SEM_PRE will skip the branch below. Any thing else
-   * is an error which will stop the translation. @memberof Example
+   * @param {number} state - the translator state (id.SEM_PRE for downward traversal of the AST, id.SEM_POST for upward
+   * traversal) @param {array} chars - the array of character codes for the input string @param {number} phraseIndex - index
+   * into the chars array to the first character of the phrase associated with this node @param {number} phraseCount - the
+   * number of characters in the phrase @param {any} data - user-defined data passed to the translator for use by the callback
+   * functions. Set in call to the function "semanticAnalysis()". @return id.SEM_OK, normal return. id.SEM_SKIP in state
+   * id.SEM_PRE will skip the branch below. Any thing else is an error which will stop the translation. @memberof Example
    */
   function semCallbackPrototype(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
@@ -116,7 +110,6 @@ module.exports = function(grammar) {
       var nameObj;
       data.rules.forEach(function(rule, index) {
         rule.isBkr = false;
-        rule.hasBkr = false;
         rule.opcodes.forEach(function(op, iop) {
           if (op.type === id.RNM) {
             nameObj = data.ruleNames.get(op.index.name);
@@ -144,13 +137,13 @@ module.exports = function(grammar) {
             rule.hasBkr = true;
             nameObj = data.ruleNames.get(op.index.name);
             if (nameObj !== -1) {
-              op.index = nameObj.index;
               data.rules[nameObj.index].isBkr = true;
+              op.index = nameObj.index;
             } else {
               nameObj = data.udtNames.get(op.index.name);
               if (nameObj !== -1) {
-                op.index = data.rules.length + nameObj.index;
                 data.udts[nameObj.index].isBkr = true;
+                op.index = data.rules.length + nameObj.index;
               } else {
                 data.errors.push({
                   line : data.findLine(op.index.phraseIndex),
@@ -408,8 +401,8 @@ module.exports = function(grammar) {
       data.opcodes.push({
         type : id.RNM,
         /*
-         * NOTE: this is temporary info, index will be replaced with integer
-         * later. Probably not the best coding practice but here you go.
+         * NOTE: this is temporary info, index will be replaced with integer later. Probably not the best coding practice but
+         * here you go.
          */
         index : {
           phraseIndex : phraseIndex,
@@ -442,14 +435,18 @@ module.exports = function(grammar) {
   function semBkrOp(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
-      data.tlscase = true; /* default to case insensitive */
+      data.ci = true; /* default to case insensitive */
+      data.cs = false;
+      data.um = true;
+      data.pm = false;
     } else if (state == id.SEM_POST) {
       data.opcodes.push({
         type : id.BKR,
-        insensitive : data.tlscase,
+        bkrCase : (data.cs === true) ? id.BKR_MODE_CS : id.BKR_MODE_CI,
+        bkrMode : (data.pm === true) ? id.BKR_MODE_PM : id.BKR_MODE_UM,
         /*
-         * NOTE: this is temporary info, index will be replaced with integer
-         * later. Probably not the best coding practice but here you go.
+         * NOTE: this is temporary info, index will be replaced with integer later. Probably not the best coding practice but
+         * here you go.
          */
         index : {
           phraseIndex : data.bkrname.phraseIndex,
@@ -459,11 +456,46 @@ module.exports = function(grammar) {
     }
     return ret;
   }
+  function semBkrCi(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.ci = true;
+    }
+    return ret;
+  }
+  function semBkrCs(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.cs = true;
+    }
+    return ret;
+  }
+  function semBkrUm(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.um = true;
+    }
+    return ret;
+  }
+  function semBkrPm(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.pm = true;
+    }
+    return ret;
+  }
   function semBkrName(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
     } else if (state == id.SEM_POST) {
-      data.bkrname = {phraseIndex: phraseIndex, phraseLength: phraseCount};
+      data.bkrname = {
+        phraseIndex : phraseIndex,
+        phraseLength : phraseCount
+      };
     }
     return ret;
   }
@@ -700,6 +732,10 @@ module.exports = function(grammar) {
   this.callbacks['bkr-name'] = semBkrName;
   this.callbacks['bstring'] = semBstring;
   this.callbacks['clsop'] = semClsOp;
+  this.callbacks['ci'] = semBkrCi;
+  this.callbacks['cs'] = semBkrCs;
+  this.callbacks['um'] = semBkrUm;
+  this.callbacks['pm'] = semBkrPm;
   this.callbacks['concatenation'] = semConcatenation;
   this.callbacks['defined'] = semDefined;
   this.callbacks['dmax'] = semDmax;

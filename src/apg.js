@@ -104,11 +104,14 @@ module.exports = function(args) {
     // Any grammar syntax errors caught are reported to the `html/grammar.html`
     // page.
     thisSectionName = "generater syntax: ";
-    grammarResult = sabnf.syntax(grammarAnalysis, config.fStrict);
+    grammarResult = sabnf.syntax(grammarAnalysis, config.fStrict, true);
     files.writePage("state", apglib.utils.parserResultToHtml(grammarResult.state));
     files.writePage("grammarStats", grammarResult.stats.toHtml("ops"));
     if (grammarResult.hasErrors) {
       files.writePage("grammar", sabnf.errorsToHtml("Grammar Syntax Errors"));
+      
+      files.writePage("grammar", grammarResult.trace.toHtml());
+      
       files.writePage("rules", "<h3>Rules not generated due to grammar syntax errors.</h3>");
       files.writePage("attributes", "<h3>Attributes not generated due to grammar syntax errors.</h3>");
       throw "grammar has syntax errors";
