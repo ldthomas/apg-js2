@@ -28,7 +28,7 @@ module.exports = function(args) {
     var htmlFiles = require("./html-files.js");
     var apglib = require("apg-lib");
     var cmdLine = require("./command-line.js");
-    var grammarAnalysis = new (require("./input-analysis-parser.js"))();
+    var inputAnalysis = new (require("./input-analysis-parser.js"))();
     var sabnf = new (require("./abnf-for-sabnf-parser.js"))();
     var Attributes = require("./attributes.js");
 
@@ -64,9 +64,9 @@ module.exports = function(args) {
     if (config.vInput.length === 0) {
       throw new Error("no input grammar file specified");
     }
-    grammarAnalysis.get(config.vInput);
-    var grammarResult = grammarAnalysis.analyze(config.fStrict);
-    files.writePage("grammar", grammarAnalysis.toHtml());
+    inputAnalysis.get(config.vInput);
+    var grammarResult = inputAnalysis.analyze(config.fStrict);
+    files.writePage("grammar", inputAnalysis.toHtml());
 
     // Do line end conversions (`--CRLF` and `--LF` options) here before
     // reporting any grammar validation errors.
@@ -74,13 +74,13 @@ module.exports = function(args) {
       thisSectionName = "line end conversions: ";
       if (config.fCRLF) {
         var name = config.vInput[0] + ".crlf";
-        grammarAnalysis.toCRLF(name);
+        inputAnalysis.toCRLF(name);
         files.writePage("console", "\nconverted input grammar file(s)  to '" + name + "' with CRLF line ends");
         console.log(thisFileName + "converted input grammar file(s)  to '" + name + "' with CRLF line ends");
       }
       if (config.fLF) {
         var name = config.vInput[0] + ".lf";
-        grammarAnalysis.toLF(name);
+        inputAnalysis.toLF(name);
         files.writePage("console", "\nconverted input grammar file(s)  to '" + name + "' with LF line ends");
         console.log(thisFileName + "converted input grammar file(s)  to '" + name + "' with LF line ends");
       }
@@ -88,7 +88,9 @@ module.exports = function(args) {
     // Exit here if grammar has validation errors.
     if (grammarResult.hasErrors === true) {
       thisSectionName = "grammar validation: ";
-      files.writePage("grammar", grammarAnalysis.errorsToHtml())
+      files.writePage("grammar", inputAnalysis.errorsToHtml(grammarResult.errors, "Grammar Validation Errors"));
+      files.writePage("rules", "<h3>Rules not generated due to grammar validation errors.</h3>");
+      files.writePage("attributes", "<h3>Attributes not generated due to grammar validation errors.</h3>");
       var msg = "invalid input grammar"
       throw new Error(msg);
     }
@@ -104,14 +106,11 @@ module.exports = function(args) {
     // Any grammar syntax errors caught are reported to the `html/grammar.html`
     // page.
     thisSectionName = "generater syntax: ";
-    grammarResult = sabnf.syntax(grammarAnalysis, config.fStrict, true);
+    grammarResult = sabnf.syntax(inputAnalysis, config.fStrict, false);
     files.writePage("state", apglib.utils.parserResultToHtml(grammarResult.state));
     files.writePage("grammarStats", grammarResult.stats.toHtml("ops"));
     if (grammarResult.hasErrors) {
-      files.writePage("grammar", sabnf.errorsToHtml("Grammar Syntax Errors"));
-      
-      files.writePage("grammar", grammarResult.trace.toHtml());
-      
+      files.writePage("grammar", inputAnalysis.errorsToHtml(grammarResult.errors, "Grammar Syntax Errors"));
       files.writePage("rules", "<h3>Rules not generated due to grammar syntax errors.</h3>");
       files.writePage("attributes", "<h3>Attributes not generated due to grammar syntax errors.</h3>");
       throw "grammar has syntax errors";
@@ -126,7 +125,7 @@ module.exports = function(args) {
     thisSectionName = "generater semantics: ";
     grammarResult = sabnf.semantic();
     if (grammarResult.hasErrors) {
-      files.writePage("grammar", sabnf.errorsToHtml("Grammar Semantic Errors"));
+      files.writePage("grammar", inputAnalysis.errorsToHtml(grammarResult.errors, "Grammar Semantic Errors"));
       files.writePage("rules", "<h3>Rules not generated due to grammar semantic errors.</h3>");
       files.writePage("attributes", "<h3>Attributes not generated due to grammar semantic errors.</h3>");
       throw "grammar has semantic errors";

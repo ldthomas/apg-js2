@@ -73,8 +73,7 @@ module.exports = function() {
       data.errors.push({
         line : data.lineNo,
         char : phraseIndex,
-        msg : "invalid character found 'x" + chars[phraseIndex].toString(16)
-            + "'"
+        msg : "invalid character found '\\x" + apglib.utils.charToHex(chars[phraseIndex])+ "'"
       });
     }
     return id.SEM_OK;
@@ -88,11 +87,10 @@ module.exports = function() {
   function semLF(state, chars, phraseIndex, phraseCount, data) {
     if (state == id.SEM_PRE) {
       if (data.strict) {
-        data.errors
-            .push({
+        data.errors.push({
               line : data.lineNo,
               char : phraseIndex,
-              msg : "line end character is new line only (\\n, x0A) - strict ABNF specified"
+              msg : "line end character is new line only (\\n, \\x0A) - strict ABNF specified"
             });
       }
     }
@@ -101,11 +99,10 @@ module.exports = function() {
   function semCR(state, chars, phraseIndex, phraseCount, data) {
     if (state == id.SEM_PRE) {
       if (data.strict) {
-        data.errors
-            .push({
+        data.errors.push({
               line : data.lineNo,
               char : phraseIndex,
-              msg : "line end character is carriage return only(\\r, x0D) - strict ABNF specified"
+              msg : "line end character is carriage return only(\\r, \\x0D) - strict ABNF specified"
             });
       }
     }
@@ -286,15 +283,178 @@ module.exports = function() {
       console.log("");
     });
   }
+  var abnfToHtml = function(chars, beg, len){
+    var NORMAL = 0;
+    var CONTROL = 1;
+    var INVALID = 2;
+    var CONTROL_BEG = '<span class="'+apglib.utils.styleNames.CLASS_CTRL+'">';
+    var CONTROL_END = "</span>";
+    var INVALID_BEG = '<span class="'+apglib.utils.styleNames.CLASS_NOMATCH+'">';
+    var INVALID_END = "</span>";
+    var end;
+    var html = '';
+    while (true) {
+      if (!Array.isArray(chars) || chars.length === 0) {
+        break;
+      }
+      if (typeof (beg) !== "number") {
+        beg = 0;
+      }
+      if (beg >= chars.length) {
+        break;
+      }
+      if (typeof (len) !== 'number' || beg+len >= chars.length) {
+        end = chars.length;
+      }else{
+        end = beg + len;
+      }
+      var state = NORMAL
+      for (var i = beg; i < end; i += 1) {
+        var ch = chars[i];
+        if (ch >= 32 && ch <= 126) {
+          /* normal - printable ASCII characters */
+          if (state === CONTROL) {
+            html += CONTROL_END;
+            state = NORMAL;
+          } else if (state === INVALID) {
+            html += INVALID_END;
+            state = NORMAL;
+          }
+          /* handle reserved HTML entity characters */
+          switch (ch) {
+          case 32:
+            html += '&nbsp;';
+            break;
+          case 60:
+            html += '&lt;';
+            break;
+          case 62:
+            html += '&gt;';
+            break;
+          case 38:
+            html += '&amp;';
+            break;
+          case 34:
+            html += '&quot;';
+            break;
+          case 39:
+            html += '&#039;';
+            break;
+          case 92:
+            html += '&#092;';
+            break;
+          default:
+            html += String.fromCharCode(ch);
+            break;
+          }
+        } else if (ch === 9 || ch === 10 || ch === 13) {
+          /* control characters */
+          if (state === NORMAL) {
+            html += CONTROL_BEG;
+            state = CONTROL;
+          } else if (state === INVALID) {
+            html += INVALID_END + CONTROL_BEG;
+            state = CONTROL;
+          }
+          if (ch === 9) {
+            html += "TAB";
+          }
+          if (ch === 10) {
+            html += "LF";
+          }
+          if (ch === 13) {
+            html += "CR";
+          }
+        } else {
+          /* invalid characters */
+          if (state === NORMAL) {
+            html += INVALID_BEG;
+            state = INVALID;
+          } else if (state === CONTROL) {
+            html += CONTROL_END + INVALID_BEG;
+            state = INVALID;
+          }
+          /* display character as hexidecimal value */
+          html += "\\x" + apglib.utils.charToHex(ch);
+        }
+      }
+      if (state === INVALID) {
+        html += INVALID_END;
+      }
+      if (state === CONTROL) {
+        html += CONTROL_END;
+      }
+      break;
+    }
+    return html;
+  }
+  var abnfErrorsToHtml = function(chars, lines, errors, title) {
+    var style = apglib.utils.styleNames;
+    var html = "";
+    if (!(Array.isArray(chars) && Array.isArray(lines) && Array.isArray(errors))) {
+      return html;
+    }
+    if (typeof (title) !== "string" || title === "") {
+      title = null;
+    }
+    var errorArrow = '<span class="'+style.CLASS_NOMATCH+'">&raquo;</span>';
+    html += '<p><table class="' + style.CLASS_LAST_LEFT_TABLE+ '">\n';
+    if(title){
+      html += '<caption>' + title + '</caption>\n';
+    }
+    html += '<tr><th>line<br>no.</th><th>first<br>char</th><th><br>text</th></tr>\n';
+//    data.catalog.push({
+//      lineNo : data.catalog.length,
+//      beginChar : phraseIndex,
+//      length : phraseCount,
+//      textLength : data.textLength,
+//      endLength : data.endLength,
+//      endType : data.endType,
+//      invalidChars : data.invalidCount
+//    });
+//    data.errors.push({
+//      line : data.lineNo,
+//      char : phraseIndex,
+//      msg : "line end character is new line only (\\n, x0A) - strict ABNF specified"
+//    });
+    errors.forEach(function(val) {
+      var line, relchar, beg, end, len, length, text, prefix = "", suffix = "";
+      if (lines.length === 0) {
+        text = errorArrow;
+        relchar = 0;
+      } else {
+        line = lines[val.line];
+        beg = line.beginChar;
+        if(val.char > beg){
+          prefix = abnfToHtml(chars, beg, val.char - beg);
+        }
+        beg = val.char;
+        end = line.beginChar + line.length;
+        if(beg < end){
+          suffix = abnfToHtml(chars, beg, end - beg);
+        }
+        text = prefix + errorArrow + suffix;
+        relchar = val.char - line.beginChar;
+      }
+      html += '<tr>';
+      html += '<td>' + val.line + '</td><td>' + relchar + '</td><td>' + text + '</td>';
+      html += '</tr>\n';
+      html += '<tr>';
+      html += '<td colspan="2"></td>' + '<td>&uarr;:&nbsp;' + val.msg + '</td>'
+      html += '</tr>\n';
+    });
+    html += '</table></p>\n';
+    return html;
+  }
   // Format the error messages to HTML, for page display.
-  this.errorsToHtml = function() {
-    return apglib.utils.errorsToHtml(this.chars, this.lines, errors, "Grammar Validation Errors");
+  this.errorsToHtml = function(errors, title) {
+    return abnfErrorsToHtml(this.chars, this.lines, errors, title);
   }
   // Generate an HTML table of the lines.
   this.toHtml = function() {
     var html = "";
     html += "<p>";
-    html += '<table class="'+apglib.utils.styleNames.CLASS_LEFT1TABLE+'">\n';
+    html += '<table class="'+apglib.utils.styleNames.CLASS_LAST_LEFT_TABLE+'">\n';
     var title = "Annotated Input Grammar File";
     if (inputFileCount > 1) {
       title += "s(" + inputFileCount + ")"
@@ -312,8 +472,7 @@ module.exports = function() {
           + '</td><td>'
           + val.length
           + '</td><td>'
-          + apglib.utils.charsToHtml(that.chars, val.beginChar, (val.beginChar
-              + val.length - 1));
+          + abnfToHtml(that.chars, val.beginChar, val.length);
       +'</td>';
       html += '</tr>\n';
     });

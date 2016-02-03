@@ -32,14 +32,6 @@ module.exports = function() {
   parser.callbacks = syn.callbacks;
   parser.ast.callbacks = sem.callbacks;
   
-  // If errors are found during parsing, this function will convert the
-  // error messages to
-  // HTML suitable for display on an HTML page.
-  this.errorsToHtml = function(title) {
-    return utils.errorsToHtml(grammarAnalysisParser.chars,
-        grammarAnalysisParser.lines, errors, title);
-  }
-
   var translateIndex = function(map, index) {
     var ret = -1;
     if (index < map.length) {
@@ -177,16 +169,6 @@ module.exports = function() {
     }
     return ret;
   }
-  // Error messages, if any, are converted to a string suitable for
-  // `console.log()`.
-//  this.displayErrors = function() {
-//    return errorsToString(thisFileName + ": displayErrors()", errors);
-//  }
-  // Error messages, if any, are converted to HTML for display on the
-  // `html/grammr.html` output page.
-//  this.displayErrorsHtml = function(className) {
-//    return errorsToHtml(thisFileName + ": displayErrors()", errors);
-//  }
   // Iterate through the rules, UDTs and opcodes, writing a `node.js` module to
   // the designated file name.
   this.generateJavaScript = function(rules, udts, fileName) {

@@ -2,7 +2,7 @@
   "name": "apg",
   "version": "2.0.2",
   "description": "An ABNF Parser Generator - generates recursive-descent parsers from grammars written in a superset of Augmented Backus-Naur Form (ABNF)",
-  "main": "./src/apg.js",
+  "main": "./src/exports.js",
   "scripts": {
     "test": "apg -v"
   },

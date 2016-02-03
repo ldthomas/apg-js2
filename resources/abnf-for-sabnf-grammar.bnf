@@ -34,10 +34,15 @@
 ;      e.g. &&%d13 or &&rule or !!(A / B)
 ;   5. Back reference operators, i.e. \rulename, are accepted.
 ;      A back reference operator acts like a TLS or TBS terminal except that the phrase it attempts
-;      to match is the phrase most recently matched by the rule 'rulename'.
-;      The case-sensitive, -insensitive modifiers can be used similare to literal strings.
-;      \A or \%iA will do a case-insensitive match to the previous match to rule A. 
-;      \%sA will do a case-sensitive match to the previous match to rule A. 
+;      to match is a phrase previously matched by the rule 'rulename'.
+;      There are two modes of previous phrase matching - the parent-frame mode and the universal mode.
+;      In universal mode, \rulename matches the last match to 'rulename' regardless of where it was found.
+;      In parent-frame mode, \rulename matches only the last match found on the parent's frame or parse tree level.
+;      Back reference modifiers can be used to specify case and mode.
+;      \A defaults to case-insensitive and universal mode, e.g. \A === \%i%uA
+;      Modifiers %i and %s determine case-insensitive and case-sensitive mode, respectively.
+;      Modifiers %u and %p determine universal mode and parent frame mode, respectively.
+;      Case and mode modifiers can appear in any order, e.g. \%s%pA === \%p%sA. 
 ;
 File            = *(BlankLine / Rule / RuleError)
 BlankLine       = *(%d32/%d9) [comment] LineEnd

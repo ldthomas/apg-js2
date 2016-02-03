@@ -259,7 +259,7 @@ module.exports = function(){
 				data.errors.push({
 					line: data.findLine(data.stringTabChar),
 					char: data.stringTabChar,
-					msg: "Tab character (\\t, x09) not allowed in literal string."
+					msg: "Tab character (\\t, x09) not allowed in literal string (see 'quoted-string' definition, RFC 7405.)"
 				});
 			}
 			break;

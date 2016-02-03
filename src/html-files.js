@@ -27,11 +27,12 @@ module.exports = function() {
   var that = this;
   var fs = require("fs");
   var apglib = require("apg-lib");
-  var left0Table = apglib.utils.styleLeft0Table();
-  var left1Table = apglib.utils.styleLeft1Table();
+  var rightTable = apglib.utils.styleRightTable();
+  var lastLeftTable = apglib.utils.styleLastLeftTable();
+  var leftTable = apglib.utils.styleLeftTable();
   var resources = require("./html-files-sources.js");
   var attrsStyle = resources.attrsStyle();
-  var rulesort = resources.rulesSort(apglib.utils.styleNames.CLASS_LEFT1TABLE);
+  var rulesort = resources.rulesSort(apglib.utils.styleNames.CLASS_LAST_LEFT_TABLE);
   var attrsort = resources.attrsSort(apglib.utils.styleNames.CLASS_NOMATCH);
 
   /* format a file error message */
@@ -68,26 +69,26 @@ module.exports = function() {
       name : 'Grammar',
       pageName : 'grammar.html',
       fd : null,
-      scripts : [left1Table]
+      scripts : [lastLeftTable]
     },
     grammarStats : {
       name : 'Grammar Statistics',
       pageName : 'grammar-statistics.html',
       fd : null,
-      scripts : [left0Table]
+      scripts : [rightTable]
     },
     rules : {
       name : 'Rules',
       pageName : 'rules.html',
       fd : null,
       scripts : [ '<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>\n',
-                  left1Table, rulesort]
+                  lastLeftTable, rulesort]
     },
     state : {
       name : 'State',
       pageName : 'state.html',
       fd : null,
-      scripts : [left1Table]
+      scripts : [leftTable]
     },
   }
   /* create the menu on each page with the current page highligted */
