@@ -10,9 +10,12 @@ module.exports = function(){
   //        CAT = 22
   //        RNM = 47
   //        UDT = 0
+  //        BKR = 0
   //        REP = 17
   //        AND = 0
   //        NOT = 0
+  //        BKA = 0
+  //        BKN = 0
   //        TLS = 0
   //        TBS = 46
   //        TRG = 11
@@ -59,39 +62,39 @@ module.exports = function(){
 
   /* RULES */
   this.rules = [];
-  this.rules[0] = {name: 'file', lower: 'file', index: 0};
-  this.rules[1] = {name: 'param', lower: 'param', index: 1};
-  this.rules[2] = {name: 'other', lower: 'other', index: 2};
-  this.rules[3] = {name: 'flag-param', lower: 'flag-param', index: 3};
-  this.rules[4] = {name: 'value-param', lower: 'value-param', index: 4};
-  this.rules[5] = {name: 'help', lower: 'help', index: 5};
-  this.rules[6] = {name: 'version', lower: 'version', index: 6};
-  this.rules[7] = {name: 'strict', lower: 'strict', index: 7};
-  this.rules[8] = {name: 'crlf', lower: 'crlf', index: 8};
-  this.rules[9] = {name: 'linefeed', lower: 'linefeed', index: 9};
-  this.rules[10] = {name: 'compressed', lower: 'compressed', index: 10};
-  this.rules[11] = {name: 'in', lower: 'in', index: 11};
-  this.rules[12] = {name: 'in-long', lower: 'in-long', index: 12};
-  this.rules[13] = {name: 'in-short', lower: 'in-short', index: 13};
-  this.rules[14] = {name: 'html', lower: 'html', index: 14};
-  this.rules[15] = {name: 'html-long', lower: 'html-long', index: 15};
-  this.rules[16] = {name: 'html-short', lower: 'html-short', index: 16};
-  this.rules[17] = {name: 'c-lang', lower: 'c-lang', index: 17};
-  this.rules[18] = {name: 'c-long', lower: 'c-long', index: 18};
-  this.rules[19] = {name: 'c-short', lower: 'c-short', index: 19};
-  this.rules[20] = {name: 'cpp-lang', lower: 'cpp-lang', index: 20};
-  this.rules[21] = {name: 'cpp-long', lower: 'cpp-long', index: 21};
-  this.rules[22] = {name: 'cpp-short', lower: 'cpp-short', index: 22};
-  this.rules[23] = {name: 'js-lang', lower: 'js-lang', index: 23};
-  this.rules[24] = {name: 'js-long', lower: 'js-long', index: 24};
-  this.rules[25] = {name: 'js-short', lower: 'js-short', index: 25};
-  this.rules[26] = {name: 'java-lang', lower: 'java-lang', index: 26};
-  this.rules[27] = {name: 'java-long', lower: 'java-long', index: 27};
-  this.rules[28] = {name: 'java-short', lower: 'java-short', index: 28};
-  this.rules[29] = {name: 'cdvalue', lower: 'cdvalue', index: 29};
-  this.rules[30] = {name: 'invalue', lower: 'invalue', index: 30};
-  this.rules[31] = {name: 'html-value', lower: 'html-value', index: 31};
-  this.rules[32] = {name: 'lang-value', lower: 'lang-value', index: 32};
+  this.rules[0] = {name: 'file', lower: 'file', index: 0, isBkr: false};
+  this.rules[1] = {name: 'param', lower: 'param', index: 1, isBkr: false};
+  this.rules[2] = {name: 'other', lower: 'other', index: 2, isBkr: false};
+  this.rules[3] = {name: 'flag-param', lower: 'flag-param', index: 3, isBkr: false};
+  this.rules[4] = {name: 'value-param', lower: 'value-param', index: 4, isBkr: false};
+  this.rules[5] = {name: 'help', lower: 'help', index: 5, isBkr: false};
+  this.rules[6] = {name: 'version', lower: 'version', index: 6, isBkr: false};
+  this.rules[7] = {name: 'strict', lower: 'strict', index: 7, isBkr: false};
+  this.rules[8] = {name: 'crlf', lower: 'crlf', index: 8, isBkr: false};
+  this.rules[9] = {name: 'linefeed', lower: 'linefeed', index: 9, isBkr: false};
+  this.rules[10] = {name: 'compressed', lower: 'compressed', index: 10, isBkr: false};
+  this.rules[11] = {name: 'in', lower: 'in', index: 11, isBkr: false};
+  this.rules[12] = {name: 'in-long', lower: 'in-long', index: 12, isBkr: false};
+  this.rules[13] = {name: 'in-short', lower: 'in-short', index: 13, isBkr: false};
+  this.rules[14] = {name: 'html', lower: 'html', index: 14, isBkr: false};
+  this.rules[15] = {name: 'html-long', lower: 'html-long', index: 15, isBkr: false};
+  this.rules[16] = {name: 'html-short', lower: 'html-short', index: 16, isBkr: false};
+  this.rules[17] = {name: 'c-lang', lower: 'c-lang', index: 17, isBkr: false};
+  this.rules[18] = {name: 'c-long', lower: 'c-long', index: 18, isBkr: false};
+  this.rules[19] = {name: 'c-short', lower: 'c-short', index: 19, isBkr: false};
+  this.rules[20] = {name: 'cpp-lang', lower: 'cpp-lang', index: 20, isBkr: false};
+  this.rules[21] = {name: 'cpp-long', lower: 'cpp-long', index: 21, isBkr: false};
+  this.rules[22] = {name: 'cpp-short', lower: 'cpp-short', index: 22, isBkr: false};
+  this.rules[23] = {name: 'js-lang', lower: 'js-lang', index: 23, isBkr: false};
+  this.rules[24] = {name: 'js-long', lower: 'js-long', index: 24, isBkr: false};
+  this.rules[25] = {name: 'js-short', lower: 'js-short', index: 25, isBkr: false};
+  this.rules[26] = {name: 'java-lang', lower: 'java-lang', index: 26, isBkr: false};
+  this.rules[27] = {name: 'java-long', lower: 'java-long', index: 27, isBkr: false};
+  this.rules[28] = {name: 'java-short', lower: 'java-short', index: 28, isBkr: false};
+  this.rules[29] = {name: 'cdvalue', lower: 'cdvalue', index: 29, isBkr: false};
+  this.rules[30] = {name: 'invalue', lower: 'invalue', index: 30, isBkr: false};
+  this.rules[31] = {name: 'html-value', lower: 'html-value', index: 31, isBkr: false};
+  this.rules[32] = {name: 'lang-value', lower: 'lang-value', index: 32, isBkr: false};
 
   /* UDTS */
   this.udts = [];
@@ -115,12 +118,12 @@ module.exports = function(){
   this.rules[1].opcodes[8] = {type: 1, children: [9,10]};// ALT
   this.rules[1].opcodes[9] = {type: 4, index: 3};// RNM(flag-param)
   this.rules[1].opcodes[10] = {type: 4, index: 2};// RNM(other)
-  this.rules[1].opcodes[11] = {type: 10, string: [10]};// TBS
+  this.rules[1].opcodes[11] = {type: 6, string: [10]};// TBS
 
   /* other */
   this.rules[2].opcodes = [];
   this.rules[2].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
-  this.rules[2].opcodes[1] = {type: 8, min: 32, max: 126};// TRG
+  this.rules[2].opcodes[1] = {type: 5, min: 32, max: 126};// TRG
 
   /* flag-param */
   this.rules[3].opcodes = [];
@@ -145,42 +148,42 @@ module.exports = function(){
   /* help */
   this.rules[5].opcodes = [];
   this.rules[5].opcodes[0] = {type: 1, children: [1,2,3]};// ALT
-  this.rules[5].opcodes[1] = {type: 10, string: [45,104]};// TBS
-  this.rules[5].opcodes[2] = {type: 10, string: [45,45,104,101,108,112]};// TBS
-  this.rules[5].opcodes[3] = {type: 10, string: [63]};// TBS
+  this.rules[5].opcodes[1] = {type: 6, string: [45,104]};// TBS
+  this.rules[5].opcodes[2] = {type: 6, string: [45,45,104,101,108,112]};// TBS
+  this.rules[5].opcodes[3] = {type: 6, string: [63]};// TBS
 
   /* version */
   this.rules[6].opcodes = [];
   this.rules[6].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[6].opcodes[1] = {type: 10, string: [45,118]};// TBS
-  this.rules[6].opcodes[2] = {type: 10, string: [45,45,118,101,114,115,105,111,110]};// TBS
+  this.rules[6].opcodes[1] = {type: 6, string: [45,118]};// TBS
+  this.rules[6].opcodes[2] = {type: 6, string: [45,45,118,101,114,115,105,111,110]};// TBS
 
   /* strict */
   this.rules[7].opcodes = [];
   this.rules[7].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[7].opcodes[1] = {type: 10, string: [45,115]};// TBS
-  this.rules[7].opcodes[2] = {type: 10, string: [45,45,115,116,114,105,99,116]};// TBS
+  this.rules[7].opcodes[1] = {type: 6, string: [45,115]};// TBS
+  this.rules[7].opcodes[2] = {type: 6, string: [45,45,115,116,114,105,99,116]};// TBS
 
   /* crlf */
   this.rules[8].opcodes = [];
   this.rules[8].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[8].opcodes[1] = {type: 10, string: [45,114]};// TBS
-  this.rules[8].opcodes[2] = {type: 10, string: [45,45,67,82,76,70]};// TBS
+  this.rules[8].opcodes[1] = {type: 6, string: [45,114]};// TBS
+  this.rules[8].opcodes[2] = {type: 6, string: [45,45,67,82,76,70]};// TBS
 
   /* linefeed */
   this.rules[9].opcodes = [];
   this.rules[9].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[9].opcodes[1] = {type: 10, string: [45,108]};// TBS
-  this.rules[9].opcodes[2] = {type: 10, string: [45,45,76,70]};// TBS
+  this.rules[9].opcodes[1] = {type: 6, string: [45,108]};// TBS
+  this.rules[9].opcodes[2] = {type: 6, string: [45,45,76,70]};// TBS
 
   /* compressed */
   this.rules[10].opcodes = [];
   this.rules[10].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[10].opcodes[1] = {type: 10, string: [45]};// TBS
+  this.rules[10].opcodes[1] = {type: 6, string: [45]};// TBS
   this.rules[10].opcodes[2] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[10].opcodes[3] = {type: 1, children: [4,5]};// ALT
-  this.rules[10].opcodes[4] = {type: 8, min: 97, max: 122};// TRG
-  this.rules[10].opcodes[5] = {type: 8, min: 65, max: 90};// TRG
+  this.rules[10].opcodes[4] = {type: 5, min: 97, max: 122};// TRG
+  this.rules[10].opcodes[5] = {type: 5, min: 65, max: 90};// TRG
 
   /* in */
   this.rules[11].opcodes = [];
@@ -191,17 +194,17 @@ module.exports = function(){
   /* in-long */
   this.rules[12].opcodes = [];
   this.rules[12].opcodes[0] = {type: 2, children: [1,2,3]};// CAT
-  this.rules[12].opcodes[1] = {type: 10, string: [45,45,105,110,61]};// TBS
+  this.rules[12].opcodes[1] = {type: 6, string: [45,45,105,110,61]};// TBS
   this.rules[12].opcodes[2] = {type: 4, index: 29};// RNM(cdvalue)
-  this.rules[12].opcodes[3] = {type: 10, string: [10]};// TBS
+  this.rules[12].opcodes[3] = {type: 6, string: [10]};// TBS
 
   /* in-short */
   this.rules[13].opcodes = [];
   this.rules[13].opcodes[0] = {type: 2, children: [1,2,3,4]};// CAT
-  this.rules[13].opcodes[1] = {type: 10, string: [45,105,110]};// TBS
-  this.rules[13].opcodes[2] = {type: 10, string: [10]};// TBS
+  this.rules[13].opcodes[1] = {type: 6, string: [45,105,110]};// TBS
+  this.rules[13].opcodes[2] = {type: 6, string: [10]};// TBS
   this.rules[13].opcodes[3] = {type: 4, index: 29};// RNM(cdvalue)
-  this.rules[13].opcodes[4] = {type: 10, string: [10]};// TBS
+  this.rules[13].opcodes[4] = {type: 6, string: [10]};// TBS
 
   /* html */
   this.rules[14].opcodes = [];
@@ -212,17 +215,17 @@ module.exports = function(){
   /* html-long */
   this.rules[15].opcodes = [];
   this.rules[15].opcodes[0] = {type: 2, children: [1,2,3]};// CAT
-  this.rules[15].opcodes[1] = {type: 10, string: [45,45,72,84,77,76]};// TBS
+  this.rules[15].opcodes[1] = {type: 6, string: [45,45,72,84,77,76]};// TBS
   this.rules[15].opcodes[2] = {type: 4, index: 31};// RNM(html-value)
-  this.rules[15].opcodes[3] = {type: 10, string: [10]};// TBS
+  this.rules[15].opcodes[3] = {type: 6, string: [10]};// TBS
 
   /* html-short */
   this.rules[16].opcodes = [];
   this.rules[16].opcodes[0] = {type: 2, children: [1,2,3,4]};// CAT
-  this.rules[16].opcodes[1] = {type: 10, string: [45,104,116,109,108]};// TBS
-  this.rules[16].opcodes[2] = {type: 10, string: [10]};// TBS
+  this.rules[16].opcodes[1] = {type: 6, string: [45,104,116,109,108]};// TBS
+  this.rules[16].opcodes[2] = {type: 6, string: [10]};// TBS
   this.rules[16].opcodes[3] = {type: 4, index: 31};// RNM(html-value)
-  this.rules[16].opcodes[4] = {type: 10, string: [10]};// TBS
+  this.rules[16].opcodes[4] = {type: 6, string: [10]};// TBS
 
   /* c-lang */
   this.rules[17].opcodes = [];
@@ -233,20 +236,20 @@ module.exports = function(){
   /* c-long */
   this.rules[18].opcodes = [];
   this.rules[18].opcodes[0] = {type: 2, children: [1,2,4]};// CAT
-  this.rules[18].opcodes[1] = {type: 10, string: [45,45,67,61]};// TBS
+  this.rules[18].opcodes[1] = {type: 6, string: [45,45,67,61]};// TBS
   this.rules[18].opcodes[2] = {type: 3, min: 0, max: 1};// REP
   this.rules[18].opcodes[3] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[18].opcodes[4] = {type: 10, string: [10]};// TBS
+  this.rules[18].opcodes[4] = {type: 6, string: [10]};// TBS
 
   /* c-short */
   this.rules[19].opcodes = [];
   this.rules[19].opcodes[0] = {type: 2, children: [1,2,3]};// CAT
-  this.rules[19].opcodes[1] = {type: 10, string: [45,99]};// TBS
-  this.rules[19].opcodes[2] = {type: 10, string: [10]};// TBS
+  this.rules[19].opcodes[1] = {type: 6, string: [45,99]};// TBS
+  this.rules[19].opcodes[2] = {type: 6, string: [10]};// TBS
   this.rules[19].opcodes[3] = {type: 3, min: 0, max: 1};// REP
   this.rules[19].opcodes[4] = {type: 2, children: [5,6]};// CAT
   this.rules[19].opcodes[5] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[19].opcodes[6] = {type: 10, string: [10]};// TBS
+  this.rules[19].opcodes[6] = {type: 6, string: [10]};// TBS
 
   /* cpp-lang */
   this.rules[20].opcodes = [];
@@ -257,20 +260,20 @@ module.exports = function(){
   /* cpp-long */
   this.rules[21].opcodes = [];
   this.rules[21].opcodes[0] = {type: 2, children: [1,2,4]};// CAT
-  this.rules[21].opcodes[1] = {type: 10, string: [45,45,67,43,43,61]};// TBS
+  this.rules[21].opcodes[1] = {type: 6, string: [45,45,67,43,43,61]};// TBS
   this.rules[21].opcodes[2] = {type: 3, min: 0, max: 1};// REP
   this.rules[21].opcodes[3] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[21].opcodes[4] = {type: 10, string: [10]};// TBS
+  this.rules[21].opcodes[4] = {type: 6, string: [10]};// TBS
 
   /* cpp-short */
   this.rules[22].opcodes = [];
   this.rules[22].opcodes[0] = {type: 2, children: [1,2,3]};// CAT
-  this.rules[22].opcodes[1] = {type: 10, string: [45,99,43,43]};// TBS
-  this.rules[22].opcodes[2] = {type: 10, string: [10]};// TBS
+  this.rules[22].opcodes[1] = {type: 6, string: [45,99,43,43]};// TBS
+  this.rules[22].opcodes[2] = {type: 6, string: [10]};// TBS
   this.rules[22].opcodes[3] = {type: 3, min: 0, max: 1};// REP
   this.rules[22].opcodes[4] = {type: 2, children: [5,6]};// CAT
   this.rules[22].opcodes[5] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[22].opcodes[6] = {type: 10, string: [10]};// TBS
+  this.rules[22].opcodes[6] = {type: 6, string: [10]};// TBS
 
   /* js-lang */
   this.rules[23].opcodes = [];
@@ -281,20 +284,20 @@ module.exports = function(){
   /* js-long */
   this.rules[24].opcodes = [];
   this.rules[24].opcodes[0] = {type: 2, children: [1,2,4]};// CAT
-  this.rules[24].opcodes[1] = {type: 10, string: [45,45,74,97,118,97,83,99,114,105,112,116,61]};// TBS
+  this.rules[24].opcodes[1] = {type: 6, string: [45,45,74,97,118,97,83,99,114,105,112,116,61]};// TBS
   this.rules[24].opcodes[2] = {type: 3, min: 0, max: 1};// REP
   this.rules[24].opcodes[3] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[24].opcodes[4] = {type: 10, string: [10]};// TBS
+  this.rules[24].opcodes[4] = {type: 6, string: [10]};// TBS
 
   /* js-short */
   this.rules[25].opcodes = [];
   this.rules[25].opcodes[0] = {type: 2, children: [1,2,3]};// CAT
-  this.rules[25].opcodes[1] = {type: 10, string: [45,106,115]};// TBS
-  this.rules[25].opcodes[2] = {type: 10, string: [10]};// TBS
+  this.rules[25].opcodes[1] = {type: 6, string: [45,106,115]};// TBS
+  this.rules[25].opcodes[2] = {type: 6, string: [10]};// TBS
   this.rules[25].opcodes[3] = {type: 3, min: 0, max: 1};// REP
   this.rules[25].opcodes[4] = {type: 2, children: [5,6]};// CAT
   this.rules[25].opcodes[5] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[25].opcodes[6] = {type: 10, string: [10]};// TBS
+  this.rules[25].opcodes[6] = {type: 6, string: [10]};// TBS
 
   /* java-lang */
   this.rules[26].opcodes = [];
@@ -305,20 +308,20 @@ module.exports = function(){
   /* java-long */
   this.rules[27].opcodes = [];
   this.rules[27].opcodes[0] = {type: 2, children: [1,2,4]};// CAT
-  this.rules[27].opcodes[1] = {type: 10, string: [45,45,74,97,118,97,61]};// TBS
+  this.rules[27].opcodes[1] = {type: 6, string: [45,45,74,97,118,97,61]};// TBS
   this.rules[27].opcodes[2] = {type: 3, min: 0, max: 1};// REP
   this.rules[27].opcodes[3] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[27].opcodes[4] = {type: 10, string: [10]};// TBS
+  this.rules[27].opcodes[4] = {type: 6, string: [10]};// TBS
 
   /* java-short */
   this.rules[28].opcodes = [];
   this.rules[28].opcodes[0] = {type: 2, children: [1,2,3]};// CAT
-  this.rules[28].opcodes[1] = {type: 10, string: [45,106,97,118,97]};// TBS
-  this.rules[28].opcodes[2] = {type: 10, string: [10]};// TBS
+  this.rules[28].opcodes[1] = {type: 6, string: [45,106,97,118,97]};// TBS
+  this.rules[28].opcodes[2] = {type: 6, string: [10]};// TBS
   this.rules[28].opcodes[3] = {type: 3, min: 0, max: 1};// REP
   this.rules[28].opcodes[4] = {type: 2, children: [5,6]};// CAT
   this.rules[28].opcodes[5] = {type: 4, index: 32};// RNM(lang-value)
-  this.rules[28].opcodes[6] = {type: 10, string: [10]};// TBS
+  this.rules[28].opcodes[6] = {type: 6, string: [10]};// TBS
 
   /* cdvalue */
   this.rules[29].opcodes = [];
@@ -327,36 +330,36 @@ module.exports = function(){
   this.rules[29].opcodes[2] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[29].opcodes[3] = {type: 2, children: [4,6,7,9]};// CAT
   this.rules[29].opcodes[4] = {type: 3, min: 0, max: Infinity};// REP
-  this.rules[29].opcodes[5] = {type: 10, string: [32]};// TBS
-  this.rules[29].opcodes[6] = {type: 10, string: [44]};// TBS
+  this.rules[29].opcodes[5] = {type: 6, string: [32]};// TBS
+  this.rules[29].opcodes[6] = {type: 6, string: [44]};// TBS
   this.rules[29].opcodes[7] = {type: 3, min: 0, max: Infinity};// REP
-  this.rules[29].opcodes[8] = {type: 10, string: [32]};// TBS
+  this.rules[29].opcodes[8] = {type: 6, string: [32]};// TBS
   this.rules[29].opcodes[9] = {type: 4, index: 30};// RNM(invalue)
 
   /* invalue */
   this.rules[30].opcodes = [];
   this.rules[30].opcodes[0] = {type: 2, children: [1,4]};// CAT
   this.rules[30].opcodes[1] = {type: 1, children: [2,3]};// ALT
-  this.rules[30].opcodes[2] = {type: 8, min: 33, max: 43};// TRG
-  this.rules[30].opcodes[3] = {type: 8, min: 45, max: 126};// TRG
+  this.rules[30].opcodes[2] = {type: 5, min: 33, max: 43};// TRG
+  this.rules[30].opcodes[3] = {type: 5, min: 45, max: 126};// TRG
   this.rules[30].opcodes[4] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[30].opcodes[5] = {type: 1, children: [6,7]};// ALT
-  this.rules[30].opcodes[6] = {type: 8, min: 33, max: 43};// TRG
-  this.rules[30].opcodes[7] = {type: 8, min: 45, max: 126};// TRG
+  this.rules[30].opcodes[6] = {type: 5, min: 33, max: 43};// TRG
+  this.rules[30].opcodes[7] = {type: 5, min: 45, max: 126};// TRG
 
   /* html-value */
   this.rules[31].opcodes = [];
   this.rules[31].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
-  this.rules[31].opcodes[1] = {type: 8, min: 33, max: 126};// TRG
+  this.rules[31].opcodes[1] = {type: 5, min: 33, max: 126};// TRG
 
   /* lang-value */
   this.rules[32].opcodes = [];
   this.rules[32].opcodes[0] = {type: 2, children: [1,4]};// CAT
   this.rules[32].opcodes[1] = {type: 1, children: [2,3]};// ALT
-  this.rules[32].opcodes[2] = {type: 8, min: 33, max: 44};// TRG
-  this.rules[32].opcodes[3] = {type: 8, min: 46, max: 126};// TRG
+  this.rules[32].opcodes[2] = {type: 5, min: 33, max: 44};// TRG
+  this.rules[32].opcodes[3] = {type: 5, min: 46, max: 126};// TRG
   this.rules[32].opcodes[4] = {type: 3, min: 0, max: Infinity};// REP
-  this.rules[32].opcodes[5] = {type: 8, min: 33, max: 126};// TRG
+  this.rules[32].opcodes[5] = {type: 5, min: 33, max: 126};// TRG
 
   // The `toString()` function will display the original grammar file(s) that produced these opcodes.
   this.toString = function(){

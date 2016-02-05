@@ -233,8 +233,8 @@ module.exports = function(){
   this.rules[1].opcodes[0] = {type: 2, children: [1,5,7]};// CAT
   this.rules[1].opcodes[1] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[1].opcodes[2] = {type: 1, children: [3,4]};// ALT
-  this.rules[1].opcodes[3] = {type: 10, string: [32]};// TBS
-  this.rules[1].opcodes[4] = {type: 10, string: [9]};// TBS
+  this.rules[1].opcodes[3] = {type: 6, string: [32]};// TBS
+  this.rules[1].opcodes[4] = {type: 6, string: [9]};// TBS
   this.rules[1].opcodes[5] = {type: 3, min: 0, max: 1};// REP
   this.rules[1].opcodes[6] = {type: 4, index: 90};// RNM(comment)
   this.rules[1].opcodes[7] = {type: 4, index: 91};// RNM(LineEnd)
@@ -274,8 +274,8 @@ module.exports = function(){
   this.rules[6].opcodes = [];
   this.rules[6].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[6].opcodes[1] = {type: 1, children: [2,3]};// ALT
-  this.rules[6].opcodes[2] = {type: 8, min: 33, max: 60};// TRG
-  this.rules[6].opcodes[3] = {type: 8, min: 62, max: 126};// TRG
+  this.rules[6].opcodes[2] = {type: 5, min: 33, max: 60};// TRG
+  this.rules[6].opcodes[3] = {type: 5, min: 62, max: 126};// TRG
 
   /* DefinedAsTest */
   this.rules[7].opcodes = [];
@@ -286,7 +286,7 @@ module.exports = function(){
   /* DefinedAsError */
   this.rules[8].opcodes = [];
   this.rules[8].opcodes[0] = {type: 3, min: 1, max: 2};// REP
-  this.rules[8].opcodes[1] = {type: 8, min: 33, max: 126};// TRG
+  this.rules[8].opcodes[1] = {type: 5, min: 33, max: 126};// TRG
 
   /* DefinedAs */
   this.rules[9].opcodes = [];
@@ -296,19 +296,19 @@ module.exports = function(){
 
   /* Defined */
   this.rules[10].opcodes = [];
-  this.rules[10].opcodes[0] = {type: 10, string: [61]};// TBS
+  this.rules[10].opcodes[0] = {type: 6, string: [61]};// TBS
 
   /* IncAlt */
   this.rules[11].opcodes = [];
-  this.rules[11].opcodes[0] = {type: 10, string: [61,47]};// TBS
+  this.rules[11].opcodes[0] = {type: 6, string: [61,47]};// TBS
 
   /* RuleError */
   this.rules[12].opcodes = [];
   this.rules[12].opcodes[0] = {type: 2, children: [1,6]};// CAT
   this.rules[12].opcodes[1] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[12].opcodes[2] = {type: 1, children: [3,4,5]};// ALT
-  this.rules[12].opcodes[3] = {type: 8, min: 32, max: 126};// TRG
-  this.rules[12].opcodes[4] = {type: 10, string: [9]};// TBS
+  this.rules[12].opcodes[3] = {type: 5, min: 32, max: 126};// TRG
+  this.rules[12].opcodes[4] = {type: 6, string: [9]};// TBS
   this.rules[12].opcodes[5] = {type: 4, index: 92};// RNM(LineContinue)
   this.rules[12].opcodes[6] = {type: 4, index: 91};// RNM(LineEnd)
 
@@ -316,8 +316,8 @@ module.exports = function(){
   this.rules[13].opcodes = [];
   this.rules[13].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[13].opcodes[1] = {type: 1, children: [2,3,4]};// ALT
-  this.rules[13].opcodes[2] = {type: 8, min: 32, max: 126};// TRG
-  this.rules[13].opcodes[3] = {type: 10, string: [9]};// TBS
+  this.rules[13].opcodes[2] = {type: 5, min: 32, max: 126};// TRG
+  this.rules[13].opcodes[3] = {type: 6, string: [9]};// TBS
   this.rules[13].opcodes[4] = {type: 4, index: 92};// RNM(LineContinue)
 
   /* Alternation */
@@ -383,10 +383,10 @@ module.exports = function(){
   this.rules[20].opcodes = [];
   this.rules[20].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[20].opcodes[1] = {type: 1, children: [2,3,4,5]};// ALT
-  this.rules[20].opcodes[2] = {type: 8, min: 33, max: 40};// TRG
-  this.rules[20].opcodes[3] = {type: 8, min: 42, max: 46};// TRG
-  this.rules[20].opcodes[4] = {type: 8, min: 48, max: 92};// TRG
-  this.rules[20].opcodes[5] = {type: 8, min: 94, max: 126};// TRG
+  this.rules[20].opcodes[2] = {type: 5, min: 33, max: 40};// TRG
+  this.rules[20].opcodes[3] = {type: 5, min: 42, max: 46};// TRG
+  this.rules[20].opcodes[4] = {type: 5, min: 48, max: 92};// TRG
+  this.rules[20].opcodes[5] = {type: 5, min: 94, max: 126};// TRG
 
   /* Group */
   this.rules[21].opcodes = [];
@@ -401,22 +401,22 @@ module.exports = function(){
   this.rules[22].opcodes = [];
   this.rules[22].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[22].opcodes[1] = {type: 1, children: [2,3,4,5]};// ALT
-  this.rules[22].opcodes[2] = {type: 8, min: 33, max: 40};// TRG
-  this.rules[22].opcodes[3] = {type: 8, min: 42, max: 46};// TRG
-  this.rules[22].opcodes[4] = {type: 8, min: 48, max: 92};// TRG
-  this.rules[22].opcodes[5] = {type: 8, min: 94, max: 126};// TRG
+  this.rules[22].opcodes[2] = {type: 5, min: 33, max: 40};// TRG
+  this.rules[22].opcodes[3] = {type: 5, min: 42, max: 46};// TRG
+  this.rules[22].opcodes[4] = {type: 5, min: 48, max: 92};// TRG
+  this.rules[22].opcodes[5] = {type: 5, min: 94, max: 126};// TRG
 
   /* GroupOpen */
   this.rules[23].opcodes = [];
   this.rules[23].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[23].opcodes[1] = {type: 10, string: [40]};// TBS
+  this.rules[23].opcodes[1] = {type: 6, string: [40]};// TBS
   this.rules[23].opcodes[2] = {type: 4, index: 87};// RNM(owsp)
 
   /* GroupClose */
   this.rules[24].opcodes = [];
   this.rules[24].opcodes[0] = {type: 2, children: [1,2]};// CAT
   this.rules[24].opcodes[1] = {type: 4, index: 87};// RNM(owsp)
-  this.rules[24].opcodes[2] = {type: 10, string: [41]};// TBS
+  this.rules[24].opcodes[2] = {type: 6, string: [41]};// TBS
 
   /* Option */
   this.rules[25].opcodes = [];
@@ -431,22 +431,22 @@ module.exports = function(){
   this.rules[26].opcodes = [];
   this.rules[26].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[26].opcodes[1] = {type: 1, children: [2,3,4,5]};// ALT
-  this.rules[26].opcodes[2] = {type: 8, min: 33, max: 40};// TRG
-  this.rules[26].opcodes[3] = {type: 8, min: 42, max: 46};// TRG
-  this.rules[26].opcodes[4] = {type: 8, min: 48, max: 92};// TRG
-  this.rules[26].opcodes[5] = {type: 8, min: 94, max: 126};// TRG
+  this.rules[26].opcodes[2] = {type: 5, min: 33, max: 40};// TRG
+  this.rules[26].opcodes[3] = {type: 5, min: 42, max: 46};// TRG
+  this.rules[26].opcodes[4] = {type: 5, min: 48, max: 92};// TRG
+  this.rules[26].opcodes[5] = {type: 5, min: 94, max: 126};// TRG
 
   /* OptionOpen */
   this.rules[27].opcodes = [];
   this.rules[27].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[27].opcodes[1] = {type: 10, string: [91]};// TBS
+  this.rules[27].opcodes[1] = {type: 6, string: [91]};// TBS
   this.rules[27].opcodes[2] = {type: 4, index: 87};// RNM(owsp)
 
   /* OptionClose */
   this.rules[28].opcodes = [];
   this.rules[28].opcodes[0] = {type: 2, children: [1,2]};// CAT
   this.rules[28].opcodes[1] = {type: 4, index: 87};// RNM(owsp)
-  this.rules[28].opcodes[2] = {type: 10, string: [93]};// TBS
+  this.rules[28].opcodes[2] = {type: 6, string: [93]};// TBS
 
   /* RnmOp */
   this.rules[29].opcodes = [];
@@ -455,7 +455,7 @@ module.exports = function(){
   /* BkrOp */
   this.rules[30].opcodes = [];
   this.rules[30].opcodes[0] = {type: 2, children: [1,2,4]};// CAT
-  this.rules[30].opcodes[1] = {type: 10, string: [92]};// TBS
+  this.rules[30].opcodes[1] = {type: 6, string: [92]};// TBS
   this.rules[30].opcodes[2] = {type: 3, min: 0, max: 1};// REP
   this.rules[30].opcodes[3] = {type: 4, index: 31};// RNM(bkrModifier)
   this.rules[30].opcodes[4] = {type: 4, index: 36};// RNM(bkr-name)
@@ -490,19 +490,19 @@ module.exports = function(){
 
   /* cs */
   this.rules[32].opcodes = [];
-  this.rules[32].opcodes[0] = {type: 10, string: [37,115]};// TBS
+  this.rules[32].opcodes[0] = {type: 6, string: [37,115]};// TBS
 
   /* ci */
   this.rules[33].opcodes = [];
-  this.rules[33].opcodes[0] = {type: 10, string: [37,105]};// TBS
+  this.rules[33].opcodes[0] = {type: 6, string: [37,105]};// TBS
 
   /* um */
   this.rules[34].opcodes = [];
-  this.rules[34].opcodes[0] = {type: 10, string: [37,117]};// TBS
+  this.rules[34].opcodes[0] = {type: 6, string: [37,117]};// TBS
 
   /* pm */
   this.rules[35].opcodes = [];
-  this.rules[35].opcodes[0] = {type: 10, string: [37,112]};// TBS
+  this.rules[35].opcodes[0] = {type: 6, string: [37,112]};// TBS
 
   /* bkr-name */
   this.rules[36].opcodes = [];
@@ -518,13 +518,13 @@ module.exports = function(){
   /* uname */
   this.rules[38].opcodes = [];
   this.rules[38].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[38].opcodes[1] = {type: 10, string: [117,95]};// TBS
+  this.rules[38].opcodes[1] = {type: 6, string: [117,95]};// TBS
   this.rules[38].opcodes[2] = {type: 4, index: 86};// RNM(alphanum)
 
   /* ename */
   this.rules[39].opcodes = [];
   this.rules[39].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[39].opcodes[1] = {type: 10, string: [101,95]};// TBS
+  this.rules[39].opcodes[1] = {type: 6, string: [101,95]};// TBS
   this.rules[39].opcodes[2] = {type: 4, index: 86};// RNM(alphanum)
 
   /* UdtOp */
@@ -536,13 +536,13 @@ module.exports = function(){
   /* udt-non-empty */
   this.rules[41].opcodes = [];
   this.rules[41].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[41].opcodes[1] = {type: 10, string: [117,95]};// TBS
+  this.rules[41].opcodes[1] = {type: 6, string: [117,95]};// TBS
   this.rules[41].opcodes[2] = {type: 4, index: 86};// RNM(alphanum)
 
   /* udt-empty */
   this.rules[42].opcodes = [];
   this.rules[42].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[42].opcodes[1] = {type: 10, string: [101,95]};// TBS
+  this.rules[42].opcodes[1] = {type: 6, string: [101,95]};// TBS
   this.rules[42].opcodes[2] = {type: 4, index: 86};// RNM(alphanum)
 
   /* RepOp */
@@ -564,7 +564,7 @@ module.exports = function(){
   /* AltOp */
   this.rules[44].opcodes = [];
   this.rules[44].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[44].opcodes[1] = {type: 10, string: [47]};// TBS
+  this.rules[44].opcodes[1] = {type: 6, string: [47]};// TBS
   this.rules[44].opcodes[2] = {type: 4, index: 87};// RNM(owsp)
 
   /* CatOp */
@@ -573,70 +573,70 @@ module.exports = function(){
 
   /* StarOp */
   this.rules[46].opcodes = [];
-  this.rules[46].opcodes[0] = {type: 10, string: [42]};// TBS
+  this.rules[46].opcodes[0] = {type: 6, string: [42]};// TBS
 
   /* AndOp */
   this.rules[47].opcodes = [];
-  this.rules[47].opcodes[0] = {type: 10, string: [38]};// TBS
+  this.rules[47].opcodes[0] = {type: 6, string: [38]};// TBS
 
   /* NotOp */
   this.rules[48].opcodes = [];
-  this.rules[48].opcodes[0] = {type: 10, string: [33]};// TBS
+  this.rules[48].opcodes[0] = {type: 6, string: [33]};// TBS
 
   /* BkaOp */
   this.rules[49].opcodes = [];
-  this.rules[49].opcodes[0] = {type: 10, string: [38,38]};// TBS
+  this.rules[49].opcodes[0] = {type: 6, string: [38,38]};// TBS
 
   /* BknOp */
   this.rules[50].opcodes = [];
-  this.rules[50].opcodes[0] = {type: 10, string: [33,33]};// TBS
+  this.rules[50].opcodes[0] = {type: 6, string: [33,33]};// TBS
 
   /* TrgOp */
   this.rules[51].opcodes = [];
   this.rules[51].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[51].opcodes[1] = {type: 10, string: [37]};// TBS
+  this.rules[51].opcodes[1] = {type: 6, string: [37]};// TBS
   this.rules[51].opcodes[2] = {type: 1, children: [3,8,13]};// ALT
   this.rules[51].opcodes[3] = {type: 2, children: [4,5,6,7]};// CAT
   this.rules[51].opcodes[4] = {type: 4, index: 74};// RNM(Dec)
   this.rules[51].opcodes[5] = {type: 4, index: 77};// RNM(dmin)
-  this.rules[51].opcodes[6] = {type: 10, string: [45]};// TBS
+  this.rules[51].opcodes[6] = {type: 6, string: [45]};// TBS
   this.rules[51].opcodes[7] = {type: 4, index: 78};// RNM(dmax)
   this.rules[51].opcodes[8] = {type: 2, children: [9,10,11,12]};// CAT
   this.rules[51].opcodes[9] = {type: 4, index: 75};// RNM(Hex)
   this.rules[51].opcodes[10] = {type: 4, index: 81};// RNM(xmin)
-  this.rules[51].opcodes[11] = {type: 10, string: [45]};// TBS
+  this.rules[51].opcodes[11] = {type: 6, string: [45]};// TBS
   this.rules[51].opcodes[12] = {type: 4, index: 82};// RNM(xmax)
   this.rules[51].opcodes[13] = {type: 2, children: [14,15,16,17]};// CAT
   this.rules[51].opcodes[14] = {type: 4, index: 76};// RNM(Bin)
   this.rules[51].opcodes[15] = {type: 4, index: 79};// RNM(bmin)
-  this.rules[51].opcodes[16] = {type: 10, string: [45]};// TBS
+  this.rules[51].opcodes[16] = {type: 6, string: [45]};// TBS
   this.rules[51].opcodes[17] = {type: 4, index: 80};// RNM(bmax)
 
   /* TbsOp */
   this.rules[52].opcodes = [];
   this.rules[52].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[52].opcodes[1] = {type: 10, string: [37]};// TBS
+  this.rules[52].opcodes[1] = {type: 6, string: [37]};// TBS
   this.rules[52].opcodes[2] = {type: 1, children: [3,10,17]};// ALT
   this.rules[52].opcodes[3] = {type: 2, children: [4,5,6]};// CAT
   this.rules[52].opcodes[4] = {type: 4, index: 74};// RNM(Dec)
   this.rules[52].opcodes[5] = {type: 4, index: 71};// RNM(dString)
   this.rules[52].opcodes[6] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[52].opcodes[7] = {type: 2, children: [8,9]};// CAT
-  this.rules[52].opcodes[8] = {type: 10, string: [46]};// TBS
+  this.rules[52].opcodes[8] = {type: 6, string: [46]};// TBS
   this.rules[52].opcodes[9] = {type: 4, index: 71};// RNM(dString)
   this.rules[52].opcodes[10] = {type: 2, children: [11,12,13]};// CAT
   this.rules[52].opcodes[11] = {type: 4, index: 75};// RNM(Hex)
   this.rules[52].opcodes[12] = {type: 4, index: 72};// RNM(xString)
   this.rules[52].opcodes[13] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[52].opcodes[14] = {type: 2, children: [15,16]};// CAT
-  this.rules[52].opcodes[15] = {type: 10, string: [46]};// TBS
+  this.rules[52].opcodes[15] = {type: 6, string: [46]};// TBS
   this.rules[52].opcodes[16] = {type: 4, index: 72};// RNM(xString)
   this.rules[52].opcodes[17] = {type: 2, children: [18,19,20]};// CAT
   this.rules[52].opcodes[18] = {type: 4, index: 76};// RNM(Bin)
   this.rules[52].opcodes[19] = {type: 4, index: 73};// RNM(bString)
   this.rules[52].opcodes[20] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[52].opcodes[21] = {type: 2, children: [22,23]};// CAT
-  this.rules[52].opcodes[22] = {type: 10, string: [46]};// TBS
+  this.rules[52].opcodes[22] = {type: 6, string: [46]};// TBS
   this.rules[52].opcodes[23] = {type: 4, index: 73};// RNM(bString)
 
   /* TlsOp */
@@ -651,28 +651,28 @@ module.exports = function(){
   this.rules[54].opcodes = [];
   this.rules[54].opcodes[0] = {type: 3, min: 0, max: 1};// REP
   this.rules[54].opcodes[1] = {type: 1, children: [2,3]};// ALT
-  this.rules[54].opcodes[2] = {type: 9, string: [37,105]};// TLS
-  this.rules[54].opcodes[3] = {type: 9, string: [37,115]};// TLS
+  this.rules[54].opcodes[2] = {type: 7, string: [37,105]};// TLS
+  this.rules[54].opcodes[3] = {type: 7, string: [37,115]};// TLS
 
   /* TlsOpen */
   this.rules[55].opcodes = [];
-  this.rules[55].opcodes[0] = {type: 10, string: [34]};// TBS
+  this.rules[55].opcodes[0] = {type: 6, string: [34]};// TBS
 
   /* TlsClose */
   this.rules[56].opcodes = [];
-  this.rules[56].opcodes[0] = {type: 10, string: [34]};// TBS
+  this.rules[56].opcodes[0] = {type: 6, string: [34]};// TBS
 
   /* TlsString */
   this.rules[57].opcodes = [];
   this.rules[57].opcodes[0] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[57].opcodes[1] = {type: 1, children: [2,3,4]};// ALT
-  this.rules[57].opcodes[2] = {type: 8, min: 32, max: 33};// TRG
-  this.rules[57].opcodes[3] = {type: 8, min: 35, max: 126};// TRG
+  this.rules[57].opcodes[2] = {type: 5, min: 32, max: 33};// TRG
+  this.rules[57].opcodes[3] = {type: 5, min: 35, max: 126};// TRG
   this.rules[57].opcodes[4] = {type: 4, index: 58};// RNM(StringTab)
 
   /* StringTab */
   this.rules[58].opcodes = [];
-  this.rules[58].opcodes[0] = {type: 10, string: [9]};// TBS
+  this.rules[58].opcodes[0] = {type: 6, string: [9]};// TBS
 
   /* ClsOp */
   this.rules[59].opcodes = [];
@@ -683,18 +683,18 @@ module.exports = function(){
 
   /* ClsOpen */
   this.rules[60].opcodes = [];
-  this.rules[60].opcodes[0] = {type: 10, string: [39]};// TBS
+  this.rules[60].opcodes[0] = {type: 6, string: [39]};// TBS
 
   /* ClsClose */
   this.rules[61].opcodes = [];
-  this.rules[61].opcodes[0] = {type: 10, string: [39]};// TBS
+  this.rules[61].opcodes[0] = {type: 6, string: [39]};// TBS
 
   /* ClsString */
   this.rules[62].opcodes = [];
   this.rules[62].opcodes[0] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[62].opcodes[1] = {type: 1, children: [2,3,4]};// ALT
-  this.rules[62].opcodes[2] = {type: 8, min: 32, max: 38};// TRG
-  this.rules[62].opcodes[3] = {type: 8, min: 40, max: 126};// TRG
+  this.rules[62].opcodes[2] = {type: 5, min: 32, max: 38};// TRG
+  this.rules[62].opcodes[3] = {type: 5, min: 40, max: 126};// TRG
   this.rules[62].opcodes[4] = {type: 4, index: 58};// RNM(StringTab)
 
   /* ProsVal */
@@ -706,19 +706,19 @@ module.exports = function(){
 
   /* ProsValOpen */
   this.rules[64].opcodes = [];
-  this.rules[64].opcodes[0] = {type: 10, string: [60]};// TBS
+  this.rules[64].opcodes[0] = {type: 6, string: [60]};// TBS
 
   /* ProsValString */
   this.rules[65].opcodes = [];
   this.rules[65].opcodes[0] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[65].opcodes[1] = {type: 1, children: [2,3,4]};// ALT
-  this.rules[65].opcodes[2] = {type: 8, min: 32, max: 61};// TRG
-  this.rules[65].opcodes[3] = {type: 8, min: 63, max: 126};// TRG
+  this.rules[65].opcodes[2] = {type: 5, min: 32, max: 61};// TRG
+  this.rules[65].opcodes[3] = {type: 5, min: 63, max: 126};// TRG
   this.rules[65].opcodes[4] = {type: 4, index: 58};// RNM(StringTab)
 
   /* ProsValClose */
   this.rules[66].opcodes = [];
-  this.rules[66].opcodes[0] = {type: 10, string: [62]};// TBS
+  this.rules[66].opcodes[0] = {type: 6, string: [62]};// TBS
 
   /* rep-min */
   this.rules[67].opcodes = [];
@@ -735,7 +735,7 @@ module.exports = function(){
   /* rep-num */
   this.rules[70].opcodes = [];
   this.rules[70].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
-  this.rules[70].opcodes[1] = {type: 8, min: 48, max: 57};// TRG
+  this.rules[70].opcodes[1] = {type: 5, min: 48, max: 57};// TRG
 
   /* dString */
   this.rules[71].opcodes = [];
@@ -752,20 +752,20 @@ module.exports = function(){
   /* Dec */
   this.rules[74].opcodes = [];
   this.rules[74].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[74].opcodes[1] = {type: 10, string: [68]};// TBS
-  this.rules[74].opcodes[2] = {type: 10, string: [100]};// TBS
+  this.rules[74].opcodes[1] = {type: 6, string: [68]};// TBS
+  this.rules[74].opcodes[2] = {type: 6, string: [100]};// TBS
 
   /* Hex */
   this.rules[75].opcodes = [];
   this.rules[75].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[75].opcodes[1] = {type: 10, string: [88]};// TBS
-  this.rules[75].opcodes[2] = {type: 10, string: [120]};// TBS
+  this.rules[75].opcodes[1] = {type: 6, string: [88]};// TBS
+  this.rules[75].opcodes[2] = {type: 6, string: [120]};// TBS
 
   /* Bin */
   this.rules[76].opcodes = [];
   this.rules[76].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[76].opcodes[1] = {type: 10, string: [66]};// TBS
-  this.rules[76].opcodes[2] = {type: 10, string: [98]};// TBS
+  this.rules[76].opcodes[1] = {type: 6, string: [66]};// TBS
+  this.rules[76].opcodes[2] = {type: 6, string: [98]};// TBS
 
   /* dmin */
   this.rules[77].opcodes = [];
@@ -794,33 +794,33 @@ module.exports = function(){
   /* dnum */
   this.rules[83].opcodes = [];
   this.rules[83].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
-  this.rules[83].opcodes[1] = {type: 8, min: 48, max: 57};// TRG
+  this.rules[83].opcodes[1] = {type: 5, min: 48, max: 57};// TRG
 
   /* bnum */
   this.rules[84].opcodes = [];
   this.rules[84].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
-  this.rules[84].opcodes[1] = {type: 8, min: 48, max: 49};// TRG
+  this.rules[84].opcodes[1] = {type: 5, min: 48, max: 49};// TRG
 
   /* xnum */
   this.rules[85].opcodes = [];
   this.rules[85].opcodes[0] = {type: 3, min: 1, max: Infinity};// REP
   this.rules[85].opcodes[1] = {type: 1, children: [2,3,4]};// ALT
-  this.rules[85].opcodes[2] = {type: 8, min: 48, max: 57};// TRG
-  this.rules[85].opcodes[3] = {type: 8, min: 65, max: 70};// TRG
-  this.rules[85].opcodes[4] = {type: 8, min: 97, max: 102};// TRG
+  this.rules[85].opcodes[2] = {type: 5, min: 48, max: 57};// TRG
+  this.rules[85].opcodes[3] = {type: 5, min: 65, max: 70};// TRG
+  this.rules[85].opcodes[4] = {type: 5, min: 97, max: 102};// TRG
 
   /* alphanum */
   this.rules[86].opcodes = [];
   this.rules[86].opcodes[0] = {type: 2, children: [1,4]};// CAT
   this.rules[86].opcodes[1] = {type: 1, children: [2,3]};// ALT
-  this.rules[86].opcodes[2] = {type: 8, min: 97, max: 122};// TRG
-  this.rules[86].opcodes[3] = {type: 8, min: 65, max: 90};// TRG
+  this.rules[86].opcodes[2] = {type: 5, min: 97, max: 122};// TRG
+  this.rules[86].opcodes[3] = {type: 5, min: 65, max: 90};// TRG
   this.rules[86].opcodes[4] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[86].opcodes[5] = {type: 1, children: [6,7,8,9]};// ALT
-  this.rules[86].opcodes[6] = {type: 8, min: 97, max: 122};// TRG
-  this.rules[86].opcodes[7] = {type: 8, min: 65, max: 90};// TRG
-  this.rules[86].opcodes[8] = {type: 8, min: 48, max: 57};// TRG
-  this.rules[86].opcodes[9] = {type: 10, string: [45]};// TBS
+  this.rules[86].opcodes[6] = {type: 5, min: 97, max: 122};// TRG
+  this.rules[86].opcodes[7] = {type: 5, min: 65, max: 90};// TRG
+  this.rules[86].opcodes[8] = {type: 5, min: 48, max: 57};// TRG
+  this.rules[86].opcodes[9] = {type: 6, string: [45]};// TBS
 
   /* owsp */
   this.rules[87].opcodes = [];
@@ -835,37 +835,37 @@ module.exports = function(){
   /* space */
   this.rules[89].opcodes = [];
   this.rules[89].opcodes[0] = {type: 1, children: [1,2,3,4]};// ALT
-  this.rules[89].opcodes[1] = {type: 10, string: [32]};// TBS
-  this.rules[89].opcodes[2] = {type: 10, string: [9]};// TBS
+  this.rules[89].opcodes[1] = {type: 6, string: [32]};// TBS
+  this.rules[89].opcodes[2] = {type: 6, string: [9]};// TBS
   this.rules[89].opcodes[3] = {type: 4, index: 90};// RNM(comment)
   this.rules[89].opcodes[4] = {type: 4, index: 92};// RNM(LineContinue)
 
   /* comment */
   this.rules[90].opcodes = [];
   this.rules[90].opcodes[0] = {type: 2, children: [1,2]};// CAT
-  this.rules[90].opcodes[1] = {type: 10, string: [59]};// TBS
+  this.rules[90].opcodes[1] = {type: 6, string: [59]};// TBS
   this.rules[90].opcodes[2] = {type: 3, min: 0, max: Infinity};// REP
   this.rules[90].opcodes[3] = {type: 1, children: [4,5]};// ALT
-  this.rules[90].opcodes[4] = {type: 8, min: 32, max: 126};// TRG
-  this.rules[90].opcodes[5] = {type: 10, string: [9]};// TBS
+  this.rules[90].opcodes[4] = {type: 5, min: 32, max: 126};// TRG
+  this.rules[90].opcodes[5] = {type: 6, string: [9]};// TBS
 
   /* LineEnd */
   this.rules[91].opcodes = [];
   this.rules[91].opcodes[0] = {type: 1, children: [1,2,3]};// ALT
-  this.rules[91].opcodes[1] = {type: 10, string: [13,10]};// TBS
-  this.rules[91].opcodes[2] = {type: 10, string: [10]};// TBS
-  this.rules[91].opcodes[3] = {type: 10, string: [13]};// TBS
+  this.rules[91].opcodes[1] = {type: 6, string: [13,10]};// TBS
+  this.rules[91].opcodes[2] = {type: 6, string: [10]};// TBS
+  this.rules[91].opcodes[3] = {type: 6, string: [13]};// TBS
 
   /* LineContinue */
   this.rules[92].opcodes = [];
   this.rules[92].opcodes[0] = {type: 2, children: [1,5]};// CAT
   this.rules[92].opcodes[1] = {type: 1, children: [2,3,4]};// ALT
-  this.rules[92].opcodes[2] = {type: 10, string: [13,10]};// TBS
-  this.rules[92].opcodes[3] = {type: 10, string: [10]};// TBS
-  this.rules[92].opcodes[4] = {type: 10, string: [13]};// TBS
+  this.rules[92].opcodes[2] = {type: 6, string: [13,10]};// TBS
+  this.rules[92].opcodes[3] = {type: 6, string: [10]};// TBS
+  this.rules[92].opcodes[4] = {type: 6, string: [13]};// TBS
   this.rules[92].opcodes[5] = {type: 1, children: [6,7]};// ALT
-  this.rules[92].opcodes[6] = {type: 10, string: [32]};// TBS
-  this.rules[92].opcodes[7] = {type: 10, string: [9]};// TBS
+  this.rules[92].opcodes[6] = {type: 6, string: [32]};// TBS
+  this.rules[92].opcodes[7] = {type: 6, string: [9]};// TBS
 
   // The `toString()` function will display the original grammar file(s) that produced these opcodes.
   this.toString = function(){

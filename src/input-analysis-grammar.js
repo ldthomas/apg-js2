@@ -10,9 +10,12 @@ module.exports = function(){
   //        CAT = 2
   //        RNM = 11
   //        UDT = 0
+  //        BKR = 0
   //        REP = 4
   //        AND = 0
   //        NOT = 0
+  //        BKA = 0
+  //        BKN = 0
   //        TLS = 0
   //        TBS = 4
   //        TRG = 5
@@ -36,16 +39,16 @@ module.exports = function(){
 
   /* RULES */
   this.rules = [];
-  this.rules[0] = {name: 'file', lower: 'file', index: 0};
-  this.rules[1] = {name: 'line', lower: 'line', index: 1};
-  this.rules[2] = {name: 'line-text', lower: 'line-text', index: 2};
-  this.rules[3] = {name: 'last-line', lower: 'last-line', index: 3};
-  this.rules[4] = {name: 'valid', lower: 'valid', index: 4};
-  this.rules[5] = {name: 'invalid', lower: 'invalid', index: 5};
-  this.rules[6] = {name: 'end', lower: 'end', index: 6};
-  this.rules[7] = {name: 'CRLF', lower: 'crlf', index: 7};
-  this.rules[8] = {name: 'LF', lower: 'lf', index: 8};
-  this.rules[9] = {name: 'CR', lower: 'cr', index: 9};
+  this.rules[0] = {name: 'file', lower: 'file', index: 0, isBkr: false};
+  this.rules[1] = {name: 'line', lower: 'line', index: 1, isBkr: false};
+  this.rules[2] = {name: 'line-text', lower: 'line-text', index: 2, isBkr: false};
+  this.rules[3] = {name: 'last-line', lower: 'last-line', index: 3, isBkr: false};
+  this.rules[4] = {name: 'valid', lower: 'valid', index: 4, isBkr: false};
+  this.rules[5] = {name: 'invalid', lower: 'invalid', index: 5, isBkr: false};
+  this.rules[6] = {name: 'end', lower: 'end', index: 6, isBkr: false};
+  this.rules[7] = {name: 'CRLF', lower: 'crlf', index: 7, isBkr: false};
+  this.rules[8] = {name: 'LF', lower: 'lf', index: 8, isBkr: false};
+  this.rules[9] = {name: 'CR', lower: 'cr', index: 9, isBkr: false};
 
   /* UDTS */
   this.udts = [];
@@ -82,16 +85,16 @@ module.exports = function(){
   /* valid */
   this.rules[4].opcodes = [];
   this.rules[4].opcodes[0] = {type: 1, children: [1,2]};// ALT
-  this.rules[4].opcodes[1] = {type: 8, min: 32, max: 126};// TRG
-  this.rules[4].opcodes[2] = {type: 10, string: [9]};// TBS
+  this.rules[4].opcodes[1] = {type: 5, min: 32, max: 126};// TRG
+  this.rules[4].opcodes[2] = {type: 6, string: [9]};// TBS
 
   /* invalid */
   this.rules[5].opcodes = [];
   this.rules[5].opcodes[0] = {type: 1, children: [1,2,3,4]};// ALT
-  this.rules[5].opcodes[1] = {type: 8, min: 0, max: 8};// TRG
-  this.rules[5].opcodes[2] = {type: 8, min: 11, max: 12};// TRG
-  this.rules[5].opcodes[3] = {type: 8, min: 14, max: 31};// TRG
-  this.rules[5].opcodes[4] = {type: 8, min: 127, max: 255};// TRG
+  this.rules[5].opcodes[1] = {type: 5, min: 0, max: 8};// TRG
+  this.rules[5].opcodes[2] = {type: 5, min: 11, max: 12};// TRG
+  this.rules[5].opcodes[3] = {type: 5, min: 14, max: 31};// TRG
+  this.rules[5].opcodes[4] = {type: 5, min: 127, max: 255};// TRG
 
   /* end */
   this.rules[6].opcodes = [];
@@ -102,15 +105,15 @@ module.exports = function(){
 
   /* CRLF */
   this.rules[7].opcodes = [];
-  this.rules[7].opcodes[0] = {type: 10, string: [13,10]};// TBS
+  this.rules[7].opcodes[0] = {type: 6, string: [13,10]};// TBS
 
   /* LF */
   this.rules[8].opcodes = [];
-  this.rules[8].opcodes[0] = {type: 10, string: [10]};// TBS
+  this.rules[8].opcodes[0] = {type: 6, string: [10]};// TBS
 
   /* CR */
   this.rules[9].opcodes = [];
-  this.rules[9].opcodes[0] = {type: 10, string: [13]};// TBS
+  this.rules[9].opcodes[0] = {type: 6, string: [13]};// TBS
 
   // The `toString()` function will display the original grammar file(s) that produced these opcodes.
   this.toString = function(){
