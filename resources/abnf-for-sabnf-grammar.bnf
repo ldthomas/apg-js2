@@ -43,6 +43,10 @@
 ;      Modifiers %i and %s determine case-insensitive and case-sensitive mode, respectively.
 ;      Modifiers %u and %p determine universal mode and parent frame mode, respectively.
 ;      Case and mode modifiers can appear in any order, e.g. \%s%pA === \%p%sA. 
+;   7. String begin anchor, ABG(%^) matches the beginning of the input string location.
+;      Returns EMPTY or NOMATCH. Never consumes any characters.
+;   8. String end anchor, AEN(%$) matches the end of the input string location.
+;      Returns EMPTY or NOMATCH. Never consumes any characters.
 ;
 File            = *(BlankLine / Rule / RuleError)
 BlankLine       = *(%d32/%d9) [comment] LineEnd
@@ -75,6 +79,8 @@ BasicElement    = UdtOp
                 / TlsOp
                 / ClsOp
                 / BkrOp
+                / AbgOp
+                / AenOp
                 / ProsVal
 BasicElementErr = 1*(%d33-40/%d42-46/%d48-92/%d94-126)
 Group           = GroupOpen  Alternation (GroupClose / GroupError)
@@ -112,6 +118,8 @@ AndOp           = %d38
 NotOp           = %d33
 BkaOp           = %d38.38
 BknOp           = %d33.33
+AbgOp           = %d37.94
+AenOp           = %d37.36
 TrgOp           = %d37 ((Dec dmin %d45 dmax) / (Hex xmin %d45 xmax) / (Bin bmin %d45 bmax))
 TbsOp           = %d37 ((Dec dString *(%d46 dString)) / (Hex xString *(%d46 xString)) / (Bin bString *(%d46 bString)))
 TlsOp           = TlsCase TlsOpen TlsString TlsClose

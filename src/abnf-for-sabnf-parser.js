@@ -421,6 +421,14 @@ module.exports = function() {
             fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
                 + opIndex + "] = {type: " + op.type + "};// NOT\n");
             break;
+          case id.ABG:
+            fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
+                + opIndex + "] = {type: " + op.type + "};// ABG(%^)\n");
+            break;
+          case id.AEN:
+            fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
+                + opIndex + "] = {type: " + op.type + "};// AEN(%$)\n");
+            break;
           case id.BKA:
             fs.writeSync(fd, "  this.rules[" + ruleIndex + "].opcodes["
                 + opIndex + "] = {type: " + op.type + "};// BKA\n");

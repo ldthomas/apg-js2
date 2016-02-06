@@ -412,6 +412,26 @@ module.exports = function(grammar) {
     }
     return ret;
   }
+  function semAbgOp(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.opcodes.push({
+        type : id.ABG,
+      });
+    }
+    return ret;
+  }
+  function semAenOp(state, chars, phraseIndex, phraseCount, data) {
+    var ret = id.SEM_OK;
+    if (state == id.SEM_PRE) {
+    } else if (state == id.SEM_POST) {
+      data.opcodes.push({
+        type : id.AEN,
+      });
+    }
+    return ret;
+  }
   function semBkaOp(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
@@ -722,6 +742,8 @@ module.exports = function(grammar) {
     return ret;
   }
   this.callbacks = [];
+  this.callbacks['abgop'] = semAbgOp;
+  this.callbacks['aenop'] = semAenOp;
   this.callbacks['alternation'] = semAlternation;
   this.callbacks['andop'] = semAndOp;
   this.callbacks['bmax'] = semBmax;
