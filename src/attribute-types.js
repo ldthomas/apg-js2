@@ -11,7 +11,7 @@
 // A = "a" S / "b"
 // ````
 // These are called "mutually recursive sets".
-// Note that within a mutually recursive set, each rule in the set refers to ALL other rules in the set
+// Note that within a mutually recursive set, each rule in the set refers to *all* other rules in the set
 // directly or indirectly.
 //Additionally, and important to the algorithms internally, are
 // non-recursive rules that refer to mutually recursive sets, and simple recursive rules
@@ -27,9 +27,9 @@ module.exports = function(rules) {
   var thisFileName = "attribute-types.js: ";
   var id = require("apg-lib").ids;
   var that = this;
-
-  // Scan a specific rule, looking to see if it refers to itself
-  // and discovering which other rules it refers to.
+  /* scan a specific rule */
+  /* see if it refers to itself (recursive) */
+  /* see which other rules it refers to */
   var scan = function(rule, index) {
     rule.ctrl.isScanned[index] += 1;
     rules[index].opcodes.forEach(function(op) {
@@ -40,20 +40,16 @@ module.exports = function(rules) {
       }
     });
   }
-
-  // Iterate through the list of rules, scanning each.
   rules.forEach(function(rule) {
     scan(rule, rule.index);
   });
-
-  // Determine which rules are recursive.
+  /* Determine which rules are recursive. */
   for (var i = 0; i < rules.length; i += 1) {
     if (rules[i].ctrl.refCount[i] > 0) {
       rules[i].ctrl.type = id.ATTR_R;
     }
   }
-
-  // Discover the mutually-recursive sets of rules.
+  /* Discover the mutually-recursive sets of rules. */
   rules.mrGroups = [];
   for (var i = 0; i < rules.length; i += 1) {
     var ctrli = rules[i].ctrl;
@@ -80,8 +76,7 @@ module.exports = function(rules) {
       }
     }
   }
-
-  // Discover the rules that refer to mutually-recursive sets.
+  /* Discover the rules that refer to mutually-recursive sets. */
   for (var i = 0; i < rules.length; i += 1) {
     var ctrli = rules[i].ctrl;
     for (var j = 0; j < rules.length; j += 1) {

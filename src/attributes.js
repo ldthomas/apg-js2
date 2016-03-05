@@ -33,7 +33,9 @@
 //
 // You may wonder why we would be interested in both `empty` and `not empty` as separate attributes. First of all note that<br>
 // `S = "" / "y"`<br>
-// demonstrates a rule that is both empty and non-empty. The importance is not apparent here, and won't be explained
+// demonstrates a rule that is both empty and non-empty. 
+// You can't infer one from the other.
+// The importance is not apparent here, and won't be explained
 // in detail, but both attributes turn out to be important to the algorithms that determine the recursiveness of a rule.
 // But if your really, really want to know, take a look at the function `catAttr()` and how it is used in 
 // [`attributes-recursive.js`](./attributes-recursive.html).
@@ -71,35 +73,29 @@ module.exports = function() {
     }
     return ret;
   }
-
-  // Simple conversion of the attribute ID to a human-readable string.
+  /* convert the attribute ID to a human-readable string */
   var attrTypeToString = function(ctrl) {
     var ret = 'unknown';
     switch (ctrl.type) {
     case id.ATTR_N:
       ret = 'N';
       break;
-
     case id.ATTR_R:
       ret = 'R';
       break;
-
     case id.ATTR_MR:
       ret = 'MR(' + ctrl.mrGroupId + ')';
       break;
-
     case id.ATTR_NMR:
       ret = 'NMR';
       break;
-
     case id.ATTR_RMR:
       ret = 'RMR';
       break;
     }
     return ret;
   }
-
-  // Array.sort() callback, sort putting errors at top.
+  /* Array.sort() callback, sort putting errors at top. */
   var sortByError = function(r, l) {
     var rerror = (r.attr.left === true || r.attr.cyclic === true || r.attr.finite === false) ? true : false;
     var lerror = (l.attr.left === true || l.attr.cyclic === true || l.attr.finite === false) ? true : false;
@@ -112,8 +108,7 @@ module.exports = function() {
     }
     return 0;
   }
-
-  // Array.sort() callback, sort by rule index.
+  /* Array.sort() callback, sort by rule index. */
   var sortByIndex = function(r, l) {
     if (r.index < l.index) {
       return -1;
@@ -123,8 +118,7 @@ module.exports = function() {
     }
     return 0;
   }
-
-  // Array.sort() callback, sort by rule name.
+  /* Array.sort() callback, sort by rule name. */
   var sortByName = function(r, l) {
     if (r.lower < l.lower) {
       return -1;
@@ -134,8 +128,7 @@ module.exports = function() {
     }
     return 0;
   }
-
-  // Array.sort() callback, sort by rule type.
+  /* Array.sort() callback, sort by rule type. */
   var sortByType = function(r, l) {
     var ar = r.ctrl;
     var al = l.ctrl;
@@ -155,10 +148,8 @@ module.exports = function() {
     }
     return sortByName(r, l);
   }
-
-  // Convert an attribute to an HTML `<script>` of JavaScript data.
-  // Used by the click-to-sort anchors.
-  // Uses `attrsort` below.
+  /* converts attributes to HTML JavaScript data */
+  /* Used by the click-to-sort anchors. */
   var attrsToHtml = function(rules, title) {
     var html = '';
     var error, attr;
@@ -194,11 +185,9 @@ module.exports = function() {
     html += "</script>\n";
     html += '<div id="sort-links" >\n';
     html += "</div>\n";
-
     return html;
   }
-
-  // Attribute control object constructor.
+  /* Attribute control object constructor. */
   var AttrCtrl = function(emptyArray) {
     this.isOpen = false;
     this.isComplete = false;
@@ -207,8 +196,7 @@ module.exports = function() {
     this.refCount = emptyArray.slice(0);
     this.isScanned = emptyArray.slice(0);
   }
-
-  // Attribute object constructor.
+  /* Attribute object constructor. */
   var Attr = function(recursive) {
     if (recursive === true) {
       this.left = true;
@@ -225,7 +213,6 @@ module.exports = function() {
     this.empty = true;
     this.notEmpty = false;
     this.error = false;
-
     this.copy = function(attr) {
       attr.left = this.left;
       attr.nested = this.nested;
@@ -247,9 +234,8 @@ module.exports = function() {
       attr.cyclic = this.cyclic;
     }
   };
-
-  // Name list object constructor.
-  // Used to keep the list of rule names referenced by each rule.
+  /* Name list object constructor. */
+  /* Used to keep the list of rule names referenced by each rule. */
   var NameList = function() {
     var list = [];
     this.add = function(name, attr) {
@@ -270,7 +256,6 @@ module.exports = function() {
       }
       return ret;
     }
-
     this.find = function(name) {
       var ret = -1;
       for (var i = 0; i < list.length; i += 1) {
@@ -285,8 +270,7 @@ module.exports = function() {
       list.length = 0;
     }
   };
-
-  // Convert a list of rule dependencies to a human-readable list.
+  /* Convert a list of rule dependencies to a human-readable list. */
   this.ruleDependenciesToString = function() {
     var ret = "";
     rules.forEach(function(rule) {
@@ -298,13 +282,10 @@ module.exports = function() {
         }
       }
     });
-
     return ret;
   }
-
-  // Convert the list of rule dependencies to an HTML `<script>` of JavaScript data.
-  // Used by the click-to-hide/show anchors.
-  // Uses `rulesort` below.
+  /* convert rule dependencies to HTML JavaScript data */
+  /* Used by the click-to-hide/show anchors. */
   this.rulesWithReferencesToHtml = function() {
     var html = '';
     var title = "Grammar Rules with Dependencies";
@@ -337,12 +318,10 @@ module.exports = function() {
     html += "</script>\n";
     html += '<div id="sort-links" >\n';
     html += "</div>\n";
-
     return html;
   }
 
-  // Perform the initial sorting of the rule names.
-  // The actual work is done by the Array.sort() callbacks.
+  /* Perform the initial sorting of the rule names. */
   this.ruleAttrsToHtml = function() {
     var html = "";
     rules.sort(sortByIndex);
@@ -353,7 +332,6 @@ module.exports = function() {
     rules.sort(sortByIndex); // make sure rules are left sorted by index - errors may change this
     return html;
   }
-
   // The main, driver function that controls the flow of attribute generation.
   // - determine rule dependencies and types (recursive, non-recursive, etc.)
   // - determine all of the non-recursive attributes first(finite, empty & non-empty).
@@ -370,7 +348,6 @@ module.exports = function() {
     rules.forEach(function(rule) {
       rule.ctrl = new AttrCtrl(emptyArray);
     });
-
     attrTypes(rules);
     rules.forEach(function(rule) {
       if (rule.ctrl.type === id.ATTR_R || rule.ctrl.type === id.ATTR_MR || rule.ctrl.type === id.ATTR_RMR) {
@@ -379,7 +356,6 @@ module.exports = function() {
         rule.attr = new Attr();
       }
     });
-
     attrNonRecursive(rules);
     attrRecursive(rules);
     ruleErrorCount = 0;

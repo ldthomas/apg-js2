@@ -1,64 +1,56 @@
 // This module simply holds and displays the configuration.
 // Valid arguments and their meaning:
 //
-//`?, -h --help`
-//    - display this screen
-//
-//`-v, --version`
-//    - display the version number
-//
-//`-s, --strict`
+//- `?, -h --help` - display the help screen
+//- -v, --version` - display the version number
+//- `-s, --strict`
 //    - adhere strictly to the RFC 5234 ABNF specification
 //    - no additional SABNF features allowed
-//
-//`-r, --CRLF`
-//    - convert all line endings to CRLF (carriage return \r, line feed \n),
+//- `-r, --CRLF`
+//    - convert all line endings to carriage return/line feed pair
+//    - \r\n
 //    - line end added to last line if missing
-//
-//`-l, --LF`
-//    - convert all line endings to LF (line feed only \n),
+//- `-l, --LF`
+//    - convert all line endings to line feed only
+//    - \n
 //    - line end added to last line if missing
-//
-//`--in=<file>[,<file>...], -in <file>[,<file>...]`
+//- `-in <file>[,<file>...], --in=<file>[,<file>...]`
 //    - input grammar filename(s) (required)
-//    - no spaces in file names or between commas allowed(\*)
+//    - no spaces in file names or between commas allowed
+//    - <file> may be relative or absolute but the file must exist
 //    - multiple filenames allowed
 //    - files will be concatenated into a single grammar in the order they are found
 //    - a comma-delimited list of names may be given
 //    - multiple input parameters are allowed and are treated the same as a comma-delimited list
-//
-//`--HTML=<directory>, -html <directory>`
-//    - `<directory>` is the directory name of the output html files<br> (default = `./html`)
+//- `-html <directory>, --HTML=<directory>`
+//    - directory for the output html files
+//    - default = `./html`
 //    - `<directory>` must exist or be creatable with mkdir
-//
-//`--C=<name>, -c <name>`
-//   - generate an APG 6.3 C-language parser
-//   - files <name>.c and <name>.h will be generated(\*)(\*\*)
-//
-//`--Cpp=<name>, -cpp <name>`
-//   - generate an APG 6.3 C++ language parser
-//   - files `<name>.cpp` and `<name>.h` will be generated(\*)(\*\*)
-//
-//`--JavaScript=<name>, -js <name>`
+//- `--JavaScript=<name>, -js <name>`
 //   - generate a JavaScript APG 2.0.0 parser
-//   - file `<name>.js` will be generated(\*)
-//
-//`--Java=<name>, -java <name>`
+//   - file `<name>.js` will be generated
+//- `-c <name>, --C=<name>`(\*)
+//   - generate an APG 6.3 C-language parser
+//   - files <name>.c and <name>.h will be generated
+//- `--Cpp=<name>, -cpp <name>`(\*)
+//   - generate an APG 6.3 C++ language parser
+//   - files `<name>.cpp` and `<name>.h` will be generated
+//- `--Java=<name>, -java <name>`(\*)
 //   - generate a Java APG 1.0 parser
-//   - file `<name>.java` will be generated(\*)(\*\*)
+//   - file `<name>.java` will be generated
 //
-//(\*)NOTE: `<name>` or `<file>` may include absolute or relative path, but the path must exist<br>
-//(\*\*)NOTE: not yet implemented
-
+//NOTE 1: the path to &lt;name> may be relative or absolute but must exist<br>
+//NOTE 2: if &lt;name> is omitted, a name will be created from the first of the `in` file names by stripping of any existing extension
+// and the language-appropriate extention then added.<br>
+//(\*) not yet implemented
 module.exports = function() {
   "use strict";
   this.that = this;
   var VERSION = "JavaScript APG 2.0";
   var HTMLDIR = "./html";
   var FILE_DIVIDER = "/";
-  var COPYRIGHT = "Copyright (C) 2105 Lowell D. Thomas, all rights reserved";
-
-  // Getters for apg system information.
+  var COPYRIGHT = "Copyright (C) 2106 Lowell D. Thomas, all rights reserved";
+  /* Getters for apg system information. */
   this.getVersion = function() {
     return VERSION;
   }
@@ -71,24 +63,20 @@ module.exports = function() {
   this.getCopyright = function() {
     return COPYRIGHT;
   }
-
-  // The flag defaults.
+  /* The flag defaults. */
   this.fHelp = false;
   this.fVersion = false;
   this.fStrict = false;
   this.fCRLF = false;
   this.fLF = false;
-
-  // The key/value defaults.
+  /* The key/value defaults. */
   this.vInput = [];
   this.vHTMLDir = HTMLDIR;
   this.vCLang = null;
   this.vCppLang = null;
   this.vJSLang = null;
   this.vJavaLang = null;
-
-  // A function to display the configuration in text format suitable for
-  // `console.log()` output.
+  // Display the configuration in text format.
   this.display = function() {
     var text = "";
     text += "\nconfiguration:";
@@ -97,11 +85,11 @@ module.exports = function() {
     text += "\n";
     text += "-v, --version: " + this.fVersion;
     text += "\n";
-    text += "-S, --strict: " + this.fStrict;
+    text += "-s, --strict: " + this.fStrict;
     text += "\n";
-    text += "-C, --CRLF: " + this.fCRLF;
+    text += "-r, --CRLF: " + this.fCRLF;
     text += "\n";
-    text += "-L, --LF: " + this.fLF;
+    text += "-l, --LF: " + this.fLF;
     text += "\n";
     text += "--in: '" + this.vInput[0] + "'";
     for(var i = 1; i < this.vInput.length; i += 1){
@@ -120,10 +108,7 @@ module.exports = function() {
     text += "\n";
     return text;
   };
-
-  // A function to display the configuration in HTML format.
-  // This function is used to generate the `html/configuration.html` output
-  // page.
+  // Display the configuration in HTML format.
   this.displayHtml = function() {
     var base, place;
     var nobase = "";
@@ -141,17 +126,17 @@ module.exports = function() {
         + '</td><td>display the JavaScript APG version number</td>\n';
     html += '</tr>\n';
     html += '<tr>\n';
-    html += '<td>-S</td><td>--strict</td><td>'
+    html += '<td>-s</td><td>--strict</td><td>'
         + this.fStrict
         + '</td><td>strict adherence to RFC 5234 (e.g. CRLF line endings only)</td>\n';
     html += '</tr>\n';
     html += '<tr>\n';
-    html += '<td>-C</td><td>--CRLF</td><td>'
+    html += '<td>-r</td><td>--CRLF</td><td>'
         + this.fCRLF
         + '</td><td>convert all line endings to CRLF, including last line</td>\n';
     html += '</tr>\n';
     html += '<tr>\n';
-    html += '<td>-L</td><td>--LF</td><td>' + this.fLF
+    html += '<td>-l</td><td>--LF</td><td>' + this.fLF
         + '</td><td>convert all line endings to LF, including last line</td>\n';
     html += '</tr>\n';
     html += '<tr>\n';
@@ -179,7 +164,7 @@ module.exports = function() {
     }
     html += '</tr>\n';
     html += '<tr>\n';
-    html += '<td>-cpp</td><td>--Cpp=</td>';
+    html += '<td>-c++</td><td>--C++=</td>';
     if(this.vCppLang === null){
       html += '<td></td><td>base name for the generated C++-lanugage parser.</td>';
     }else{
@@ -208,8 +193,7 @@ module.exports = function() {
     html += '</table>\n';
     return html
   };
-
-  // Helper function to display apg usage to the help screen
+  /* Helper function to display apg usage to the help screen */
   this.displayUsage = function(args) {
     var argsStr = "", text = "";
     text += "\n";
@@ -236,14 +220,12 @@ module.exports = function() {
     text += "\n";
     return text;
   }
-
-  // Text help screen called when `--help` or one of its equivalents is
-  // specified.
+  // Display the help screen.
   this.helpScreen = function(args) {
     var text = this.displayUsage(args);
     text += "\n";
     text += "ARGS:\n";
-    text += "?, -h --help";
+    text += "?, -h, --help";
     text += "\n    display this screen";
     text += "\n\n";
     text += "-v, --version" + "\n    display the version number";
@@ -276,7 +258,7 @@ module.exports = function() {
     text += "\n   generate an APG 6.3 C-language parser";
     text += "\n   files <name>.c and <name>.h will be generated(*)(**)";
     text += "\n\n";
-    text += "--Cpp=<name>, -cpp <name>";
+    text += "--C++=<name>, -c++ <name>";
     text += "\n   generate an APG 6.3 C++ language parser";
     text += "\n   files <name>.cpp and <name>.h will be generated(*)(**)";
     text += "\n\n";

@@ -1,6 +1,6 @@
 // This module reads the contents of a file argument (`@filename`) and parses it into
 // a [structured list](./arg-string-parser.html) of arguments. 
-// (*See `resources/FileContent.bnf` for the grammar file this parser is based on.*)
+// (*See `resources/file-content-grammar.bnf` for the grammar file this parser is based on.*)
 module.exports = function() {
   "use strict";
   var thisFileName = "file-content-parser.js: ";
@@ -9,9 +9,7 @@ module.exports = function() {
   var id = apglib.ids;
   var fileContentGrammar = require("./file-content-grammar.js");
   var cwd = process.cwd();
-
-  // The AST callback functions for translating the input string into the
-  // structured arguments list string.
+  /* the translation callback functions */
   function semAnyToken(state, chars, phraseIndex, phraseCount, data) {
     if (state == id.SEM_PRE) {
       data.temp = "";
@@ -69,10 +67,8 @@ module.exports = function() {
     try {
       fileString = fs.readFileSync(filename, "utf-8");
     } catch (e) {
-      throw new Error(fsmsg(functionName, "error reading command line file '"
-          + val + "'", e));
+      throw new Error(fsmsg(functionName, "error reading command line file '" + val + "'", e));
     }
-
     var grammar = new fileContentGrammar();
     var parser = new apglib.parser();
     parser.ast = new apglib.ast();
@@ -90,8 +86,7 @@ module.exports = function() {
       apglib.utils.htmlToPage(html, "html/filecontent.html");
     }
     if (result.success === false) {
-      throw new Error(thisFileName + "parse: parse of command line file '"
-          + val + "' failed");
+      throw new Error(thisFileName + "parse: parse of command line file '" + val + "' failed");
     }
     parser.ast.translate(data);
     return data.str;

@@ -13,15 +13,12 @@ module.exports = function(rules) {
   var thisFileName = "attributes-non-recursive.js: ";
   var id = require("apg-lib").ids;
   var that = this;
-
-  // Walks through the `SEPT` of opcodes
-  // for non-recursive and recursive rules.
+  /* Walks through the `SEPT` of opcodes for non-recursive and recursive rules. */
   var ruleAttr = function(rule, attr) {
     while (true) {
       if (rule.ctrl.isOpen === true || rule.ctrl.isComplete === true) {
-        /* rule is complete, use previously computed values
-        or rule is open, use leaf values (which have been previously
-        initialized to this rule) */
+        /* rule is complete - use previously computed values */
+        /* or rule is open - use leaf values which have been previously initialized to this rule */
         attr.finite = rule.attr.finite;
         attr.empty = rule.attr.empty;
         attr.notEmpty = rule.attr.notEmpty;
@@ -38,16 +35,13 @@ module.exports = function(rules) {
       break;
     }
   }
-
-  // Walks through the `SEPT` of opcodes
-  // for mutually-recursive sets of rules.
+  /* Walks through the `SEPT` of opcodes for mutually-recursive sets of rules. */
   var mrRuleAttr = function(rule, attr) {
     while (true) {
       var branchName = branchNames[branchNames.length - 1] + rule.lower;
       if (rule.ctrl.isOpen === true || rule.ctrl.isComplete === true) {
-        /* rule is complete, use previously computed values
-        or rule is open, use leaf values (which have been previously
-        initialized to this rule) */
+        /* rule is complete - use previously computed values */
+        /* or rule is open - use leaf values which have been previously initialized to this rule */
         attr.finite = rule.attr.finite;
         attr.empty = rule.attr.empty;
         attr.notEmpty = rule.attr.notEmpty;
@@ -74,7 +68,7 @@ module.exports = function(rules) {
       break;
     }
   }
-
+  /* process attributes through an ALT node */
   var altAttr = function(rule, opIndex, attr) {
     var opcode = rule.opcodes[opIndex];
     var childAttrs = [];
@@ -98,7 +92,7 @@ module.exports = function(rules) {
       }
     }
   }
-
+  /* process attributes through a CAT node */
   var catAttr = function(rule, opIndex, attr) {
     var opcode = rule.opcodes[opIndex];
     var childAttrs = [];
@@ -121,7 +115,7 @@ module.exports = function(rules) {
       }
     }
   }
-
+  /* process attributes through a REP node */
   var repAttr = function(rule, opIndex, attr) {
     var opcode = rule.opcodes[opIndex];
     opcodeAttr(rule, opIndex + 1, attr);
@@ -130,6 +124,7 @@ module.exports = function(rules) {
       attr.empty = true;
     }
   }
+  /* process attributes through an opcode */
   var opcodeAttr = function(rule, opIndex, attr) {
     var opcode = rule.opcodes[opIndex];
     switch (opcode.type) {
@@ -154,6 +149,8 @@ module.exports = function(rules) {
     case id.NOT:
     case id.BKA:
     case id.BKN:
+    case id.ABG:
+    case id.AEN:
       attr.finite = true;
       attr.empty = true;
       attr.notEmpty = false;
@@ -181,8 +178,7 @@ module.exports = function(rules) {
     }
 
   }
-
-  // Initialize the attributes and attribute controls for all rules.
+  /* Initialize the attributes and attribute controls for all rules. */
   var branchNames = [];
   var nameList = new rules.nameListConstructor();
   var ruleAttrFunc = ruleAttr;
@@ -191,8 +187,7 @@ module.exports = function(rules) {
     rule.ctrl.isOpen = false;
     rule.ctrl.isComplete = false;
   });
-  
-  // Get the attributes of the recursive and non-recursive rules. 
+  /* Get the attributes of the recursive and non-recursive rules. */ 
   rules.forEach(function(rule) {
     if (rule.ctrl.type === id.ATTR_N || rule.ctrl.type === id.ATTR_R) {
       if (rule.ctrl.isComplete === false) {
@@ -200,8 +195,7 @@ module.exports = function(rules) {
       }
     }
   });
-
-  // Get the attributes of the mutually-recursive sets of rules. 
+  /* Get the attributes of the mutually-recursive sets of rules. */ 
   ruleAttrFunc = mrRuleAttr;
   rules.mrGroups.forEach(function(group) {
     group.forEach(function(ruleIndex) {
@@ -213,8 +207,7 @@ module.exports = function(rules) {
       rule.ctrl.isComplete = true;
     });
   });
-
-  // Get the attributes of the recursive and non-recursive rules the refer to mutually recursive sets.
+  /* Get the attributes of the recursive and non-recursive rules the refer to mutually recursive sets. */
   ruleAttrFunc = ruleAttr;
   var workAttr = new rules.attrConstructor();
   rules.forEach(function(rule) {

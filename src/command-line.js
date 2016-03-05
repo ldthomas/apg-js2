@@ -1,7 +1,6 @@
-// This module processes the command line arguments into a completed configuration.
-// It returns a `config` object.
-//
-// Arguments will consist of `node` command line arguments less the first two. e.g. `process.argv.slice(2)`
+// This module processes the command line arguments into a completed configuration
+// and returns a `config` object.
+// It takes the  `node` command line arguments less the first two. e.g. `process.argv.slice(2)`
 // and can be a free mix of three types:
 //  - flags
 //  - values
@@ -31,7 +30,6 @@
 // - tokens with spaces or tabs must be quoted ("ab c" or 'ab c')
 // - quoted strings may have leading unquoted characters (abc"xyz")
 // - quoted strings end with a matching quote or a line end ("abc def**LF**)
-
 module.exports = function(commandlineArgs) {
   "use strict";
   var thisFileName = "command-line.js: ";
@@ -39,24 +37,21 @@ module.exports = function(commandlineArgs) {
   var fcp = new (require("./file-content-parser.js"))();
   var args, argString = "";
   var config;
-
-  // Generate a structured list of arguments with one argument per line
+  /* Generate a structured list of arguments with one argument per line */
   commandlineArgs.forEach(function(arg) {
     if (arg.charCodeAt(0) === 64) {
-      // If a file of arguments has been indicated, parse it here.
+      /* If a file of arguments has been indicated, parse it here. */
       argString += fcp.parse(arg);
     } else {
       argString += arg + "\n";
     }
   });
-
   var tokens = argString.split("\n");
   var rx = new RegExp("\t");
   var errors = [];
   tokens.forEach(function(token) {
     if (rx.test(token)) {
-      errors.push("tabs not allowed in command line arguments: '" + token
-          + "';")
+      errors.push("tabs not allowed in command line arguments: '" + token + "';")
     }
   });
   if (errors.length > 0) {
@@ -66,36 +61,21 @@ module.exports = function(commandlineArgs) {
     });
     throw new Error(msg);
   }
-
-  // Parse the structured list of arguments to extract the configuration values.
+  /* Parse the structured list of arguments to extract the configuration values. */
   config = asp.parse(argString);
-  if (config.fDisplayVerbose === true) {
-    config.fDisplayAst = true;
-    config.fDisplayAttributes = true;
-    config.fDisplayGrammar = true;
-    config.fDisplayGrammarStats = true;
-    config.fDisplayConfig = true;
-    config.fDisplayRules = true;
-    config.fDisplayState = true;
-    config.fDisplayWarnings = true;
-  }
+  /* if the output file name is empty, use the first input file name, stripped of any extension */
   var replace = (config.vInput.length > 0) ? config.vInput[0].replace(/\.[^.$]+$/, '') : "";
   if (config.vJSLang === "") {
-    /* if file name is empty, use the first input file name, stripped of any extension */
     config.vJSLang = replace;
   }
   if (config.vCLang === "") {
-    /* if file name is empty, use the first input file name, stripped of any extension */
     config.vCLang = replace;
   }
   if (config.vCppLang === "") {
-    /* if file name is empty, use the first input file name, stripped of any extension */
     config.vCppLang = replace;
   }
   if (config.vJavaLang === "") {
-    /* if file name is empty, use the first input file name, stripped of any extension */
     config.vJavaLang = replace;
   }
-  // Return the `config` object to the caller.
   return config;
 }

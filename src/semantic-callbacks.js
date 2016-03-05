@@ -1,19 +1,17 @@
 // This module has all of the semantic callback functions for the [ABNF for SABNF parser](./abnf-for-sabnf-parser.html).
-// (*See `resources/ABNFforSABNF.bnf` for the grammar file these callback functions are based on.*)
-// These functions are called by the parser's AST (see `apg-lib` documentation).
+// (*See `resources/abnf-for-sabnf-grammar.bnf` for the grammar file these callback functions are based on.*)
+// These functions are called by the parser's AST translation function (see `apg-lib` documentation).
 module.exports = function(grammar) {
   "use strict";
   var thisFileName = "SemanticCallbacks.js: ";
   var apglib = require("apg-lib");
   var id = apglib.ids;
 
-  // Some helper functions.
+  /* Some helper functions. */
   var NameList = function() {
     this.names = [];
-    /*
-     * Adds a new rule name object to the list. Returns -1 if the name already exists. Returns the added name object if the name
-     * does not already exist.
-     */
+    /* Adds a new rule name object to the list. Returns -1 if the name already exists. */
+    /* Returns the added name object if the name does not already exist. */
     this.add = function(name) {
       var ret = -1;
       var find = this.get(name);
@@ -76,15 +74,18 @@ module.exports = function(grammar) {
   }
 
   /*
-   * This is the prototype for all semantic analysis callback functions.<br> Note that at the point these functions are called
-   * the parser has done its job and all arguments are input supplied to the callback function by the translator.
+   * This is the prototype for all semantic analysis callback functions.
    * 
-   * @param {number} state - the translator state (id.SEM_PRE for downward traversal of the AST, id.SEM_POST for upward
-   * traversal) @param {array} chars - the array of character codes for the input string @param {number} phraseIndex - index
-   * into the chars array to the first character of the phrase associated with this node @param {number} phraseCount - the
-   * number of characters in the phrase @param {any} data - user-defined data passed to the translator for use by the callback
-   * functions. Set in call to the function "semanticAnalysis()". @return id.SEM_OK, normal return. id.SEM_SKIP in state
-   * id.SEM_PRE will skip the branch below. Any thing else is an error which will stop the translation. @memberof Example
+   * state - the translator state
+   *   id.SEM_PRE for downward (pre-branch) traversal of the AST
+   *   id.SEM_POST for upward (post branch) traversal of the AST
+   * chars - the array of character codes for the input string
+   * phraseIndex - index into the chars array to the first character of the phrase
+   * phraseCount - the number of characters in the phrase
+   * data - user-defined data passed to the translator for use by the callback functions.
+   * @return id.SEM_OK, normal return.
+   *         id.SEM_SKIP in state id.SEM_PRE will skip the branch below.
+   *         Any thing else is an error which will stop the translation.
    */
   function semCallbackPrototype(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
@@ -93,7 +94,7 @@ module.exports = function(grammar) {
     }
     return ret;
   }
-  // The AST callback functions.
+  /* The AST callback functions. */
   function semFile(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
@@ -126,7 +127,6 @@ module.exports = function(grammar) {
           }
         });
       });
-
       /* validate BKR rule names and set opcode rule index */
       data.udts.forEach(function(udt) {
         udt.isBkr = false;
@@ -400,10 +400,8 @@ module.exports = function(grammar) {
     } else if (state == id.SEM_POST) {
       data.opcodes.push({
         type : id.RNM,
-        /*
-         * NOTE: this is temporary info, index will be replaced with integer later. Probably not the best coding practice but
-         * here you go.
-         */
+        /* NOTE: this is temporary info, index will be replaced with integer later. */
+        /* Probably not the best coding practice but here you go. */
         index : {
           phraseIndex : phraseIndex,
           name : apglib.utils.charsToString(chars, phraseIndex, phraseCount)
@@ -464,10 +462,8 @@ module.exports = function(grammar) {
         type : id.BKR,
         bkrCase : (data.cs === true) ? id.BKR_MODE_CS : id.BKR_MODE_CI,
         bkrMode : (data.pm === true) ? id.BKR_MODE_PM : id.BKR_MODE_UM,
-        /*
-         * NOTE: this is temporary info, index will be replaced with integer later. Probably not the best coding practice but
-         * here you go.
-         */
+            /* NOTE: this is temporary info, index will be replaced with integer later. */
+            /* Probably not the best coding practice but here you go. */
         index : {
           phraseIndex : data.bkrname.phraseIndex,
           name : apglib.utils.charsToString(chars, data.bkrname.phraseIndex, data.bkrname.phraseLength)
@@ -741,6 +737,7 @@ module.exports = function(grammar) {
     }
     return ret;
   }
+  /* define the callback functions to the AST object */
   this.callbacks = [];
   this.callbacks['abgop'] = semAbgOp;
   this.callbacks['aenop'] = semAenOp;

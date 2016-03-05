@@ -12,8 +12,7 @@ module.exports = function(rules) {
   var thisFileName = "attributes-recursive.js: ";
   var id = require("apg-lib").ids;
   var that = this;
-
-  // Walk the `SEPT` for one specific rule.
+  /* Walk the `SEPT` for one specific rule. */
   var ruleAttr = function(startIndex, rule, attr) {
     while (true) {
       if (rule.index === startIndex && rule.ctrl.isOpen === true) {
@@ -49,7 +48,6 @@ module.exports = function(rules) {
         attr.notEmpty = rule.attr.notEmpty;
         break;
       }
-
       /* rule refers to the start rule and is NOT open -
          look it up to see if it has been traversed in this branch configuration before */
       var branchName = branchNames[branchNames.length - 1] + rule.lower;
@@ -76,7 +74,7 @@ module.exports = function(rules) {
       break;
     }
   }
-
+  /* process the attributes through an ALT operator */
   var altAttr = function(startIndex, rule, opIndex, attr) {
     var opcode = rule.opcodes[opIndex];
     var childAttrs = [];
@@ -117,8 +115,7 @@ module.exports = function(rules) {
       }
     }
   }
-
-  /* CAT nested is complicated !! */
+  /* is CAT nested? Very complicated question. We must consider 4 cases separately. */
   var isCatNested = function(childAttrs) {
     var ret = false;
     var child, found, foundLeft, foundRecursive;
@@ -129,7 +126,6 @@ module.exports = function(rules) {
         return true;
       }
     }
-
     /* 2.) the left-most, right recursive child is followed by a non-empty child */
     foundRecursive = false;
     for (var i = 0; i < childAttrs.length; i += 1) {
@@ -145,7 +141,6 @@ module.exports = function(rules) {
         }
       }
     }
-
     /* 3.) the right-most, left recursive child is followed by a non-empty child */
     foundRecursive = false;
     for (var i = childAttrs.length - 1; i >= 0; i -= 1) {
@@ -161,7 +156,6 @@ module.exports = function(rules) {
         }
       }
     }
-
     /* 4.) there is at least one recursive term between the left-most and right-most non-empty-only terms */
     var isRecursive
     foundLeft = false;
@@ -186,9 +180,9 @@ module.exports = function(rules) {
         }
       }
     }
-
     return false;
   }
+  /* is CAT left recursive */
   var isCatLeft = function(childAttrs) {
     var ret = false;
     for (var i = 0; i < childAttrs.length; i += 1) {
@@ -204,6 +198,7 @@ module.exports = function(rules) {
     }
     return ret;
   }
+  /* is CAT right recursive */
   var isCatRight = function(childAttrs) {
     var ret = false;
     for (var i = childAttrs.length - 1; i >= 0; i -= 1) {
@@ -219,6 +214,7 @@ module.exports = function(rules) {
     }
     return ret;
   }
+  /* is CAT cyclic */
   var isCatCyclic = function(childAttrs) {
     var ret = true;
     for (var i = 0; i < childAttrs.length; i += 1) {
@@ -229,6 +225,7 @@ module.exports = function(rules) {
     }
     return ret;
   }
+  /* process the attribute through a CAT operator */
   var catAttr = function(startIndex, rule, opIndex, attr) {
     var opcode = rule.opcodes[opIndex];
     var childAttrs = [];
@@ -255,10 +252,11 @@ module.exports = function(rules) {
     attr.right = isCatRight(childAttrs);
     attr.cyclic = isCatCyclic(childAttrs);
   }
-
+  /* process the attribute through a REP operator */
   var repAttr = function(startIndex, rule, opIndex, attr) {
     opcodeAttr(startIndex, rule, opIndex + 1, attr);
   }
+  /* process the attributes through the opcodes */
   var opcodeAttr = function(startIndex, rule, opIndex, attr) {
     var opcode = rule.opcodes[opIndex];
     attr.left = false;
@@ -287,6 +285,8 @@ module.exports = function(rules) {
     case id.NOT:
     case id.BKA:
     case id.BKN:
+    case id.ABG:
+    case id.AEN:
       attr.finite = true;
       attr.empty = true;
       attr.notEmpty = false;
@@ -312,10 +312,8 @@ module.exports = function(rules) {
       attr.notEmpty = true;
       break;
     }
-
   }
-
-  // Initialize the attribute and controls of all rules.
+  /* Initialize the attribute and controls of all rules. */
   var branchNames = [];
   var nameList = new rules.nameListConstructor();
   var workAttr = new rules.attrConstructor();
@@ -323,8 +321,7 @@ module.exports = function(rules) {
     rule.ctrl.isOpen = false;
     rule.ctrl.isComplete = false;
   });
-  
-  // Walk through the `SEPT`, determining attributes as we go.
+  /* Walk through the `SEPT`, determining attributes as we go. */
   for (var i = 0; i < rules.length; i += 1) {
     if (rules[i].ctrl.type === id.ATTR_R || rules[i].ctrl.type === id.ATTR_MR
         || rules[i].ctrl.type === id.ATTR_RMR) {

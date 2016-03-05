@@ -1,36 +1,54 @@
 ##JavaScript APG
 
-**Version:**  2.0
-
 **Description:**  
 
-**APG** is an acronym for "ABNF Parser Generator". Version 2.0 is a complete re-write of version 1.0 (<a href="https://github.com/ldthomas/apg-js">apg-js</a>)with the following objectives in mind:
-<ol>
-<li>Updating its features to the full <a href="https://github.com/ldthomas/apg-6.3">apg-6.3</a> and <a href="https://github.com/ldthomas/apg-java">apg-java</a> complement.</li>
-<li>Creating a local version of the parser generator as well as the parsing library (version 1.0 was library only).</li>
-<li>Developing it in the <a = href="https://nodejs.org/en/">node.js</a> framework.</li>
-</ol>
+**APG** is an acronym for "ABNF Parser Generator". Originally written to generate parsers directly from ABNF syntax
+([RFC 5234](https://tools.ietf.org/html/rfc5234)) it has since grown to include a number of additional features requiring additional syntax terms. The resulting syntax is a superset of ABNF or [SABNF](https://github.com/ldthomas/apg-js2/SABNF.md).
+This version adds a number of new features to the last, primarily to support the new [`apg-exp`](https://github.com/ldthomas/apg-js2-exp) pattern-matching application.
 
-Its features include:
-
+New features:  
 <ul>
-<li>generates language parsers and translators from a superset of the Augmented Backus-Naur Form 
-(ABNF) grammar syntax (<a href="https://tools.ietf.org/html/rfc5234">RFC 5234</a>)</li>
-<li>accepts valid ABNF grammars, including <a href="https://tools.ietf.org/html/rfc7405">RFC 7405</a> case-sensitive and -insensitive 
-literal strings of the form <code>%s"abc" & %i"abc"</code>
+<li>
+Sub-string parsing - the option to parse only a sub-string of the entire input string. 
 </li>
-<li>accepts <code>AND</code> & <code>NOT</code> syntactic predicate operators for conditional parsing based on specified, look-ahead phrases</li>
-<li>accepts User-Defined Terminals (UDTs) which provide user-written, non-Context-Free phrase recognition operators</li>
-<li>use of callback functions keeps the parser's action code separate from the grammar</li>
-<li>user-written callback functions provide complete monitoring and flow control of the parser</li>
-<li>optional generation of an Abstract Syntax Tree (AST)</li>
-<li>translation of the AST with user-written callback functions</li>
-<li>XML formatting of the AST</li>
-<li>extensive tracing facilities</li>
-<li>statistics gathering for a full picture of parse tree node coverage</li>
-<li>extensive attribute generation for an overview of the grammar's characteristics</li>
-<li>runs as a <a = href="https://nodejs.org/en/">node.js</a>, desktop cli function</li>
+<li>
+Positive and negative look around - the ability to look ahead <i>or behind</i> in the string to make parsing decisions based on what is or isn't found.
+</li>
+<li>
+Back referencing - phrase matching based on phrases previously matched to other rules or UDTs.
+</li>
+<li>
+Beginning and ending of string anchors - parsing decisions based on whether or not the sub-string includes the beginning and/or the ending of the full input string. 
+</li>
+<li>
+Statistics and limits on the node tree depth and hit count. Recursive-descent parsers can have exponential parsing times for some grammars. Limits can be set to prevent run-away parsing. 
+</li>
 </ul>
+  
+Other features:  
+<ul>
+<li>
+User-Defined Terminals (UDTs). These are user-written code snippets for matching phrases that are difficult or impossible to define with the SABNF syntax. They make for an effectively Turing complete parser.
+</li>
+<li>
+The use of callback functions to keep the parser's action code separate from the grammar.
+User-written callback functions provide complete monitoring and flow control of the parser.
+</li>
+<li>
+Generation of Abstract Syntax Trees (ASTs) with optional XML formatting.
+</li>
+<li>
+Translation of the AST with user-written callback functions.
+</li>
+<li>Extensive tracing facility with updated output formatting for easier interpretation.</li>
+<li>Statistics gathering for a full picture of parse tree node coverage.</li>
+<li>Extensive attribute generation for an overview of the grammar's characteristics.</li>
+<li><b>APG</b> and its parsers run as <a = href="https://nodejs.org/en/">node.js</a>, desktop cli functions.</li>
+<li>
+Parsers can easily be used in web page applications with tools such as <a href="http://browserify.org/">browserify</a>.
+</li>
+</ul>
+More complete explanations of these features can be found in the [SABNF](https://github.com/ldthomas/apg-js2/SABNF.md) documentation, in the code file documentation and the [examples](https://github.com/ldthomas/apg-js2-examples).
 
 **Installation:**    
 *Requires node.js and npm.*
@@ -47,7 +65,7 @@ apg -v
 ```
 You should see something like:
 
-`JavaScript APG 2.0, Copyright (C) 2105 Lowell D. Thomas, all rights reserved`
+`JavaScript APG 2.0, Copyright (C) 2106 Lowell D. Thomas, all rights reserved`
 
 Note: If there is a name conflict on your system
 (for example, Automated Password Generator) there are a couple of options for
@@ -85,8 +103,8 @@ View `docs/index.html` in any web browser to get started.
 Or view it on the [APG website](http://coasttocoastresearch.com/docjs2/apg/index.html)
 
 **Copyright:**  
-  *Copyright &copy; 2015 Lowell D. Thomas, all rights reserved*  
+  *Copyright &copy; 2016 Lowell D. Thomas, all rights reserved*  
 
 **License:**  
-Unlike all previous releases of **APG**, JavaSript APG, Version 2.0 is released with the more permissive BSD-3-Clause license.
+Released with the BSD-3-Clause license.
       

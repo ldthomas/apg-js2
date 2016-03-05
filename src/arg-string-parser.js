@@ -1,5 +1,5 @@
 // This module parses and translates a structured list of arguments into a `config` object.
-// (*See `resources/ArgString.bnf` for the grammar file this parser is based on.*)
+// (*See `resources/arg-string-grammar.bnf` for the grammar file this parser is based on.*)
 //
 // Note that the [command line function](./command-line.html) together with the [file-content-parser](./file-content-parser.html)
 // pre-parse the command line arguments into a structured list which has exactly one, correctly formed argument on each line
@@ -12,10 +12,7 @@ module.exports = function() {
   var id = apglib.ids;
   var ArgStringGrammar = require("./arg-string-grammar.js");
   var Config = require("./config.js");
-
-  // These are the callback functions called by the AST translator.
-  // For the most part, they simply recognize the phrases associated with the
-  // specific arguments (flags or key/values).
+  /* the translation callback functions */
   function semHelp(state, chars, phraseIndex, phraseCount, data) {
     if (state == id.SEM_PRE) {
       data.config.fHelp = true;
@@ -46,7 +43,7 @@ module.exports = function() {
     }
     return id.SEM_OK;
   }
-  // Uncompresses, compressed flags to the individual flags found.
+  /* Uncompresses, compressed flags to the individual flags found. */
   function semCompressed(state, chars, phraseIndex, phraseCount, data) {
     if (state == id.SEM_PRE) {
       for (var i = 1; i < phraseCount; i += 1) {
@@ -67,8 +64,7 @@ module.exports = function() {
           data.config.fLF = true;
           break;
         default:
-          data.errors.push("unrecognized command line argument flag: "
-              + String.fromCharCode(chars[phraseIndex + i]));
+          data.errors.push("unrecognized command line argument flag: " + String.fromCharCode(chars[phraseIndex + i]));
           break;
         }
       }
@@ -123,7 +119,7 @@ module.exports = function() {
       for (var i = phraseIndex; i < end; i++) {
         data.value += String.fromCharCode(chars[i]);
       }
-      if(phraseCount === 0){
+      if (phraseCount === 0) {
         data.errors.push("htmlDir value cannot be empty");
       }
     }
@@ -146,8 +142,7 @@ module.exports = function() {
       for (var i = phraseIndex; i < end; i++) {
         data.value += String.fromCharCode(chars[i]);
       }
-      data.errors.push("unrecognized command line argument value: "
-          + data.value);
+      data.errors.push("unrecognized command line argument value: " + data.value);
     }
     return id.SEM_OK;
   }
@@ -158,10 +153,6 @@ module.exports = function() {
     var grammar = new ArgStringGrammar();
     var parser = new apglib.parser();
     parser.ast = new apglib.ast();
-
-    // Assign callback functions to the important rule names.<br>
-    // (*NOTE: This is an edited cut & paste from callback the list in
-    // [`arg-string-grammar.js`](./arg-string-grammar.html)*
     parser.ast.callbacks['c-lang'] = semCLang;
     parser.ast.callbacks['c-long'] = false;
     parser.ast.callbacks['c-short'] = false;
@@ -195,8 +186,7 @@ module.exports = function() {
     parser.ast.callbacks['strict'] = semStrict;
     parser.ast.callbacks['value-param'] = false;
     parser.ast.callbacks['version'] = semVersion;
-
-    // Syntax checking and AST generation.
+    /* the syntax phase */
     result = parser.parse(grammar, 'file', chars);
     if (result.success !== true) {
       throw new Error("command line argument errors: unrecognized arguments");
@@ -206,7 +196,7 @@ module.exports = function() {
       errors : [],
       config : new Config()
     };
-    // Translate the AST to `config` object values.
+    /* the translation - the semantic phase */
     parser.ast.translate(data);
     if (data.errors.length > 0) {
       var msg = "command line argument errors:";
