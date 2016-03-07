@@ -47,7 +47,7 @@ Strings of character codes are represented with a dotted format.
 A range of character codes can be represented with a hyphenated notation.
 ```
 %d48-57         - represents any single character code in the decimal range 48 through 57
-                  that is, any ASCII digit `0, 1, 2, 3 ,4, 5, 6, 7, 8 or 9`
+                  that is, any ASCII digit 0, 1, 2, 3 ,4, 5, 6, 7, 8 or 9
 %x30-39         - represents any single character code in the hexidecimal range 30 through 39
                   (also any ASCII digit)
 %b110000-111001 - represents any single character code in the binary range 110000 through 111001
@@ -96,8 +96,8 @@ There are a number of shorthand variations of the repetition operator.
 *1 = 0*1 (zero or one repetitions, optional)
 2  = 2*2 (exactly two repetitions)
 ```
-Note: `0*0` is not allowed and a syntax error will be generated. The only way to explicitly
-define an empty string is with the literal string operator, `""`;
+<i>Note: <code>0*0</code> is not allowed and a syntax error will be generated. The only way to explicitly
+define an empty string is with the literal string operator, <code>""</code>.</i>
 
 **Groups:**  
 Elements may be grouped with enclosing parentheses. Grouped elements are then treated as a single element
@@ -126,7 +126,7 @@ For example, in the following rule definition, everything from the semicolon to 
 ```
 phrase = "abc"; any comment can go here   CRLF
 ```
-Note that empty lines and comment-only lines are accepted as white space,
+In this implementation empty lines and comment-only lines are accepted as white space,
 but any line beginning with one or more space/tab characters and having text not beginning
 with a semicolon will be rejected as an ABNF syntax error.
 Consider the lines,
@@ -184,7 +184,7 @@ UDTs begin with `u_` or `e_`. The underscore is not used in the ABNF syntax, so 
 distinguish between UDT names and rule names. The difference between the two forms is that a UDT that
 begins with `u_` may not return an empty phrase. If it does the parser will throw an exception.
 Only if the UDT name begins with `e_` is an empty phrase return accepted. The difference has to do with
-the rule [attributes]() and will not be discussed here further.
+the [rule attributes](https://github.com/ldthomas/apg-js2/blob/master/src/attributes.js) and will not be discussed here further.
 
 Note the even though UDTs are terminal phrases, they are also named phrases and share some of the named-phrase
 qualities with rules. Also, UDTs were introduced to **APG** prior to publication of RFC 7405, otherwise
@@ -201,7 +201,7 @@ number  = ("+" / "-") 1*%d48-75 CRLF
 `phrase1` uses the positive look ahead operator. If `number` begins with a `"+"` then `&"+"` returns the
 empty phrase and parsing continues. Otherwise, `&"+"` return failure and `phrase1` fails to find a match.
 `phrase2` uses the negative look ahead operator. It works just as described above except that it succeeds if
-`"+` is *not* found and fails if it is.
+`"+"` is *not* found and fails if it is.
 
 As far as I can tell, the positive look ahead operator was first introduced by Parr and Quong and the negative
 form added by Bryon Ford with Parsing Grammar Expressions (PEG). In those contexts the term "syntactic predicate" was used. A good discussion of this with the original references can be found in this 
@@ -211,7 +211,7 @@ form added by Bryon Ford with Parsing Grammar Expressions (PEG). In those contex
 The look behind operators are   modifiers very similar to the look ahead operators, the difference, as the name implies, is that they operate on phrases behind the current string index instead of ahead of it.
 ```
 phrase1 = any-text &&line-end text CRLF
-phrase1 = any-text !!line-end text CRLF
+phrase2 = any-text !!line-end text CRLF
 text = *%d32-126 CRLF
 any-text = *(%d10 / %d13 / %d32-126) CRLF
 line-end = %d13.10 / %d10 / %d13 CRLF
@@ -223,7 +223,8 @@ There is one big caveat to using look behind. When parsing the phrase modified b
 `line-end` in the cases above, the **APG** parser actually parses right-to-left.
 The parser works in this direction for all of the primary operators but may not work for all
 rules or UDTs. If needed, special rules can be written to work in look behind mode and an example of
-that is given in the [examples](). Also, there is a flag available to the author of UDTs and they
+that is given in the [examples](https://github.com/ldthomas/apg-js2-examples/tree/master/look-behind).
+Also, there is a flag available to the author of UDTs and they
 could also be written to work in look behind mode. However, as a general practice, it is safest
 to assume that rules and UDTs do not work right-to-left and avoid the use of them altogether in look behind phrases.
 
@@ -269,9 +270,9 @@ ayy2xya
 ayx2xxa
 ```
 Practically speaking, when a back referenced rule is matched the phrase is stored in two places.
-Once in the root rule call stack frame and once in the parent rule call stack frame.
-`\%uX` will always refer to the last value saved in the root rule call stack frame.
-`\%pX` will always refer to the last value saved in the parent rule call stack frame.
+Once in a single, universal object and again in the parent rule call stack frame.
+`\%uX` will always refer to the last phrase saved in the universal object.
+`\%pX` will always refer to the last phrase saved in the parent rule call stack frame.
 
 Case insensitive and universal mode are the defaults unless otherwise specified.
 The complete set of back references with modifiers is:
@@ -283,11 +284,11 @@ The complete set of back references with modifiers is:
 ```
 It is well known that recursion can be used to match pairs of opening and closing HTML tags,
 but by using parent frame mode back references, it is also possible to match the tag names.
-An example of this is in the [examples]().
+An example of this is in the [examples](https://github.com/ldthomas/apg-js2-examples/tree/master/back-reference).
 
 **Anchors:**  
 Primarily to aid the new pattern matching engine
-[`apg-exp`](), SABNF includes two specific anchors, the beginning
+[`apg-exp`](https://github.com/ldthomas/apg-js2-exp), SABNF includes two specific anchors, the beginning
 and ending of a string.
 ```
 phrase1 = %^ text     CRLF
@@ -319,7 +320,7 @@ notation for this was introduced in SABNF prior to publication of RFC 7405, or p
 The SABNF single-quote notation is kept for backward compatibility.
 
 ##ABNF for SABNF  
-RFC 5234 defines the ABNF syntax for the ABNF syntax. While this may seem paradoxical, it makes sense when you realize that a parser generator is a parser whose semantic phase generates a parser. In this case, both the parser of the generator and the parser it generates are defined with an ABNF syntax. Confusing? Here is what the ABNF (no superset features required) for SABNF looks like. It is more elaborate than that given in RFC 5234 partially because of the extra features but mostly because many "error" rules have been added so that the parser can catch input errors and report them rather than just fail to parse correctly. The latest version can always be found [here](https://github.com/ldthomas/apg-js2/blob/master/resources/ABNFforSABNF.bnf).
+RFC 5234 defines the ABNF syntax for the ABNF syntax. While this may seem paradoxical, it makes sense when you realize that a parser generator is a parser whose semantic phase generates a parser. In this case, both the parser of the generator and the parser it generates are defined with an ABNF syntax. Confusing? Here is what the ABNF (no superset features required) for SABNF looks like. It is more elaborate than that given in RFC 5234 partially because of the extra features but mostly because many "error" rules have been added so that the parser can catch input errors and report them rather than just fail to parse correctly. The latest version can always be found [here](https://github.com/ldthomas/apg-js2/blob/master/resources/abnf-for-sabnf-grammar.bnf).
 ```
 File            = *(BlankLine / Rule / RuleError)
 BlankLine       = *(%d32/%d9) [comment] LineEnd

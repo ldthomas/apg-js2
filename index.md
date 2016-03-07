@@ -25,7 +25,7 @@ Converts line ends if requested by the `--CRLF` or `--LF` arguments.
 
 5. Parse the input grammar. The syntax phase will check the grammar for syntax errors.
 The semantic phase will generate rule and opcode arrays.
-Generates the grammar object>
+Generates the grammar object
 >[abnf-for-sabnf-parser.js](abnf-for-sabnf-parser.html)<br>
 >[syntax-callbacks.js](./syntax-callbacks.html)<br>
 >[semantic-callbacks.js](semantic-callbacks.html)
