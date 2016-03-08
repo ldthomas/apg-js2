@@ -1,3 +1,5 @@
+[<span style="font-size: 150%;font-weight:bold;">&#8962;</span> home](http://coasttocoastresearch.com/)
+
 **Annotated Table of Contents**<br>
 *JavaScript APG*
 

@@ -4,7 +4,7 @@
 
 **APG** is an acronym for "ABNF Parser Generator". Originally written to generate parsers directly from ABNF syntax
 ([RFC 5234](https://tools.ietf.org/html/rfc5234)) it has since grown to include a number of additional features requiring additional syntax terms. The resulting syntax is a superset of ABNF or [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md).
-This version adds a number of new features to the last, primarily to support the new [`apg-exp`](https://github.com/ldthomas/apg-js2-exp) pattern-matching application.
+This version adds a number of new features to the last, primarily to support the new [`apg-exp`](https://github.com/ldthomas/apg-js2-exp) pattern-matching application. A general description of how **APG** works is given [here](http://coasttocoastresearch.com/apg).
 
 New features:  
 <ul>
