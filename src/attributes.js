@@ -337,7 +337,7 @@ module.exports = function() {
   // - determine all of the non-recursive attributes first(finite, empty & non-empty).
   // These are required by the alogrithms that determine the recursive attributes.
   // - finally, determine the recursive attributes (left, nested, right & cyclic)
-  this.getAttributes = function(grammarRules) {
+  this.getAttributes = function(grammarRules, rulesLineMap) {
     rules = grammarRules;
     rules.attrConstructor = Attr;
     rules.nameListConstructor = NameList;
@@ -366,24 +366,27 @@ module.exports = function() {
         rule.error = true;
         ruleErrorCount += 1;
         attrErrors.push({
-          name : rule.name,
-          error : "left recursive"
+          line: rulesLineMap[rule.index].line,
+          char : rulesLineMap[rule.index].char,
+          msg : "left recursive"
         });
       }
       if (rule.attr.finite === false) {
         rule.error = true;
         ruleErrorCount += 1;
         attrErrors.push({
-          name : rule.name,
-          error : "infinite"
+          line: rulesLineMap[rule.index].line,
+          char : rulesLineMap[rule.index].char,
+          msg : "infinite"
         });
       }
       if (rule.attr.cyclic === true) {
         rule.error = true;
         ruleErrorCount += 1;
         attrErrors.push({
-          name : rule.name,
-          error : "cyclic"
+          line: rulesLineMap[rule.index].line,
+          char : rulesLineMap[rule.index].char,
+          msg : "cyclic"
         });
       }
     });

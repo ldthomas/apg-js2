@@ -102,6 +102,7 @@ module.exports = function(grammar) {
       data.udtNames = new NameList();
       data.rules = [];
       data.udts = [];
+      data.rulesLineMap = [];
       data.opcodes = [];
       data.altStack = [];
       data.topStack = null;
@@ -164,6 +165,10 @@ module.exports = function(grammar) {
     if (state == id.SEM_PRE) {
       data.altStack.length = 0;
       data.topStack = null;
+      data.rulesLineMap.push({
+        line : data.findLine(phraseIndex),
+        char : phraseIndex,
+      });
     } else if (state == id.SEM_POST) {
     }
     return ret;

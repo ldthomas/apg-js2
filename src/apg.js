@@ -113,10 +113,11 @@ module.exports = function(args) {
     /* attribute generation */
     thisSectionName = "grammar attributes: ";
     var attrs = new Attributes();
-    var attrErrors = attrs.getAttributes(grammarResult.rules);
+    var attrErrors = attrs.getAttributes(grammarResult.rules, grammarResult.rulesLineMap);
     files.writePage("rules", attrs.rulesWithReferencesToHtml());
     files.writePage("attributes", attrs.ruleAttrsToHtml());
     if (attrErrors.length > 0) {
+      files.writePage("grammar", inputAnalysis.errorsToHtml(attrErrors, "Grammar Attribute Errors"));
       throw "grammar has attribute errors";
     }
     files.writePage("console", "\ngrammar Attributes OK");

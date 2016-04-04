@@ -23,7 +23,7 @@ module.exports = function(){
   //        BKR = 0
   //        ABG = 0
   //        AEN = 0
-  // characters = [0 - 255]
+  // characters = [0 - 65535]
   //```
   /* CALLBACK LIST PROTOTYPE (true, false or function reference) */
   this.callbacks = [];
@@ -98,7 +98,7 @@ module.exports = function(){
   this.rules[5].opcodes[1] = {type: 5, min: 0, max: 8};// TRG
   this.rules[5].opcodes[2] = {type: 5, min: 11, max: 12};// TRG
   this.rules[5].opcodes[3] = {type: 5, min: 14, max: 31};// TRG
-  this.rules[5].opcodes[4] = {type: 5, min: 127, max: 255};// TRG
+  this.rules[5].opcodes[4] = {type: 5, min: 127, max: 65535};// TRG
 
   /* end */
   this.rules[6].opcodes = [];
@@ -127,7 +127,7 @@ module.exports = function(){
     str += "line-text = *(valid/invalid)\n";
     str += "last-line = 1*(valid/invalid)\n";
     str += "valid = %d32-126 / %d9\n";
-    str += "invalid = %d0-8 / %d11-12 /%d14-31 / %d127-255\n";
+    str += "invalid = %d0-8 / %d11-12 /%d14-31 / %x7f-ffff\n";
     str += "end = CRLF / LF / CR\n";
     str += "CRLF = %d13.10\n";
     str += "LF = %d10\n";

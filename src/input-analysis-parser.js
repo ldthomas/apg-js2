@@ -170,6 +170,20 @@ module.exports = function() {
     if (strict === undefined || strict !== true) {
       strict = false;
     }
+    for(var i = 0; i < this.chars.length; i += 1){
+      var thisChar = this.chars[i]; 
+      if(thisChar > 65535){
+        errors.push({
+          line : 0,
+          char : i,
+          msg : "input SABNF grammar has invalid character code > 65535: char["+i+"]" + thisChar
+        });
+      }
+    }
+    if(errors.length > 0){
+      ret.hasErrors = true;
+      return ret;
+    }
     var grammar = new Grammar();
     var parser = new apglib.parser();
     parser.ast = new apglib.ast();
@@ -189,10 +203,10 @@ module.exports = function() {
     parser.ast.callbacks["cr"] = semCR;
     var test = parser.parse(grammar, 'file', this.chars);
     if (test.success !== true) {
-      error.push({
+      errors.push({
         line : 0,
         char : 0,
-        msg : "syntax analysis error analyzing grammar file: '" + this.name + "'"
+        msg : "syntax analysis error analyzing input SABNF grammar"
       });
       ret.hasErrors = true;
       return ret;
@@ -258,14 +272,6 @@ module.exports = function() {
       }
     }
     return ret;
-  }
-  // Display the input string.
-  this.toString = function() {
-    var str = "";
-    for (var i = 0; i < this.chars.length; i += 1) {
-      str += String.fromCharCode(this.chars[i]);
-    }
-    return str;
   }
   // Debug function to list the cataloged line objects to the console.
   this.dump = function() {
@@ -398,7 +404,7 @@ module.exports = function() {
     if (title) {
       html += '<caption>' + title + '</caption>\n';
     }
-    html += '<tr><th>line<br>no.</th><th>first<br>char</th><th><br>text</th></tr>\n';
+    html += '<tr><th>line<br>no.</th><th>line<br>offset</th><th>error<br>offset</th><th><br>text</th></tr>\n';
     /*
      * grammar error format 
      * { 
@@ -427,10 +433,10 @@ module.exports = function() {
         relchar = val.char - line.beginChar;
       }
       html += '<tr>';
-      html += '<td>' + val.line + '</td><td>' + relchar + '</td><td>' + text + '</td>';
+      html += '<td>' + val.line + '</td><td>' + line.beginChar + '</td><td>' + relchar + '</td><td>' + text + '</td>';
       html += '</tr>\n';
       html += '<tr>';
-      html += '<td colspan="2"></td>' + '<td>&uarr;:&nbsp;' + val.msg + '</td>'
+      html += '<td colspan="3"></td>' + '<td>&uarr;:&nbsp;' + apglib.utils.stringToAsciiHtml(val.msg) + '</td>'
       html += '</tr>\n';
     });
     html += '</table></p>\n';
@@ -439,6 +445,56 @@ module.exports = function() {
   // Format the error messages to HTML, for page display.
   this.errorsToHtml = function(errors, title) {
     return abnfErrorsToHtml(this.chars, this.lines, errors, title);
+  }
+  // Display the input string.
+  this.toString = function() {
+    var str = "";
+//    str += "line :   char: text\n";
+//    str += "no   : offset: text\n";
+    var thisChars = this.chars;
+    var end;
+    this.lines.forEach(function(line){
+      str += line.lineNo + ": ";
+      str += line.beginChar + ": ";
+      end = line.beginChar + line.textLength;
+      for(var i = line.beginChar; i < end; i += 1){
+        str += String.fromCharCode(thisChars[i]);
+      }
+      str += "\n";
+    });
+    return str;
+  }
+  this.errorsToString = function(errors){
+    var str, thisChars, thisLines, line, beg, end;
+    str = "";
+    thisChars = this.chars;
+    thisLines = this.lines;
+    errors.forEach(function(error){
+      line = thisLines[error.line];
+      str += line.lineNo + ": ";
+      str += line.beginChar + ": ";
+      str += error.char - line.beginChar + ": ";
+      beg = line.beginChar;
+      end = error.char;
+      for(var i = beg; i < end; i += 1){
+        str += String.fromCharCode(thisChars[i]);
+      }
+      str += " >> ";
+      beg = end;
+      end = line.beginChar + line.textLength;
+      for(var i = beg; i < end; i += 1){
+        str += String.fromCharCode(thisChars[i]);
+      }
+      str += "\n";
+      str += line.lineNo + ": ";
+      str += line.beginChar + ": ";
+      str += error.char - line.beginChar + ": ";
+      str += " >>: ";
+      str += error.msg;
+      str += "\n";
+    });
+    
+    return str;
   }
   // Generate an HTML table of the lines.
   this.toHtml = function() {

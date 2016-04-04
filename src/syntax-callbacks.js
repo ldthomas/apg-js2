@@ -284,7 +284,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.tlsOpen),
         char : topAlt.tlsOpen,
-        msg : "Case-insensitive literal string, &#34;&hellip;&#34, opened but not closed."
+        msg : 'Case-insensitive literal string, "...", opened but not closed.'
       });
       topAlt.basicError = true;
       topAlt.tlsOpen = null;
@@ -337,7 +337,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.clsOpen),
         char : topAlt.clsOpen,
-        msg : "Case-sensitive literal string, &#39;&hellip;&#39;, opened but not closed."
+        msg : "Case-sensitive literal string, '...', opened but not closed."
       });
       topAlt.clsOpen = null;
       topAlt.basicError = true;
@@ -347,7 +347,7 @@ module.exports = function() {
         data.errors.push({
           line : data.findLine(topAlt.clsOpen),
           char : topAlt.clsOpen,
-          msg : "Case-sensitive string operator, &#39;&hellip;&#39;, found - strict ABNF specified."
+          msg : "Case-sensitive string operator, '...', found - strict ABNF specified."
         });
       }
       topAlt.clsOpen = null;
@@ -397,7 +397,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.prosValOpen),
         char : topAlt.prosValOpen,
-        msg : "Prose value, &lt;&hellip;&gt;, opened but not closed."
+        msg : "Prose value, <...>, opened but not closed."
       });
       topAlt.basicError = true;
       topAlt.prosValOpen = null;
@@ -407,7 +407,7 @@ module.exports = function() {
           .push({
             line : data.findLine(topAlt.prosValOpen),
             char : topAlt.prosValOpen,
-            msg : "Prose value operator, &lt;&hellip;&gt;, found. The ABNF syntax is valid, but a parser cannot be generated from this grammar."
+            msg : "Prose value operator, <...>, found. The ABNF syntax is valid, but a parser cannot be generated from this grammar."
           });
       topAlt.prosValOpen = null;
       break;
@@ -446,7 +446,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.groupOpen),
         char : topAlt.groupOpen,
-        msg : "Group, (&hellip;), opened but not closed."
+        msg : "Group, (...), opened but not closed."
       });
       topAlt = data.altStack.pop();
       topAlt.groupError = true;
@@ -489,7 +489,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.optionOpen),
         char : topAlt.optionOpen,
-        msg : "Option, [&hellip;], opened but not closed."
+        msg : "Option, [...], opened but not closed."
       });
       topAlt = data.altStack.pop();
       topAlt.optionError = true;

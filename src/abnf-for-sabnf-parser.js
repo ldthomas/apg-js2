@@ -149,6 +149,7 @@ module.exports = function() {
       ret.rules = reduceOpcodes(data.rules);
       ret.rules = data.rules;
       ret.udts = data.udts;
+      ret.rulesLineMap = data.rulesLineMap;
       break;
     }
     return ret;
