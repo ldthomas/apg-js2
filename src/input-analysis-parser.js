@@ -449,8 +449,6 @@ module.exports = function() {
   // Display the input string.
   this.toString = function() {
     var str = "";
-//    str += "line :   char: text\n";
-//    str += "no   : offset: text\n";
     var thisChars = this.chars;
     var end;
     this.lines.forEach(function(line){
@@ -464,6 +462,7 @@ module.exports = function() {
     });
     return str;
   }
+  // Display an array of errors of the form `{line: 0, char: 0, msg: "message"}` as ASCII text.
   this.errorsToString = function(errors){
     var str, thisChars, thisLines, line, beg, end;
     str = "";
@@ -489,7 +488,7 @@ module.exports = function() {
       str += line.lineNo + ": ";
       str += line.beginChar + ": ";
       str += error.char - line.beginChar + ": ";
-      str += " >>: ";
+      str += "error: ";
       str += error.msg;
       str += "\n";
     });
