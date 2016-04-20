@@ -49,7 +49,7 @@ module.exports = function() {
   var VERSION = "JavaScript APG 2.0";
   var HTMLDIR = "./html";
   var FILE_DIVIDER = "/";
-  var COPYRIGHT = "Copyright (C) 2106 Lowell D. Thomas, all rights reserved";
+  var COPYRIGHT = "Copyright (C) 2016 Lowell D. Thomas, all rights reserved";
   /* Getters for apg system information. */
   this.getVersion = function() {
     return VERSION;

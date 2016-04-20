@@ -65,7 +65,7 @@ apg -v
 ```
 You should see something like:
 
-`JavaScript APG 2.0, Copyright (C) 2106 Lowell D. Thomas, all rights reserved`
+`JavaScript APG 2.0, Copyright (C) 2016 Lowell D. Thomas, all rights reserved`
 
 Note: If there is a name conflict on your system
 (for example, Automated Password Generator) there are a couple of options for
