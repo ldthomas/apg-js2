@@ -182,10 +182,37 @@ module.exports = function() {
     });
     html += '\n]\n';
     html += 'var attrHasErrors = ' + hasErrors + '\n';
-    html += "</script>\n";
+    html += "<\/script>\n";
     html += '<div id="sort-links" >\n';
     html += "</div>\n";
     return html;
+  }
+  var attrsData = function(rules){
+    var error, attr;
+    var data = [];
+    rules.forEach(function(rule) {
+      attr = rule.attr;
+      error = false;
+      if (attr.left === true || attr.cyclic === true || attr.finite === false) {
+        error = true;
+      }
+      var row = {};
+      row.error = error;
+      row.index = rule.index;
+      row.name = rule.name;
+      row.lower = rule.lower;
+      row.type = rule.ctrl.type;
+      row.typename = attrTypeToString(rule.ctrl);
+      row.left = attr.left;
+      row.nested = attr.nested;
+      row.right = attr.right;
+      row.cyclic = attr.cyclic;
+      row.finite = attr.finite;
+      row.empty = attr.empty;
+      row.notempty = attr.notEmpty;
+      data.push(row);
+    });
+    return data;
   }
   /* Attribute control object constructor. */
   var AttrCtrl = function(emptyArray) {
@@ -304,21 +331,42 @@ module.exports = function() {
       for (var i = 0; i < rules.length; i += 1) {
         if (rule.ctrl.refCount[i] > 0) {
           if (icount === 0) {
-            html += '{name: "' + rules[i].name + '", index: ' + i + '}'
+            html += '{name: "' + rules[i].name + '", index: ' + i + '}';
             icount += 1;
           } else {
             html += ',';
-            html += '{name: "' + rules[i].name + '", index: ' + i + '}'
+            html += '{name: "' + rules[i].name + '", index: ' + i + '}';
           }
         }
       }
       html += ']}\n';
     });
     html += ']};\n';
-    html += "</script>\n";
+    html += "<\/script>\n";
     html += '<div id="sort-links" >\n';
     html += "</div>\n";
     return html;
+  }
+  this.rulesWithReferencesData = function(){
+    var data = {indexSort: "up", nameSort: "none", rows: []};
+    rules.forEach(function(rule){
+      var row = {};
+      row.name = rule.name;
+      row.lower = rule.lower;
+      row.index = rule.index;
+      row.show = true;
+      row.dependents = [];
+      for(var i = 0; i < rules.length; i += 1){
+        if(rule.ctrl.refCount[i] > 0){
+          var dependent = {};
+          dependent.name = rules[i].name;
+          dependent.index = i;
+          row.dependents.push(dependent);
+        }
+      }
+      data.rows.push(row);
+    });
+    return data;
   }
 
   /* Perform the initial sorting of the rule names. */
@@ -331,6 +379,15 @@ module.exports = function() {
     html += attrsToHtml(rules, "Attributes by Rule Index");
     rules.sort(sortByIndex); // make sure rules are left sorted by index - errors may change this
     return html;
+  }
+  this.ruleAttrsData = function() {
+    rules.sort(sortByIndex);
+    if (ruleErrorCount > 0) {
+      rules.sort(sortByError);
+    }
+    var data = attrsData(rules);
+    rules.sort(sortByIndex); // make sure rules are left sorted by index - errors may change this
+    return data;
   }
   // The main, driver function that controls the flow of attribute generation.
   // - determine rule dependencies and types (recursive, non-recursive, etc.)

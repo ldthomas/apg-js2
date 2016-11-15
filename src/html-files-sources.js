@@ -520,7 +520,7 @@ exports.rulesSort = function(classname){
   html += " });\n";
   html += " html += \"<\/table>\";\n";
   html += " return html;\n";
-  html += "}</script>\n";
+  html += "}<\/script>\n";
   return html;
 }
 // This is the JavaScript code for sorting the attributes list
@@ -754,6 +754,6 @@ exports.attrsSort = function(classname){
   html += " });\n";
   html += " html += \"<\/table>\"\n";
   html += " return html;\n";
-  html += "}</script>\n";
+  html += "}<\/script>\n";
   return html;
 }

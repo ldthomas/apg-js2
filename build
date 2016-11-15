@@ -1,0 +1,6 @@
+#!/bin/bash
+cat ./resources/apg.css ./node_modules/apg-lib/apglib.css > build-tmp.css
+browserify ./src/apgweb.js  > build-tmp.js
+cat ./resources/apgweb-top.html build-tmp.css ./resources/apgweb-body.html build-tmp.js ./resources/apgweb-bot.html > apg.html
+rm build-tmp*
+exit 0

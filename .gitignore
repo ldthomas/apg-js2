@@ -3,6 +3,7 @@
 *~
 *.log
 *.out
+*.txt
 *.zip
 *.tgz
 cmsg
@@ -16,4 +17,7 @@ cmsg
 **documentation/
 **docs/
 conf.json
+apg-web.js
+apg-web-gen.js
+js-gen
 

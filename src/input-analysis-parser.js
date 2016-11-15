@@ -498,9 +498,8 @@ module.exports = function() {
   // Generate an HTML table of the lines.
   this.toHtml = function() {
     var html = "";
-    html += "<p>";
     html += '<table class="' + apglib.utils.styleNames.CLASS_LAST_LEFT_TABLE + '">\n';
-    var title = "Annotated Input Grammar File";
+    var title = "Annotated Input Grammar";
     if (inputFileCount > 1) {
       title += "s(" + inputFileCount + ")"
     }
@@ -516,7 +515,7 @@ module.exports = function() {
       html += '</tr>\n';
     });
 
-    html += '</table></p>\n';
+    html += '</table>\n';
     return html;
   }
 }

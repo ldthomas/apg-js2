@@ -1,0 +1,320 @@
+</style>
+</head>
+
+<body onload="onPageLoad()">
+ <!-- ##### Header ##### -->
+
+ <div id="header">
+
+  <div class="superHeader"></div>
+  <div class="midHeader">
+    <h1 class="headerTitle">
+   <a id="headerLink" href="https://github.com/ldthomas/apg-js2" target="_blank">
+     JavaScript <strong>APG</strong> 2.0
+   </a>
+    </h1>
+  </div>
+
+  <div class="subHeader">
+   | <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(0)" title="type or paste SABNF grammar here">Generator</a> |
+   <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(1)" title="annotated display of SABNF grammar">Grammar</a> |
+   <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(2)" title="rules defined by the SABNF grammar">Rules</a> |
+   <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(3)" title="the grammar rules attributes">Attributes</a> |
+   <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(4)" title="the generated parser">Parser</a> |
+   <div class="menu-right">
+   | <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(5)">About</a> | 
+   <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(6)">Help |</a>
+   </div>
+  </div>
+ </div>
+
+ <!-- ##### Side Bar ##### -->
+
+ <!-- ##### Main Copy ##### -->
+
+ <div id="main-copy">
+  <!-- #### tab 0 - the parser generator #### -->
+  <div class="tabcontent">
+  
+<!-- #### Parser Generator GUI #### -->
+   <h1 class="inner-header">
+   | <a class="inner-header" href="javascript:void(0)" onclick="apgweb.generate()">Generate</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.select('grammar-area')">Copy</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('grammar-area')">Full Screen</a> |
+   </h1>
+   <article id="generator" class="section">
+   <div class="supCap">
+   input <a href="https://github.com/ldthomas/apg-js2/blob/master/SABNF.md" target="_blank">SABNF</a> grammar&nbsp;&nbsp;
+   |&nbsp;&nbsp;<input id="strict" class="align-middle" name="strict" type="checkbox" value="strict" />
+   allow strict <a href="https://tools.ietf.org/html/rfc5234" target="_blank">ABNF</a> only
+   </div>
+   <div>
+   
+   <!-- temp test grammar  -->
+   <textarea id="grammar-area" class="text-area" spellcheck="false">phrases = options *(1*%d32 options)
+options = p1 / p2 / p3
+p1 = "abc"
+p2 = "ijk"
+p3 = "xyz"
+</textarea>
+   <!-- temp test grammar  -->
+
+   </div>
+
+   </article>
+   <a class="topOfPage" href="#header" title="Go to the top of this page">^ TOP</a>
+   <h1>Generator</h1>
+  </div>
+
+  <!-- ####  tab 1 - the annotated SABNF grammar, with errors if any #### -->
+  <div class="tabcontent">
+   <h1>Grammar |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('grammar-page')">Full Screen</a> |
+   </h1>
+   <article id="grammar-page" class="section">
+   </article>
+   <a class="topOfPage" href="#header" title="Go to the top of this page">^ TOP</a>
+   <h1>Grammar</h1>
+  </div>
+
+  <!-- ####  tab 2 - the grammar rules with dependencies #### -->
+  <div class="tabcontent">
+   <h1>Rules |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.rules.showAll(true)">Show All</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.rules.showAll(false)">Hide All</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('rules-page')">Full Screen</a> |
+   </h1>
+   <article id="rules-page" class="section">
+   </article>
+   <a class="topOfPage" href="#header" title="Go to the top of this page">^ TOP</a>
+   <h1>Rules</h1>
+  </div>
+
+  <!-- ####  tab 3 - the grammar attributes #### -->
+  <div class="tabcontent">
+   <h1>Attributes |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('attrs-page')">Full Screen</a> |
+   </h1>
+   <article id="attrs-page" class="section">
+   </article>
+   <a class="topOfPage" href="#header" title="Go to the top of this page">^ TOP</a>
+   <h1>Attributes</h1>
+  </div>
+
+  <!-- ####  tab 4 - the generated parser with a GUI for testing it with an input string #### -->
+  <div class="tabcontent">
+  
+<!-- #### Parse User Input GUI #### -->
+   <article id="parser">
+   <h1 id="parserHeader">
+   | <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(0)">Parser</a> |
+   <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(1)">Configure</a> |
+   <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(2)">Input</a> |
+   <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(3)">Phrases</a> |
+   <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(4)">State</a> |
+   <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(5)">Stats</a> |
+   <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(6)">Trace</a> |
+   <a class="parser-tablinks menu-right" href="javascript:void(0)" onclick="apgweb.parser.openTab(7)">| Help |</a>
+   </h1>
+   
+   <!-- #### parser tab 0 - the JS parser object #### -->
+   <section class="parser-tabcontent">
+   <h1 class="subh1">
+   | <a class="inner-header" href="javascript:void(0)" onclick="apgweb.select('parser-area')">Copy</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('parser-area')">Full Screen</a> |
+   </h1>
+  <textarea id="parser-area" class="text-area" spellcheck="false"></textarea>
+   </section>
+   
+   <!-- #### parser tab 1 - input and trace configuration #### -->
+   <section class="parser-tabcontent">
+   <h1 class="subh1">
+   | Input and Parser Configuration
+   </h1>
+  <!--  this section is not manipulated dynamically -->
+  <div id="config-input">
+  <form id="config-mode-form">
+  <strong>Input Mode:</strong><br>
+  <input type="radio" name="config-mode" id="config-ascii" checked><label for="config-ascii"> ASCII characters only</label><br>
+ <input type="radio" name="config-mode" id="config-escaped"><label for="config-escaped"> escaped characters</label>
+  </form>
+  </div>
+  <!--  this section is not manipulated dynamically -->
+  <div id="config-trace-range">
+  <form id="config-traceon-form">
+  <strong>Trace:</strong><br>
+  <input type="radio" name="config-traceon" id="config-trace-on"><label for="config-trace-on"> on</label><br>
+ <input type="radio" name="config-traceon" id="config-trace-off" checked><label for="config-trace-off"> off</label><br>
+ <input type="text" id="config-trace-range" value="5000"> max records<br>
+ <i>(Only the last "max records" of the trace will be saved and displayed.)</i>
+  </form><br>
+  
+  </div>
+  <!--  this section is not manipulated dynamically -->
+  <div id="config-trace-operators">
+  <form id="config-operators-form">
+  Operator Nodes:<br>
+  <input type="radio" name="config-operatorson" id="config-operators-on"><label for="config-operators-on"> all</label>
+ <input type="radio" name="config-operatorson" id="config-operators-off" checked><label for="config-operators-off"> none</label>
+ <input type="radio" name="config-operatorson" id="config-operators-select"><label for="config-operators-select""> select</label><br>
+ <table>
+ <tr>
+ <td><input type="checkbox" name="config-operators" id="config-operators-alt"><label for="config-operators-alt"> ALT - alternate</label></td>
+ <td><input type="checkbox" name="config-operators" id="config-operators-cat"><label for="config-operators-cat"> CAT - concatenation</label></td>
+ <td><input type="checkbox" name="config-operators" id="config-operators-rep"><label for="config-operators-rep"> REP - repetition</label></td>
+ </tr>
+ <tr>
+ <td><input type="checkbox" name="config-operators" id="config-operators-tls"><label for="config-operators-tls"> TLS - literal string</label></td>
+ <td><input type="checkbox" name="config-operators" id="config-operators-tbs"><label for="config-operators-tbs"> TBS - binary string</label></td>
+ <td><input type="checkbox" name="config-operators" id="config-operators-trg"><label for="config-operators-trg"> TRG - character range</label></td>
+ </tr>
+ <tr>
+ <td><input type="checkbox" name="config-operators" id="config-operators-bkr"><label for="config-operators-bkr"> BKR - back reference</label></td>
+ <td><input type="checkbox" name="config-operators" id="config-operators-tbs"><label for="config-operators-tbs"> ABG - begin of string</label></td>
+ <td><input type="checkbox" name="config-operators" id="config-operators-trg"><label for="config-operators-trg"> AEN - end of string</label></td>
+ </tr>
+ <tr>
+ <td><input type="checkbox" name="config-operators" id="config-operators-and"><label for="config-operators-and"> AND - positive look ahead</label></td>
+ <td colspan="2"><input type="checkbox" name="config-operators" id="config-operators-not"><label for="config-operators-not"> NOT - negative look ahead</label></td>
+ <td></td>
+ </tr>
+ <tr>
+ <td><input type="checkbox" name="config-operators" id="config-operators-bka"><label for="config-operators-bka"> BKA - positive look behind</label></td>
+ <td colspan="2"><input type="checkbox" name="config-operators" id="config-operators-bkn"><label for="config-operators-bkn"> BKN - negative look behind</label></td>
+ <td></td>
+ </tr>
+ </table>
+  </form><br>
+  </div>
+  <!--  this section IS manipulated dynamically -->
+  <div id="config-trace-rules">
+  <form id="config-rules-form">
+  Rule/UDT Nodes:<br>
+  <input type="radio" name="config-operatorson" id="config-rules-on" checked><label for="config-rules-on"> all</label>
+ <input type="radio" name="config-operatorson" id="config-rules-off"><label for="config-rules-off"> none</label>
+ <input type="radio" name="config-operatorson" id="config-rules-select"><label for="config-rules-select""> select</label><br>
+ </form>
+ <table id="config-rules-table"></table>
+  </div>
+   </section>
+   
+   <!-- #### parser tab 2 - input to the parser #### -->
+   <section class="parser-tabcontent">
+   <h1 class="subh1">
+   | <a class="inner-header" href="javascript:void(0)" onclick="apgweb.parser.parseInput()">Parse Input</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.select('input-area')">Copy</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('input-area')">Full Screen</a> |
+   </h1>
+  <textarea id="input-area" class="text-area" spellcheck="false" ondblclick="apgweb.parser.displayInput()">abc ijk xyz abc ijk xyz</textarea>
+   </section>
+   
+   <!-- #### parser tab 3 - the parsed phrases #### -->
+   <section class="parser-tabcontent">
+   <h1 class="subh1">|
+   <select id="ast-phrases" class="align-middle"  onchange="apgweb.parser.phraseChange(event)">
+   </select>
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.parser.displayPhrase(1)">&#9198;</a>
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.parser.displayPhrase(2)">&#9204;</a>
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.parser.displayPhrase(3)">phrases</a>
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.parser.displayPhrase(4)">&#9205;</a>
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.parser.displayPhrase(5)">&#9197;</a> |
+   <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('phrases-frame')">Full Screen</a> |
+   </h1>
+  <iframe src="" id="phrases-frame" class="iframe-area" ></iframe>
+   </section>
+   
+   <!-- #### parser tab 4 - parser state #### -->
+   <section class="parser-tabcontent">
+   <h1 class="subh1">
+   | Parser's Final State
+   </h1>
+   <div id="state-page">
+   </div>
+   </section>
+   
+   <!-- #### parser tab 5 - the parsing statistics #### -->
+   <section class="parser-tabcontent">
+   <h1 class="subh1">
+   | Parsing Statistics
+   </h1>
+   <div id="stats-page">
+   </div>
+   </section>
+   
+   <!-- #### parser tab 6 - the trace #### -->
+   <section class="parser-tabcontent">
+   <h1 class="subh1">| <a class="inner-header" href="javascript:void(0)" onclick="apgweb.fullScreen('trace-frame')">Full Screen</a> |
+   </h1>
+   <iframe src="" id="trace-frame" class="iframe-area"></iframe>
+   </section>
+   
+   <!-- #### parser tab 7 - the help page #### -->
+   <section class="parser-tabcontent">
+
+<h2 id="parser-help">Parser Help</h2>
+<h3 id="input">Input</h3>
+<p>While the SABNF grammar can easily define sentences and phrases with arbitrary binary characters, with this web interface input can only be entered through an input  &lt;textarea&gt;; reading files is not possible. The <em>Parser -&gt; Input</em> tab is a &lt;textarea&gt; for the parser’s input. Input to the parser is typed or pasted into this &lt;textarea&gt;. </p>
+
+<p>Because of the &lt;textarea&gt; and the variations of how they are handled across the different browsers, there is no reliable way to handle non-printing ASCII characters. However, a configuration option is available to allow non-printing characters to be entered with an escaped, hexadecimal format. Whether in ASCII-only mode (default) or escaped character mode, only character codes TAB(9), LF(10), CR(13) and 32‐126 are allowed. Any other character will be rejected as an input error.</p>
+
+<p>In escaped character mode, the escape character is the grave accent (`). This choice was made because the  grave accent is rarely used in English, ASCII text and does not require the shift key. The backslash (\) was rejected because of annoying conflicts with the JavaScript string escape character, the percent (%) was rejected because of conflicts with the ABNF grammar syntax, and the tilde (~) was rejected because it requires the shift key. The escaped encoding rules are:</p>
+
+<ul>
+<li>`` – literal grave accent (`)</li>
+<li>`xhh – 8-bit integer</li>
+<li>`Xhhhh – 16-bit integer</li>
+<li>`uhhhhhhhh – 32-bit integer</li>
+<li>h – hexadecimal digit, 0-9, a-f, or A-F</li>
+</ul>
+
+<p>Grave accent (`) used in any context other than `x, `X, `u, or `` is an input error. Double clicking within the input &lt;textarea&gt; will check the input for errors and provide an annotated display in the <em>Phrases</em> tab.</p>
+
+<blockquote>
+  <p>Written with <a href="https://stackedit.io/">StackEdit</a>.</p>
+</blockquote>
+
+   </section>
+   
+   
+   <a class="topOfPage" href="#header" title="Go to the top of this page">^ TOP</a>
+   <h1>Parser</h1>
+   </article>
+  </div>
+
+  <!-- ####  tab 5 - the "about" page #### -->
+  <div class="tabcontent">
+   <h1>About</h1>
+   <article id="about" class="section">
+   <h3>Coming soon &hellip;</h3>
+   
+   </article>
+   <a class="topOfPage" href="#header" title="Go to the top of this page">^ TOP</a>
+   <h1>About</h1>
+  </div>
+
+  <!-- ####  tab 6 - the help page #### -->
+  <div class="tabcontent">
+   <h1>Help</h1>
+   <article id="help" class="section">
+   <h3>Coming soon &hellip;</h3>
+   
+   </article>
+   <a class="topOfPage" href="#header" title="Go to the top of this page">^ TOP</a>
+   <h1>Help</h1>
+  </div>
+  
+ </div>
+
+ <!-- ##### Footer ##### -->
+
+ <div id="footer">
+  <div class="left">
+    Copyright &copy; 2016 <a href="http://www.coasttocoastresearch.com">Lowell D. Thomas</a>, all rights reserved
+  </div>
+  <br class="doNotDisplay doNotPrint" />
+
+  <div class="right">
+    Design by <a href="http://www.oswd.org/user/designs/id/3013">haran</a>
+  </div>
+ </div>
+<script type="text/javascript">

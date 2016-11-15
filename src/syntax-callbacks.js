@@ -126,7 +126,7 @@ module.exports = function() {
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "AND operator, &, found - strict ABNF specified."
+          msg : "AND operator(&) found - strict ABNF specified."
         });
       }
       break;
@@ -145,7 +145,7 @@ module.exports = function() {
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "NOT operator, !, found - strict ABNF specified."
+          msg : "NOT operator(!) found - strict ABNF specified."
         });
       }
       break;
@@ -164,7 +164,7 @@ module.exports = function() {
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "Positive look-behind operator, .&, found - strict ABNF specified."
+          msg : "Positive look-behind operator(&&) found - strict ABNF specified."
         });
       }
       break;
@@ -183,7 +183,45 @@ module.exports = function() {
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "Negative look-behind operator, .!, found - strict ABNF specified."
+          msg : "Negative look-behind operator(!!) found - strict ABNF specified."
+        });
+      }
+      break;
+    }
+  }
+  var synAbgOp = function(result, chars, phraseIndex, data) {
+    switch (result.state) {
+    case id.ACTIVE:
+      break;
+    case id.EMPTY:
+      break;
+    case id.NOMATCH:
+      break;
+    case id.MATCH:
+      if (data.strict) {
+        data.errors.push({
+          line : data.findLine(phraseIndex),
+          char : phraseIndex,
+          msg : "Beginning of string anchor(%^) found - strict ABNF specified."
+        });
+      }
+      break;
+    }
+  }
+  var synAenOp = function(result, chars, phraseIndex, data) {
+    switch (result.state) {
+    case id.ACTIVE:
+      break;
+    case id.EMPTY:
+      break;
+    case id.NOMATCH:
+      break;
+    case id.MATCH:
+      if (data.strict) {
+        data.errors.push({
+          line : data.findLine(phraseIndex),
+          char : phraseIndex,
+          msg : "End of string anchor(%$) found - strict ABNF specified."
         });
       }
       break;
@@ -203,7 +241,7 @@ module.exports = function() {
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "Back reference operator, '" + name + "', found - strict ABNF specified."
+          msg : "Back reference operator(" + name + ") found - strict ABNF specified."
         });
       }
       break;
@@ -219,10 +257,11 @@ module.exports = function() {
       break;
     case id.MATCH:
       if (data.strict) {
+        var name = apglib.utils.charsToString(chars, phraseIndex, result.phraseLength);
         data.errors.push({
           line : data.findLine(phraseIndex),
           char : phraseIndex,
-          msg : "UDT operator found - strict ABNF specified."
+          msg : "UDT operator found("+name+") - strict ABNF specified."
         });
       }
       break;
@@ -284,7 +323,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.tlsOpen),
         char : topAlt.tlsOpen,
-        msg : 'Case-insensitive literal string, "...", opened but not closed.'
+        msg : 'Case-insensitive literal string("...") opened but not closed.'
       });
       topAlt.basicError = true;
       topAlt.tlsOpen = null;
@@ -337,7 +376,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.clsOpen),
         char : topAlt.clsOpen,
-        msg : "Case-sensitive literal string, '...', opened but not closed."
+        msg : "Case-sensitive literal string('...') opened but not closed."
       });
       topAlt.clsOpen = null;
       topAlt.basicError = true;
@@ -347,7 +386,7 @@ module.exports = function() {
         data.errors.push({
           line : data.findLine(topAlt.clsOpen),
           char : topAlt.clsOpen,
-          msg : "Case-sensitive string operator, '...', found - strict ABNF specified."
+          msg : "Case-sensitive string operator('...') found - strict ABNF specified."
         });
       }
       topAlt.clsOpen = null;
@@ -397,7 +436,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.prosValOpen),
         char : topAlt.prosValOpen,
-        msg : "Prose value, <...>, opened but not closed."
+        msg : "Prose value operator(<...>) opened but not closed."
       });
       topAlt.basicError = true;
       topAlt.prosValOpen = null;
@@ -407,7 +446,7 @@ module.exports = function() {
           .push({
             line : data.findLine(topAlt.prosValOpen),
             char : topAlt.prosValOpen,
-            msg : "Prose value operator, <...>, found. The ABNF syntax is valid, but a parser cannot be generated from this grammar."
+            msg : "Prose value operator(<...>) found. The ABNF syntax is valid, but a parser cannot be generated from this grammar."
           });
       topAlt.prosValOpen = null;
       break;
@@ -446,7 +485,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.groupOpen),
         char : topAlt.groupOpen,
-        msg : "Group, (...), opened but not closed."
+        msg : "Group \"(...)\" opened but not closed."
       });
       topAlt = data.altStack.pop();
       topAlt.groupError = true;
@@ -489,7 +528,7 @@ module.exports = function() {
       data.errors.push({
         line : data.findLine(topAlt.optionOpen),
         char : topAlt.optionOpen,
-        msg : "Option, [...], opened but not closed."
+        msg : "Option \"[...]\" opened but not closed."
       });
       topAlt = data.altStack.pop();
       topAlt.optionError = true;
@@ -579,4 +618,6 @@ module.exports = function() {
   this.callbacks['bkaop'] = synBkaOp;
   this.callbacks['bknop'] = synBknOp;
   this.callbacks['bkrop'] = synBkrOp;
+  this.callbacks['abgop'] = synAbgOp;
+  this.callbacks['aenop'] = synAenOp;
 }
