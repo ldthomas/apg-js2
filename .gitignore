@@ -4,8 +4,10 @@
 *.log
 *.out
 *.zip
+*.txt
 *.tgz
 cmsg
+js-gen
 **html/
 **RemoteSystemsTempFiles/
 **Archive/
