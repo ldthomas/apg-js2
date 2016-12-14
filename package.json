@@ -11,11 +11,12 @@
   },
   "files": [
     "src",
-    "resources",
     "bin",
     "index.md",
     "SABNF.md",
     "docco-gen",
+    "abnf-for-sabnf-grammar.bnf",
+    "apg.html",
     "main.js"
   ],
   "dependencies": {

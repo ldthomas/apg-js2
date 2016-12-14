@@ -301,7 +301,7 @@ module.exports = function() {
       }
       source += "\n";
       source += "  //```\n";
-      source += "  /* CALLBACK LIST PROTOTYPE (true, false or function reference) */\n";
+      source += "  /* CALLBACK LIST PROTOTYPE (callback[i] must be false or function reference) */\n";
       source += "  this.callbacks = [];\n";
       ruleNames.forEach(function(name) {
         source += "  this.callbacks['" + name + "'] = false;\n";

@@ -38,6 +38,9 @@ module.exports = function(rules) {
         if (rule.ctrl.isScanned[op.index] === 0)
           scan(rule, op.index);
       }
+      if (op.type === id.UDT) {
+        rule.ctrl.udtRefCount[op.index] += 1;
+      }
     });
   }
   rules.forEach(function(rule) {

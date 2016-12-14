@@ -51,6 +51,7 @@ module.exports = function() {
   var htmlSources = require("./html-files-sources.js");
   var that = this;
   var rules = null;
+  var udts = null;
   var ruleErrorCount = 0;
   var attrChar = function(value, error) {
     var text;
@@ -215,13 +216,14 @@ module.exports = function() {
     return data;
   }
   /* Attribute control object constructor. */
-  var AttrCtrl = function(emptyArray) {
+  var AttrCtrl = function(emptyRules, emptyUdts) {
     this.isOpen = false;
     this.isComplete = false;
     this.type = id.ATTR_N;
     this.mrGroupId = -1;
-    this.refCount = emptyArray.slice(0);
-    this.isScanned = emptyArray.slice(0);
+    this.refCount = emptyRules.slice(0);
+    this.udtRefCount = emptyUdts.slice(0);
+    this.isScanned = emptyRules.slice(0);
   }
   /* Attribute object constructor. */
   var Attr = function(recursive) {
@@ -364,6 +366,14 @@ module.exports = function() {
           row.dependents.push(dependent);
         }
       }
+      for(var i = 0; i < udts.length; i += 1){
+        if(rule.ctrl.udtRefCount[i] > 0){
+          var dependent = {};
+          dependent.name = udts[i].name;
+          dependent.index = udts[i].index;
+          row.dependents.push(dependent);
+        }
+      }
       data.rows.push(row);
     });
     return data;
@@ -389,21 +399,29 @@ module.exports = function() {
     rules.sort(sortByIndex); // make sure rules are left sorted by index - errors may change this
     return data;
   }
+  this.udtAttrsData = function() {
+    return attrsData(udts);
+  }
   // The main, driver function that controls the flow of attribute generation.
   // - determine rule dependencies and types (recursive, non-recursive, etc.)
   // - determine all of the non-recursive attributes first(finite, empty & non-empty).
   // These are required by the alogrithms that determine the recursive attributes.
   // - finally, determine the recursive attributes (left, nested, right & cyclic)
-  this.getAttributes = function(grammarRules, rulesLineMap) {
+  this.getAttributes = function(grammarRules, grammarUdts, rulesLineMap) {
     rules = grammarRules;
+    udts = grammarUdts;
     rules.attrConstructor = Attr;
     rules.nameListConstructor = NameList;
-    var emptyArray = [];
+    var emptyRules = [];
+    var emptyUdts = [];
     rules.forEach(function() {
-      emptyArray.push(0);
+      emptyRules.push(0);
+    });
+    udts.forEach(function(udt){
+      emptyUdts.push(0);
     });
     rules.forEach(function(rule) {
-      rule.ctrl = new AttrCtrl(emptyArray);
+      rule.ctrl = new AttrCtrl(emptyRules, emptyUdts);
     });
     attrTypes(rules);
     rules.forEach(function(rule) {
@@ -411,6 +429,19 @@ module.exports = function() {
         rule.attr = new Attr(true);
       } else {
         rule.attr = new Attr();
+      }
+    });
+    udts.forEach(function(udt){
+      udt.ctrl = {type: id.ATTR_N};
+      udt.attr = {
+          left: false,
+          nested: false,
+          right: false,
+          cyclic: false,
+          finite: true,
+          empty: udt.empty,
+          notEmpty: true,
+          error: false
       }
     });
     attrNonRecursive(rules);

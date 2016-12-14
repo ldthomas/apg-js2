@@ -7,17 +7,13 @@
 *.zip
 *.tgz
 cmsg
-**html/
 **RemoteSystemsTempFiles/
-**Archive/
 **workfiles/
 **node_modules/
 **html/
+**dev/
 **test/
+**archive/
 **documentation/
 **docs/
-conf.json
-apg-web.js
-apg-web-gen.js
-js-gen
 

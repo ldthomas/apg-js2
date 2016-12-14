@@ -32,8 +32,8 @@ module.exports = function() {
   var leftTable = apglib.utils.styleLeftTable();
   var resources = require("./html-files-sources.js");
   var attrsStyle = resources.attrsStyle();
-  var rulesort = resources.rulesSort(apglib.utils.styleNames.CLASS_LAST_LEFT_TABLE);
-  var attrsort = resources.attrsSort(apglib.utils.styleNames.CLASS_NOMATCH);
+  var rulesort = resources.rulesSort(apglib.style.CLASS_ABNF);
+  var attrsort = resources.attrsSort(apglib.style.CLASS_NOMATCH);
 
   /* format a file error message */
   var fsmsg = function(name, msg, e) {

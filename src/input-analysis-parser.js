@@ -289,9 +289,9 @@ module.exports = function() {
     var NORMAL = 0;
     var CONTROL = 1;
     var INVALID = 2;
-    var CONTROL_BEG = '<span class="' + apglib.utils.styleNames.CLASS_CTRL + '">';
+    var CONTROL_BEG = '<span class="' + apglib.style.CLASS_CTRLCHAR + '">';
     var CONTROL_END = "</span>";
-    var INVALID_BEG = '<span class="' + apglib.utils.styleNames.CLASS_NOMATCH + '">';
+    var INVALID_BEG = '<span class="' + apglib.style.CLASS_NOMATCH + '">';
     var INVALID_END = "</span>";
     var end;
     var html = '';
@@ -391,7 +391,7 @@ module.exports = function() {
     return html;
   }
   var abnfErrorsToHtml = function(chars, lines, errors, title) {
-    var style = apglib.utils.styleNames;
+    var style = apglib.style;
     var html = "";
     if (!(Array.isArray(chars) && Array.isArray(lines) && Array.isArray(errors))) {
       return html;
@@ -400,7 +400,7 @@ module.exports = function() {
       title = null;
     }
     var errorArrow = '<span class="' + style.CLASS_NOMATCH + '">&raquo;</span>';
-    html += '<p><table class="' + style.CLASS_LAST_LEFT_TABLE + '">\n';
+    html += '<p><table class="' + style.CLASS_GRAMMAR + '">\n';
     if (title) {
       html += '<caption>' + title + '</caption>\n';
     }
@@ -498,7 +498,7 @@ module.exports = function() {
   // Generate an HTML table of the lines.
   this.toHtml = function() {
     var html = "";
-    html += '<table class="' + apglib.utils.styleNames.CLASS_LAST_LEFT_TABLE + '">\n';
+    html += '<table class="' + apglib.style.CLASS_GRAMMAR + '">\n';
     var title = "Annotated Input Grammar";
     if (inputFileCount > 1) {
       title += "s(" + inputFileCount + ")"
