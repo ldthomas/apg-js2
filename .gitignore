@@ -8,12 +8,10 @@
 *.tgz
 cmsg
 **RemoteSystemsTempFiles/
-**workfiles/
 **node_modules/
-**html/
 **dev/
+**work/
 **test/
-**archive/
-**documentation/
 **docs/
+**resources/
 

@@ -20,7 +20,8 @@
     "main.js"
   ],
   "dependencies": {
-    "apg-lib": "*"
+    "apg-lib": "*",
+    "apg-conv": "*"
   },
   "repository": {
     "type": "git",

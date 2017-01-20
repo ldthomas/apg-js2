@@ -557,6 +557,26 @@ module.exports = function() {
       break;
     }
   }
+  var synLineEnd = function(result, chars, phraseIndex, data) {
+    switch (result.state) {
+    case id.ACTIVE:
+      break;
+    case id.EMPTY:
+      break;
+    case id.NOMATCH:
+      break;
+    case id.MATCH:
+      if(result.phraseLength === 1 && data.strict){
+        var end = (chars[phraseIndex] === 13) ? "CR" : "LF";
+        data.errors.push({
+          line : data.findLine(phraseIndex),
+          char : phraseIndex,
+          msg : "Line end '"+end+"' found - strict ABNF specified, only CRLF allowed."
+        });
+      }
+      break;
+    }
+  }
   var synLineEndError = function(result, chars, phraseIndex, data) {
     switch (result.state) {
     case id.ACTIVE:
@@ -600,6 +620,7 @@ module.exports = function() {
   this.callbacks['groupclose'] = synGroupClose;
   this.callbacks['groupopen'] = synGroupOpen;
   this.callbacks['lineenderror'] = synLineEndError;
+  this.callbacks['lineend'] = synLineEnd;
   this.callbacks['notop'] = synNotOp;
   this.callbacks['optionclose'] = synOptionClose;
   this.callbacks['optionopen'] = synOptionOpen;

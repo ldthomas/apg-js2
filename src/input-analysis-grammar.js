@@ -6,7 +6,7 @@ module.exports = function(){
   //      rules = 10
   //       udts = 0
   //    opcodes = 31
-  //        ABNF original opcodes
+  //        ---   ABNF original opcodes
   //        ALT = 5
   //        CAT = 2
   //        REP = 4
@@ -14,7 +14,7 @@ module.exports = function(){
   //        TLS = 0
   //        TBS = 4
   //        TRG = 5
-  //        SABNF superset opcodes
+  //        ---   SABNF superset opcodes
   //        UDT = 0
   //        AND = 0
   //        NOT = 0
@@ -23,21 +23,8 @@ module.exports = function(){
   //        BKR = 0
   //        ABG = 0
   //        AEN = 0
-  // characters = [0 - 65535]
+  // characters = [0 - 4294967295]
   //```
-  /* CALLBACK LIST PROTOTYPE (true, false or function reference) */
-  this.callbacks = [];
-  this.callbacks['cr'] = false;
-  this.callbacks['crlf'] = false;
-  this.callbacks['end'] = false;
-  this.callbacks['file'] = false;
-  this.callbacks['invalid'] = false;
-  this.callbacks['last-line'] = false;
-  this.callbacks['lf'] = false;
-  this.callbacks['line'] = false;
-  this.callbacks['line-text'] = false;
-  this.callbacks['valid'] = false;
-
   /* OBJECT IDENTIFIER (for internal parser use) */
   this.grammarObject = 'grammarObject';
 
@@ -98,7 +85,7 @@ module.exports = function(){
   this.rules[5].opcodes[1] = {type: 5, min: 0, max: 8};// TRG
   this.rules[5].opcodes[2] = {type: 5, min: 11, max: 12};// TRG
   this.rules[5].opcodes[3] = {type: 5, min: 14, max: 31};// TRG
-  this.rules[5].opcodes[4] = {type: 5, min: 127, max: 65535};// TRG
+  this.rules[5].opcodes[4] = {type: 5, min: 127, max: 4294967295};// TRG
 
   /* end */
   this.rules[6].opcodes = [];
@@ -127,7 +114,7 @@ module.exports = function(){
     str += "line-text = *(valid/invalid)\n";
     str += "last-line = 1*(valid/invalid)\n";
     str += "valid = %d32-126 / %d9\n";
-    str += "invalid = %d0-8 / %d11-12 /%d14-31 / %x7f-ffff\n";
+    str += "invalid = %d0-8 / %d11-12 /%d14-31 / %x7f-ffffffff\n";
     str += "end = CRLF / LF / CR\n";
     str += "CRLF = %d13.10\n";
     str += "LF = %d10\n";

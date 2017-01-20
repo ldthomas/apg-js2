@@ -48,7 +48,6 @@ module.exports = function() {
   var attrTypes = require("./attribute-types.js");
   var attrNonRecursive = require("./attributes-non-recursive.js");
   var attrRecursive = require("./attributes-recursive.js");
-  var htmlSources = require("./html-files-sources.js");
   var that = this;
   var rules = null;
   var udts = null;
