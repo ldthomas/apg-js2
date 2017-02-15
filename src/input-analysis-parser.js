@@ -1,6 +1,7 @@
 // This module reads the input grammar file and does a preliminary analysis
 //before attempting to parse it into a grammar object.
-// (*See `resources/input-analysis-grammar.bnf` for the grammar file this parser is based on.*)
+// See:<br> `abnf/input-analysis-grammar.bnf`<br>for the grammar file this parser is based on.
+//
 // It has two primary functions.
 // - verify the character codes - no non-printing ASCII characters
 // - catalog the lines - create an array with a line object for each line.
@@ -13,6 +14,7 @@ module.exports = function() {
   var apglib = require("apg-lib");
   var id = apglib.ids;
   var Grammar = require("./input-analysis-grammar.js");
+  var converter = require("apg-conv");
   var that = this;
   this.hasInvalidCharacters = false;
   this.originalString = "";
@@ -107,41 +109,6 @@ module.exports = function() {
     }
     return id.SEM_OK;
   }
-  // Get the grammar from the named file.
-  this.get = function(filename) {
-    var files = [];
-    this.chars.length = 0;
-    this.lines.length = 0;
-    if (typeof (filename) === "string") {
-      files.push(filename);
-    } else if (Array.isArray(filename)) {
-      files = filename
-    } else {
-      throw new Error("get(): unrecognized input: must be string or array of strings");
-    }
-    inputFileCount = files.length;
-    try {
-      for (var j = 0; j < files.length; j += 1) {
-        var buf = fs.readFileSync(files[j]);
-        for (var i = 0; i < buf.length; i += 1) {
-          this.chars.push(buf[i]);
-        }
-        this.originalString = apglib.utils.charsToString(this.chars);
-      }
-    } catch (e) {
-      throw new Error(thisFileName + "get(): error reading input grammar file\n" + e.message);
-    }
-  };
-  // Get the grammar from the input string.
-  this.getString = function(str) {
-    if (typeof (str) !== "string" || str === "") {
-      throw new Error(thisFileName + 'getString(): input not a valid string: "' + str + '"');
-    }
-    this.originalString = str.slice(0);
-    this.chars.length = 0;
-    this.lines.length = 0;
-    this.chars = apglib.utils.stringToChars(str);
-  }
   // Analyze the grammar for character code errors and catalog the lines.
   /*
    * grammar error format 
@@ -161,7 +128,16 @@ module.exports = function() {
    *   invalidChars : number of invalid characters - e.g. 0x255 
    * }
    */
-  this.analyze = function(strict, doTrace) {
+  this.analyze = function(src, strict, doTrace) {
+    if(Buffer.isBuffer(src)){
+      this.chars = converter.decode("BINARY", src);
+    }else if(Array.isArray(src)){
+      this.chars = src.slice();
+    }else if(typeof(src) === "string"){
+      this.chars = converter.decode("STRING", src);
+    }else{
+      throw new TypeError("input source is not a Buffer or string");
+    }
     var ret = {
       hasErrors : false,
       errors : errors,
@@ -169,20 +145,6 @@ module.exports = function() {
     }
     if (strict === undefined || strict !== true) {
       strict = false;
-    }
-    for(var i = 0; i < this.chars.length; i += 1){
-      var thisChar = this.chars[i]; 
-      if(thisChar > 65535){
-        errors.push({
-          line : 0,
-          char : i,
-          msg : "input SABNF grammar has invalid character code > 65535: char["+i+"]" + thisChar
-        });
-      }
-    }
-    if(errors.length > 0){
-      ret.hasErrors = true;
-      return ret;
     }
     var grammar = new Grammar();
     var parser = new apglib.parser();
@@ -225,37 +187,6 @@ module.exports = function() {
     }
     return ret;
   };
-  /* convert the line ends and output the converted file */
-  var convert = function(filename, end) {
-    if (typeof (filename) !== "string") {
-      throw new Error(thisFileName + "filename is not a string");
-    }
-    try {
-      var fd;
-      var buf;
-      var count;
-      buf = new Buffer(that.chars);
-      fd = fs.openSync(filename, "w");
-      that.lines.forEach(function(val, index) {
-        count = fs.writeSync(fd, buf, val.beginChar, val.textLength);
-        count = fs.writeSync(fd, end, 0, end.length);
-      });
-    } catch (e) {
-      var msg = thisFileName + "convert: can't open file'" + filename + "'\n";
-      msg += e.message;
-      throw new Error(msg);
-    }
-  }
-  // Converts all line ends (`CRLF`, `LF`, `CR` or `EOF`) to `CRLF`, including
-  // last line.
-  this.toCRLF = function(filename) {
-    convert(filename, CRLF);
-  };
-  // Converts all line ends (`CRLF`, `LF`, `CR` or `EOF`) to `LF`, including
-  // last line.
-  this.toLF = function(filename) {
-    convert(filename, LF);
-  };
   // Given a character position, find the line that the character is in.
   this.findLine = function(charIndex) {
     var ret = -1;
@@ -289,9 +220,9 @@ module.exports = function() {
     var NORMAL = 0;
     var CONTROL = 1;
     var INVALID = 2;
-    var CONTROL_BEG = '<span class="' + apglib.utils.styleNames.CLASS_CTRL + '">';
+    var CONTROL_BEG = '<span class="' + apglib.style.CLASS_CTRLCHAR + '">';
     var CONTROL_END = "</span>";
-    var INVALID_BEG = '<span class="' + apglib.utils.styleNames.CLASS_NOMATCH + '">';
+    var INVALID_BEG = '<span class="' + apglib.style.CLASS_NOMATCH + '">';
     var INVALID_END = "</span>";
     var end;
     var html = '';
@@ -391,7 +322,7 @@ module.exports = function() {
     return html;
   }
   var abnfErrorsToHtml = function(chars, lines, errors, title) {
-    var style = apglib.utils.styleNames;
+    var style = apglib.style;
     var html = "";
     if (!(Array.isArray(chars) && Array.isArray(lines) && Array.isArray(errors))) {
       return html;
@@ -400,19 +331,11 @@ module.exports = function() {
       title = null;
     }
     var errorArrow = '<span class="' + style.CLASS_NOMATCH + '">&raquo;</span>';
-    html += '<p><table class="' + style.CLASS_LAST_LEFT_TABLE + '">\n';
+    html += '<p><table class="' + style.CLASS_GRAMMAR + '">\n';
     if (title) {
       html += '<caption>' + title + '</caption>\n';
     }
     html += '<tr><th>line<br>no.</th><th>line<br>offset</th><th>error<br>offset</th><th><br>text</th></tr>\n';
-    /*
-     * grammar error format 
-     * { 
-     *  line: 0, 
-     *  char: 0, 
-     *  msg: "" 
-     * }
-     */
     errors.forEach(function(val) {
       var line, relchar, beg, end, len, length, text, prefix = "", suffix = "";
       if (lines.length === 0) {
@@ -448,21 +371,11 @@ module.exports = function() {
   }
   // Display the input string.
   this.toString = function() {
-    var str = "";
-    var thisChars = this.chars;
-    var end;
-    this.lines.forEach(function(line){
-      str += line.lineNo + ": ";
-      str += line.beginChar + ": ";
-      end = line.beginChar + line.textLength;
-      for(var i = line.beginChar; i < end; i += 1){
-        str += String.fromCharCode(thisChars[i]);
-      }
-      str += "\n";
-    });
-    return str;
+    return converter.encode("STRING", this.chars);
   }
-  // Display an array of errors of the form `{line: 0, char: 0, msg: "message"}` as ASCII text.
+  // Display an array of errors of the form<br>
+  //`{line: 0, char: 0, msg: "message"}`<br>
+  //as ASCII text.
   this.errorsToString = function(errors){
     var str, thisChars, thisLines, line, beg, end;
     str = "";
@@ -498,9 +411,8 @@ module.exports = function() {
   // Generate an HTML table of the lines.
   this.toHtml = function() {
     var html = "";
-    html += "<p>";
-    html += '<table class="' + apglib.utils.styleNames.CLASS_LAST_LEFT_TABLE + '">\n';
-    var title = "Annotated Input Grammar File";
+    html += '<table class="' + apglib.style.CLASS_GRAMMAR + '">\n';
+    var title = "Annotated Input Grammar";
     if (inputFileCount > 1) {
       title += "s(" + inputFileCount + ")"
     }
@@ -516,7 +428,7 @@ module.exports = function() {
       html += '</tr>\n';
     });
 
-    html += '</table></p>\n';
+    html += '</table>\n';
     return html;
   }
 }

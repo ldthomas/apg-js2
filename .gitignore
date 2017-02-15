@@ -3,19 +3,16 @@
 *~
 *.log
 *.out
+*.txt
 *.zip
 *.txt
 *.tgz
 cmsg
-js-gen
-**html/
 **RemoteSystemsTempFiles/
-**Archive/
-**workfiles/
 **node_modules/
-**html/
+**dev/
+**work/
 **test/
-**documentation/
 **docs/
-conf.json
+**resources/
 

@@ -1,81 +1,158 @@
 // This module processes the command line arguments into a completed configuration
 // and returns a `config` object.
 // It takes the  `node` command line arguments less the first two. e.g. `process.argv.slice(2)`
-// and can be a free mix of three types:
-//  - flags
-//  - values
-//  - file names
+// and can be a free mix of keys and key/value pairs.
+// ````
+// -h, --help                 : print this help screen
+// -v, --version              : display version information
+// -s, --strict               : only ABNF grammar (RFC 5234 & 7405) allowed, no Superset features
+// -i <path>[,<path>[,...]]   : input file(s)*
+// --in=<path>[,<path>[,...]] : input file(s)*
+// -o <path>                  : output filename**
+// --out=<path>               : output filename**
 //
-// Flags are simply true/false values.
-// Initially false, they are set to true if found one or more times in the argument list.
-// They have short and long forms, e.g. `-h`, `--help`. Short forms may be compressed,
-// e.g. `-sCL` would be the same as `-s -C -L`.
-//
-// Values are key/value pairs. They also have short and long forms,<br> e.g. `-js name`, `--JavaScript=name`.
-// If a key appears more than once, only the last value will be retained, except for `--in`
-// (see [config.js](config.html)).
-//
-// File name arguments, `@filename`, identify a file with all or some of the arguments.
-// Files of arguments offer several advantages:
-//    - long and complex arguments can be passed to the application easily and repeatedly
-//    - arguments may appear on separate lines
-//    - arguments can be documented with comments and spaced with blank lines
-//
-// The complete syntax of an argument file is:
-// - arguments are tokens of printing characters (9, 32-126)
-// - arguments are separated by spaces, tabs, comments or line ends
-// - blank lines and comment lines allowed
-// - comments begin with `#` and run to the end of the line
-// - a line end can be a **CRLF** pair, a single **LF** or a single **CR**
-// - tokens with spaces or tabs must be quoted ("ab c" or 'ab c')
-// - quoted strings may have leading unquoted characters (abc"xyz")
-// - quoted strings end with a matching quote or a line end ("abc def**LF**)
-module.exports = function(commandlineArgs) {
+// Options are case insensitive.
+// *  Multiple input files allowed.
+//    Multiple file names must be comma separated with no spaces.
+//    File names from multiple input options are concatenated.
+//    Content of all resulting input files is concatenated.
+// ** Output file name is optional.
+//    If no output file name is given, it is generated from the first input file name.
+//    Input file name is stripped of extension, if any, and the extention ".js" is added.
+// ````
+module.exports = function(args){
   "use strict";
-  var thisFileName = "command-line.js: ";
-  var asp = new (require("./arg-string-parser.js"))();
-  var fcp = new (require("./file-content-parser.js"))();
-  var args, argString = "";
-  var config;
-  /* Generate a structured list of arguments with one argument per line */
-  commandlineArgs.forEach(function(arg) {
-    if (arg.charCodeAt(0) === 64) {
-      /* If a file of arguments has been indicated, parse it here. */
-      argString += fcp.parse(arg);
-    } else {
-      argString += arg + "\n";
+  var helpScreen = function(args){
+    var help = "Usage: apg options\n";
+    var options = "";
+    args.forEach(function(arg){options += arg + " "});
+    help += "options: "+ options + "\n";
+    help += "-h, --help                 : print this help screen\n";
+    help += "-v, --version              : display version information\n";
+    help += "-s, --strict               : only ABNF grammar (RFC 5234 & 7405) allowed, no Superset features\n";
+    help += "-i <path>[,<path>[,...]]   : input file(s)*\n";
+    help += "--in=<path>[,<path>[,...]] : input file(s)*\n";
+    help += "-o <path>                  : output filename**\n";
+    help += "--out=<path>               : output filename**\n";
+    help += "\n";
+    help += "Options are case insensitive.\n";
+    help += "*  Multiple input files allowed.\n";
+    help += "   Multiple file names must be comma separated with no spaces.\n";
+    help += "   File names from multiple input options are concatenated.\n";
+    help += "   Content of all resulting input files is concatenated.\n";
+    help += "** Output file name is optional.\n";
+    help += "   If no output file name is given, it is generated from the first input file name.\n";
+    help += '   Input file name is stripped of extension, if any, and the extention ".js" is added.\n';
+    return help;
+  }
+  var version = function(){
+    var v = "";
+    v  = "JavaScript APG, version 3.0.0, Copyright (C) 2017 Lowell D. Thomas, all rights reserved\n";
+    v += "    http://coasttocoastresearch.com/\n";
+    v += "    https://github.com/ldthomas/apg-js2\n";
+    v += "    https://www.npmjs.com/package/apg\n";
+    return v;
+  }
+  var fs = require("fs");
+  var path = require("path");
+  var converter = require("apg-conv");
+  var STRICTL = "--strict";
+  var STRICTS = "-s";
+  var HELPL = "--help";
+  var HELPS = "-h";
+  var VERSIONL = "--version";
+  var VERSIONS = "-v";
+  var INL = "--in";
+  var INS = "-i";
+  var OUTL = "--out";
+  var OUTS = "-o";
+  var inFilenames = [];
+  var config = {
+      help: "",
+      version: "",
+      error: "",
+      strict: false,
+      src: null,
+      outFilename: "",
+      outfd: process.stdout.fd
+  }
+  var key, value;
+  var i = 0;
+  try{
+    while( i < args.length){
+      var kv = args[i].toLowerCase().split("=");
+      if(kv.length === 2){
+        key = kv[0];
+        value = kv[1];
+      }else if(kv.length === 1){
+        key = kv[0];
+        value = (i + 1 < args.length) ? args[i+1] : "";
+      }else{
+        throw new Error("command line error: ill-formed option: "+args[i]);
+      }
+      switch(key){
+      case HELPL:
+      case HELPS:
+        config.help = helpScreen(args);
+        return config
+        break;
+      case VERSIONL:
+      case VERSIONS:
+        config.version = version();;
+        return config;
+        break;
+      case STRICTL:
+      case STRICTS:
+        config.strict = true;
+        i += 1;
+        break;
+      case INL:
+      case INS:
+        if(!value){
+          throw new Error("command line error: input file name has no value: "+args[i]);
+        }
+        inFilenames = inFilenames.concat(value.split(","));
+        i += (key === INL) ? 1 : 2;
+        break;
+      case OUTL:
+      case OUTS:
+        if(!value){
+          throw new Error("command line error: output file name has no value: "+args[i]);
+        }
+        config.outFilename = value;
+        i += (key === OUTL) ? 1 : 2;
+        break;
+      default:
+        throw new Error("command line error: unrecognized arg: "+args[i]);
+        break;
+      }
     }
-  });
-  var tokens = argString.split("\n");
-  var rx = new RegExp("\t");
-  var errors = [];
-  tokens.forEach(function(token) {
-    if (rx.test(token)) {
-      errors.push("tabs not allowed in command line arguments: '" + token + "';")
+    
+    /* get the SABNF input */
+    if(inFilenames.length === 0){
+      throw new Error("command line error: no input file(s)");
     }
-  });
-  if (errors.length > 0) {
-    var msg = "command line errors:";
-    errors.forEach(function(error) {
-      msg += "\n" + error;
+    
+    var buf = Buffer.alloc(0);
+    inFilenames.forEach(function(name){
+      buf = Buffer.concat([buf, fs.readFileSync(name)]);
     });
-    throw new Error(msg);
-  }
-  /* Parse the structured list of arguments to extract the configuration values. */
-  config = asp.parse(argString);
-  /* if the output file name is empty, use the first input file name, stripped of any extension */
-  var replace = (config.vInput.length > 0) ? config.vInput[0].replace(/\.[^.$]+$/, '') : "";
-  if (config.vJSLang === "") {
-    config.vJSLang = replace;
-  }
-  if (config.vCLang === "") {
-    config.vCLang = replace;
-  }
-  if (config.vCppLang === "") {
-    config.vCppLang = replace;
-  }
-  if (config.vJavaLang === "") {
-    config.vJavaLang = replace;
+    config.src = converter.decode("BINARY", buf);
+    
+    /* validate & open the output file */
+    if(!config.outFilename){
+      var info = path.parse(inFilenames[0]);
+      if(info.ext === "js"){
+        /* dumb input file name, but just in case */
+        config.outFilename = inFilenames[0] + ".js";
+      }else{
+        config.outFilename = info.dir + "/" + info.name + ".js";
+      }
+    }
+    config.outfd = fs.openSync(config.outFilename, "w");
+  }catch(e){
+    config.error = "CONFIG EXCEPTION: "+ e.message;
+    config.help = helpScreen(args);
   }
   return config;
 }

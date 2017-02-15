@@ -4,7 +4,6 @@
 //  and [`attributes-non-recursive.js`](./attributes-non-recursive.html)
 // determines the rule dependencies (the list of rules referenced by each rule)
 // and rule attributes.
-// Attributes are displayed on the `html/attributes.html` output page.
 //
 // It is well known that recursive-descent parsers will fail if a rule is left recursive.
 // e.g.<br>
@@ -48,9 +47,9 @@ module.exports = function() {
   var attrTypes = require("./attribute-types.js");
   var attrNonRecursive = require("./attributes-non-recursive.js");
   var attrRecursive = require("./attributes-recursive.js");
-  var htmlSources = require("./html-files-sources.js");
   var that = this;
   var rules = null;
+  var udts = null;
   var ruleErrorCount = 0;
   var attrChar = function(value, error) {
     var text;
@@ -182,19 +181,47 @@ module.exports = function() {
     });
     html += '\n]\n';
     html += 'var attrHasErrors = ' + hasErrors + '\n';
-    html += "</script>\n";
+    html += "<\/script>\n";
     html += '<div id="sort-links" >\n';
     html += "</div>\n";
     return html;
   }
+  var attrsData = function(rules){
+    var error, attr;
+    var data = [];
+    rules.forEach(function(rule) {
+      attr = rule.attr;
+      error = false;
+      if (attr.left === true || attr.cyclic === true || attr.finite === false) {
+        error = true;
+      }
+      var row = {};
+      row.error = error;
+      row.index = rule.index;
+      row.name = rule.name;
+      row.lower = rule.lower;
+      row.type = rule.ctrl.type;
+      row.typename = attrTypeToString(rule.ctrl);
+      row.left = attr.left;
+      row.nested = attr.nested;
+      row.right = attr.right;
+      row.cyclic = attr.cyclic;
+      row.finite = attr.finite;
+      row.empty = attr.empty;
+      row.notempty = attr.notEmpty;
+      data.push(row);
+    });
+    return data;
+  }
   /* Attribute control object constructor. */
-  var AttrCtrl = function(emptyArray) {
+  var AttrCtrl = function(emptyRules, emptyUdts) {
     this.isOpen = false;
     this.isComplete = false;
     this.type = id.ATTR_N;
     this.mrGroupId = -1;
-    this.refCount = emptyArray.slice(0);
-    this.isScanned = emptyArray.slice(0);
+    this.refCount = emptyRules.slice(0);
+    this.udtRefCount = emptyUdts.slice(0);
+    this.isScanned = emptyRules.slice(0);
   }
   /* Attribute object constructor. */
   var Attr = function(recursive) {
@@ -304,21 +331,50 @@ module.exports = function() {
       for (var i = 0; i < rules.length; i += 1) {
         if (rule.ctrl.refCount[i] > 0) {
           if (icount === 0) {
-            html += '{name: "' + rules[i].name + '", index: ' + i + '}'
+            html += '{name: "' + rules[i].name + '", index: ' + i + '}';
             icount += 1;
           } else {
             html += ',';
-            html += '{name: "' + rules[i].name + '", index: ' + i + '}'
+            html += '{name: "' + rules[i].name + '", index: ' + i + '}';
           }
         }
       }
       html += ']}\n';
     });
     html += ']};\n';
-    html += "</script>\n";
+    html += "<\/script>\n";
     html += '<div id="sort-links" >\n';
     html += "</div>\n";
     return html;
+  }
+  this.rulesWithReferencesData = function(){
+    var data = {indexSort: "up", nameSort: "none", rows: []};
+    rules.forEach(function(rule){
+      var row = {};
+      row.name = rule.name;
+      row.lower = rule.lower;
+      row.index = rule.index;
+      row.show = true;
+      row.dependents = [];
+      for(var i = 0; i < rules.length; i += 1){
+        if(rule.ctrl.refCount[i] > 0){
+          var dependent = {};
+          dependent.name = rules[i].name;
+          dependent.index = i;
+          row.dependents.push(dependent);
+        }
+      }
+      for(var i = 0; i < udts.length; i += 1){
+        if(rule.ctrl.udtRefCount[i] > 0){
+          var dependent = {};
+          dependent.name = udts[i].name;
+          dependent.index = udts[i].index;
+          row.dependents.push(dependent);
+        }
+      }
+      data.rows.push(row);
+    });
+    return data;
   }
 
   /* Perform the initial sorting of the rule names. */
@@ -332,21 +388,38 @@ module.exports = function() {
     rules.sort(sortByIndex); // make sure rules are left sorted by index - errors may change this
     return html;
   }
+  this.ruleAttrsData = function() {
+    rules.sort(sortByIndex);
+    if (ruleErrorCount > 0) {
+      rules.sort(sortByError);
+    }
+    var data = attrsData(rules);
+    rules.sort(sortByIndex); // make sure rules are left sorted by index - errors may change this
+    return data;
+  }
+  this.udtAttrsData = function() {
+    return attrsData(udts);
+  }
   // The main, driver function that controls the flow of attribute generation.
   // - determine rule dependencies and types (recursive, non-recursive, etc.)
   // - determine all of the non-recursive attributes first(finite, empty & non-empty).
   // These are required by the alogrithms that determine the recursive attributes.
   // - finally, determine the recursive attributes (left, nested, right & cyclic)
-  this.getAttributes = function(grammarRules, rulesLineMap) {
+  this.getAttributes = function(grammarRules, grammarUdts, rulesLineMap) {
     rules = grammarRules;
+    udts = grammarUdts;
     rules.attrConstructor = Attr;
     rules.nameListConstructor = NameList;
-    var emptyArray = [];
+    var emptyRules = [];
+    var emptyUdts = [];
     rules.forEach(function() {
-      emptyArray.push(0);
+      emptyRules.push(0);
+    });
+    udts.forEach(function(udt){
+      emptyUdts.push(0);
     });
     rules.forEach(function(rule) {
-      rule.ctrl = new AttrCtrl(emptyArray);
+      rule.ctrl = new AttrCtrl(emptyRules, emptyUdts);
     });
     attrTypes(rules);
     rules.forEach(function(rule) {
@@ -354,6 +427,19 @@ module.exports = function() {
         rule.attr = new Attr(true);
       } else {
         rule.attr = new Attr();
+      }
+    });
+    udts.forEach(function(udt){
+      udt.ctrl = {type: id.ATTR_N};
+      udt.attr = {
+          left: false,
+          nested: false,
+          right: false,
+          cyclic: false,
+          finite: true,
+          empty: udt.empty,
+          notEmpty: true,
+          error: false
       }
     });
     attrNonRecursive(rules);

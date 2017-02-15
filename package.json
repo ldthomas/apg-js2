@@ -11,15 +11,17 @@
   },
   "files": [
     "src",
-    "resources",
     "bin",
+    "abnf",
     "index.md",
     "SABNF.md",
     "docco-gen",
+    "apg.html",
     "main.js"
   ],
   "dependencies": {
-    "apg-lib": "*"
+    "apg-lib": "3.x",
+    "apg-conv": "1.x"
   },
   "repository": {
     "type": "git",
