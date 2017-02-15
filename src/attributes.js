@@ -4,7 +4,6 @@
 //  and [`attributes-non-recursive.js`](./attributes-non-recursive.html)
 // determines the rule dependencies (the list of rules referenced by each rule)
 // and rule attributes.
-// Attributes are displayed on the `html/attributes.html` output page.
 //
 // It is well known that recursive-descent parsers will fail if a rule is left recursive.
 // e.g.<br>

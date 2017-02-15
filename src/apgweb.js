@@ -1,6 +1,5 @@
 window.apgweb = (function() {
-  // ## apgweb
-  // apgweb is the interface to the web page interface (GUI) to JavaScript APG 2.0.
+  // This function generates the object with all of the event handlers for the web interface events.
   /* Global HTML page information */
   var GRAMMAR_AREA = 'grammar-area';
   var PARSER_AREA = 'parser-area';
@@ -64,14 +63,14 @@ window.apgweb = (function() {
       element: null
   }
 
-  // apgInput is an object for processing the input to a generated parser.
-  // It take the input string from the parser input area, performs validation
+  // `apgInput` is the constructor for the object which processes the input to a generated parser.
+  // It takes the input string from the parser input area, performs validation
   // checks and, if no errors, produces an array of characters for the parser to parse.
-  // - input: the input string
-  // - chars: an array of character codes matching the input string
-  // - parseChars: the array of character codes for the parser to process; may different from chars due to escaped character coding
-  // - invalidChars: the number of invalid characters found
-  // - invalidEscapes: the number of invalid escape sequences found (e.g. \xg - escape sequence not followed by hex digits)
+  //````
+  // input: the input string
+  // mode: if "escaped", input is decoded from escaped format
+  //       otherwise, input is treated as pure ASCII.
+  //````
   var apgInput = function(input, mode) {
     var apglib = require("apg-lib");
     var strings = [];
@@ -423,6 +422,7 @@ window.apgweb = (function() {
       translateCtrl(input, this.pchars, pmap);
     }
   }
+  // Constructor function for the generated parser.
   var apgParser = function() {
     var TAB_PHRASES = 3;
     var TAB_STATE = 4;
@@ -447,9 +447,6 @@ window.apgweb = (function() {
     function iframeWrite(pageInfo, body) {
       var win = pageInfo.element.contentWindow
       var doc = win.document;
-      // font-family: monospace;
-      // font-size: .8em;
-      // margin-top: 3px;
       var lineHeight = 14;
       var fontSize = 12;
       var css = 'body{';
@@ -552,11 +549,12 @@ window.apgweb = (function() {
       return null;
     }
 
-    // Initialization:
-    // - src is the the generated grammar text file, null if none
-    // - obj is the constructed grammar object, null if none
-    // - msg is the error message, displayed only of src & obj are null
-    /* public functions */
+    // Initializes the generated parser.
+    //````
+    // src: is the the generated grammar text file, null if none
+    // obj: is the constructed grammar object, null if none
+    // msg: is the error message, displayed only of src & obj are null
+    //````
     this.init = function(src, obj, msg) {
       PAGE_INFO[PARSER_AREA].element.value = '<h4>No parser available.</h4>';
       PAGE_INFO[STATE_PAGE].element.innerHTML = '<h4>No parser state available.</h4>';
@@ -853,14 +851,6 @@ window.apgweb = (function() {
         }
 
         /* configure AST for all rule/UDT names */
-//        grammar.rules.forEach(function(rule) {
-//          parser.ast.callbacks[rule.name] = true;
-//        });
-//        grammar.udts.forEach(function(udt) {
-//          parser.ast.callbacks[udt.name] = true;
-//        });
-
-        /* get the start rule */
         startRule = 0;
         result = parser.parse(grammar, startRule, input.pchars);
         PAGE_INFO[STATE_PAGE].element.innerHTML = apglib.utils.parserResultToHtml(result, "Parser State");
@@ -942,36 +932,30 @@ window.apgweb = (function() {
       }
       iframeWrite(PAGE_INFO[PHRASES_FRAME], input.displayPhrases(phrases));
     }
-    /* double click in input textarea will validate the input */
-//    this.displayInput = function() {
-//      var obj = new apgInput(PAGE_INFO[INPUT_AREA].element.value);
-//      iframeWrite(PAGE_INFO[PHRASES_FRAME], obj.displayInput());
-//      this.openTab(TAB_PHRASES);
-//    }
     this.openTab = function(tabnumber) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("parser-tabcontent");
       tablinks = document.getElementsByClassName("parser-tablinks");
 
-      // hide all content
+      /* hide all content */
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].className = tabcontent[i].className.replace(" show", "");
         tabcontent[i].className = tabcontent[i].className.replace(" hide", "");
         tabcontent[i].className += " hide";
       }
 
-      // deactivate all menu links
+      /* deactivate all menu links */
       for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
 
-      // activate menu item (changes its color)
+      /* activate menu item (changes its color) */
       var tab = tablinks[tabnumber];
       if (tab) {
         tab.className += " active";
       }
 
-      // show the activated content
+      /* show the activated content */
       var content = tabcontent[tabnumber];
       if (content) {
         content.className = content.className.replace(" hide", "");
@@ -981,6 +965,7 @@ window.apgweb = (function() {
       return false;
     }
   }
+  // Constructor for the attributes object. Handles display and sorting of the rule attributes.
   var apgAttrs = function() {
     var DOWN = 1;
     var UP = 2;
@@ -1031,15 +1016,11 @@ window.apgweb = (function() {
     var colNames = [];
     var noDataMsg = "<h4>Attributes not initialized.</h4>";
 
-    // 'self' for accessing 'this' reference in anonymous functions.
-    // self.rulesData is the attribute data, if any.
-    // self.msg is a message to display on the attributes page if there is no data.
     var self = this;
     self.rulesData = null;
     self.udtsData = null;
     self.msg = noDataMsg;
 
-    // private sorting functions
     function sortIndex(sortDir, errors, others, udts) {
       function up(lhs, rhs) {
         return rhs.index - lhs.index;
@@ -1133,7 +1114,7 @@ window.apgweb = (function() {
       }
     }
 
-    // Generates and displays the attribute table.
+    /* Generates and displays the attribute table. */
     var tableGen = function(errors, others) {
       function yes(val) {
         return val ? "yes" : "no";
@@ -1163,8 +1144,6 @@ window.apgweb = (function() {
         var checked = sortState.topErrors ? "checked" : "";
         html += '<input type="checkbox" class="align-middle" id="' + CHECKED_ID + '" ' + checked + '> keep rules with attribute errors at top';
       }
-      // html += '<tr><th><a class="'+style.CLASS_RULESLINK+'" href="javascript:void(0)" onclick="apgweb.rules.sortIndex(event)">' + self.dir.index +
-      // '</a></th>';
       html += '<table class="' + style.CLASS_ATTRIBUTES + '">';
       html += ' <caption>Attributes</caption>'
       html += '<tr>';
@@ -1192,7 +1171,7 @@ window.apgweb = (function() {
       return html;
     }
 
-    // Initializes the attributes table state data for a descending sort on the index column.
+    /* Initializes the attributes table state data for a descending sort on the index column. */
     function initSort(col) {
       if (self.rulesData === null) {
         return;
@@ -1200,7 +1179,7 @@ window.apgweb = (function() {
       for (var i = 0; i < COL_NAMES.length; i += 1) {
         colNames[i] = COL_NAMES[i].NONE;
       }
-      // initialize to default sort state
+      /* initialize to default sort state */
       sortState.hasErrors = false;
       for (var i = 0; i < self.rulesData.length; i += 1) {
         if (self.rulesData[i].error) {
@@ -1214,8 +1193,8 @@ window.apgweb = (function() {
       colNames[sortState.col] = COL_NAMES[sortState.col].UP;
     }
 
-    // Called by the parser generator to initialize the attributes table, if any.
-    // Displays either the table or an error message on the attributes page.
+    /* Called by the parser generator to initialize the attributes table, if any. */
+    /* Displays either the table or an error message on the attributes page. */
     this.init = function(rules, udts, msg) {
       self.rulesData = rules;
       self.udtsData = udts;
@@ -1230,7 +1209,7 @@ window.apgweb = (function() {
       self.sort(0);
     }
 
-    // Event handler for the attribute table column header sorting anchors.
+    /* Event handler for the attribute table column header sorting anchors. */
     this.sort = function(col) {
       if (self.rulesData === null) {
         PAGE_INFO[ATTRS_PAGE].element.innerHTML = self.msg;
@@ -1295,9 +1274,10 @@ window.apgweb = (function() {
       return false;
     }
 
-    // initialize the attributes page message
+    /* initialize the attributes page message */
     this.init(null, null);
   }
+  // Constuctor for the display and sorting of the rules/UDT information.
   var apgRules = function() {
     var INDEX_DOWN = "index\u2193";
     var INDEX_UP = "index\u2191";
@@ -1309,9 +1289,6 @@ window.apgweb = (function() {
     var ROW_HIDE = "hide";
     var style = require('apg-lib').style;
 
-    // 'self' for accessing 'this' reference in anonymous functions.
-    // self.rulesData is the attribute data, if any.
-    // self.msg is a message to display on the attributes page if there is no data.
     var self = this;
     self.rulesData = null;
     self.udtsData = null;
@@ -1339,12 +1316,12 @@ window.apgweb = (function() {
         return lhs.index - rhs.index;
       }
       if (event.currentTarget.innerHTML === INDEX_DOWN) {
-        // sort up
+        /* sort up */
         self.rulesData.rows.sort(up);
         self.udtsData.sort(up);
         self.dir.index = INDEX_UP;
       } else {
-        // sort down
+        /* sort down */
         self.rulesData.rows.sort(down);
         self.udtsData.sort(down);
         self.dir.index = INDEX_DOWN;
@@ -1372,12 +1349,12 @@ window.apgweb = (function() {
         return 0;
       }
       if (event.currentTarget.innerHTML === RULES_DOWN) {
-        // sort up
+        /* sort up */
         self.rulesData.rows.sort(up);
         self.udtsData.sort(up);
         self.dir.rules = RULES_UP;
       } else {
-        // sort down
+        /* sort down */
         self.rulesData.rows.sort(down);
         self.udtsData.sort(down);
         self.dir.rules = RULES_DOWN;
@@ -1385,7 +1362,6 @@ window.apgweb = (function() {
       return tableGen();
     }
     this.init = function(rules, udts, msg) {
-      // constructor: initial sort of table descending on rule indexes; show all rule dependencies
       self.rulesData = rules;
       self.udtsData = udts;
       self.msg = (msg && typeof (msg) === "string") ? msg : "";
@@ -1397,7 +1373,7 @@ window.apgweb = (function() {
       tableGen();
     }
 
-    // Generate the rules table HTML.
+    /* Generate the rules table HTML. */
     var tableGen = function() {
       if (self.rulesData === null) {
         PAGE_INFO[RULES_PAGE].element.innerHTML = self.msg;
@@ -1449,37 +1425,37 @@ window.apgweb = (function() {
 
     self.init(null, null, "<h4>Rules not initialized.</h4>");
   }
-
+// Constructor for the generator function. Handles the main logic for parser generation.  
   var apgWeb = function() {
     var attributes = require("./attributes.js");
     var inputAnalysis = require("./input-analysis-parser.js");
     var sabnfParser = require("./abnf-for-sabnf-parser.js");
 
-    // public functions
+    /* handle the main menu tabs */
     this.openTab = function(tabnumber) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");
       tablinks = document.getElementsByClassName("tablinks");
 
-      // hide all content
+      /* hide all content */
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].className = tabcontent[i].className.replace(" show", "");
         tabcontent[i].className = tabcontent[i].className.replace(" hide", "");
         tabcontent[i].className += " hide";
       }
 
-      // deactivate all menu links
+      /* deactivate all menu links */
       for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
 
-      // activate menu item (changes its color)
+      /* activate menu item (changes its color) */
       var tab = tablinks[tabnumber];
       if (tab) {
         tab.className += " active";
       }
 
-      // show the activated content
+      /* show the activated content */
       var content = tabcontent[tabnumber];
       if (content) {
         content.className = content.className.replace(" hide", "");
@@ -1566,7 +1542,7 @@ window.apgweb = (function() {
       var attrErrors = false;
       var validGrammar = false;
       while (true) {
-        // validate the input SABNF grammar
+        /* validate the input SABNF grammar */
         if (!sabnfGrammar || sabnfGrammar === "") {
           grammarHtml = '<h4 class="error">Input SABNF grammar is empty.</h4>';
           break;
@@ -1580,7 +1556,7 @@ window.apgweb = (function() {
           break;
         }
 
-        // validate the SABNF grammar syntax
+        /* validate the SABNF grammar syntax */
         sabnf = new sabnfParser();
         result = sabnf.syntax(analyzer, strict, false);
         if (result.hasErrors) {
@@ -1588,14 +1564,14 @@ window.apgweb = (function() {
           break;
         }
 
-        // validate the SABNF grammar semantics
+        /* validate the SABNF grammar semantics */
         result = sabnf.semantic();
         if (result.hasErrors) {
           grammarHtml += analyzer.errorsToHtml(result.errors, "SABNF grammar has semantic errors");
           break;
         }
 
-        // validate the SABNF grammar attributes
+        /* validate the SABNF grammar attributes */
         attrsObj = new attributes();
         var errors = attrsObj.getAttributes(result.rules, result.udts, result.rulesLineMap);
         if (errors.length > 0) {
@@ -1604,14 +1580,14 @@ window.apgweb = (function() {
           break;
         }
 
-        // success: have a valid grammar
+        /* success: have a valid grammar */
         validGrammar = true;
         break;
       }
 
-      // display the results
+      /* display the results */
       PAGE_INFO[GRAMMAR_PAGE].element.innerHTML = grammarHtml;
-      // Initialize the parser object.
+      /* Initialize the parser object. */
       if (validGrammar) {
         var src = sabnf.generateSource(result.rules, result.udts, "var generatedGrammar");
         var obj = sabnf.generateObject(result.rules, result.udts);
@@ -1619,8 +1595,8 @@ window.apgweb = (function() {
       } else {
         this.parser.init(null, null, parserErrorMsg);
       }
-      // Initialize the rules and attributes objects.
-      // Having attrsObj implies having result.udt
+      /* Initialize the rules and attributes objects. */
+      /* Having attrsObj implies having result.udt */
       if (attrsObj) {
         this.rules.init(attrsObj.rulesWithReferencesData(), result.udts);
         this.attrs.init(attrsObj.ruleAttrsData(), attrsObj.udtAttrsData());
@@ -1628,11 +1604,11 @@ window.apgweb = (function() {
         this.rules.init(null, null, rulesErrorMsg);
         this.attrs.init(null, null, attrsErrorMsg);
       }
-      // Open the proper tab to display the appropriate results.
-      // - the grammar tab if the grammar is invalid
-      // - the attributes tab if there are attribute errors
-      // - the parser tab if the grammar is valid
-      // - always initialize the parser page to the tab (even if the parser page is not displayed)
+      /* Open the proper tab to display the appropriate results. */
+      /* - the grammar tab if the grammar is invalid */
+      /* - the attributes tab if there are attribute errors */
+      /* - the parser tab if the grammar is valid */
+      /* - always initialize the parser page to the Parser tab (even if the parser page is not displayed) */
       this.parser.openTab(0)
       if (attrErrors) {
         this.openTab(3)

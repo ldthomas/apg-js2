@@ -1,6 +1,7 @@
 // This module reads the input grammar file and does a preliminary analysis
 //before attempting to parse it into a grammar object.
-// (*See `resources/input-analysis-grammar.bnf` for the grammar file this parser is based on.*)
+// See:<br> `abnf/input-analysis-grammar.bnf`<br>for the grammar file this parser is based on.
+//
 // It has two primary functions.
 // - verify the character codes - no non-printing ASCII characters
 // - catalog the lines - create an array with a line object for each line.
@@ -108,41 +109,6 @@ module.exports = function() {
     }
     return id.SEM_OK;
   }
-  // Get the grammar from the named file.
-//  this.get = function(filename) {
-//    var files = [];
-//    this.chars.length = 0;
-//    this.lines.length = 0;
-//    if (typeof (filename) === "string") {
-//      files.push(filename);
-//    } else if (Array.isArray(filename)) {
-//      files = filename
-//    } else {
-//      throw new Error("get(): unrecognized input: must be string or array of strings");
-//    }
-//    inputFileCount = files.length;
-//    try {
-//      for (var j = 0; j < files.length; j += 1) {
-//        var buf = fs.readFileSync(files[j]);
-//        for (var i = 0; i < buf.length; i += 1) {
-//          this.chars.push(buf[i]);
-//        }
-//        this.originalString = apglib.utils.charsToString(this.chars);
-//      }
-//    } catch (e) {
-//      throw new Error(thisFileName + "get(): error reading input grammar file\n" + e.message);
-//    }
-//  };
-  // Get the grammar from the input string.
-//  this.getString = function(str) {
-//    if (typeof (str) !== "string" || str === "") {
-//      throw new Error(thisFileName + 'getString(): input not a valid string: "' + str + '"');
-//    }
-//    this.originalString = str.slice(0);
-//    this.chars.length = 0;
-//    this.lines.length = 0;
-//    this.chars = converter.decode("STRING", str);
-//  }
   // Analyze the grammar for character code errors and catalog the lines.
   /*
    * grammar error format 
@@ -370,14 +336,6 @@ module.exports = function() {
       html += '<caption>' + title + '</caption>\n';
     }
     html += '<tr><th>line<br>no.</th><th>line<br>offset</th><th>error<br>offset</th><th><br>text</th></tr>\n';
-    /*
-     * grammar error format 
-     * { 
-     *  line: 0, 
-     *  char: 0, 
-     *  msg: "" 
-     * }
-     */
     errors.forEach(function(val) {
       var line, relchar, beg, end, len, length, text, prefix = "", suffix = "";
       if (lines.length === 0) {
@@ -415,7 +373,9 @@ module.exports = function() {
   this.toString = function() {
     return converter.encode("STRING", this.chars);
   }
-  // Display an array of errors of the form `{line: 0, char: 0, msg: "message"}` as ASCII text.
+  // Display an array of errors of the form<br>
+  //`{line: 0, char: 0, msg: "message"}`<br>
+  //as ASCII text.
   this.errorsToString = function(errors){
     var str, thisChars, thisLines, line, beg, end;
     str = "";

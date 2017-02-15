@@ -592,7 +592,7 @@ code {
     <div id="header">
       <div class="super-header"></div>
       <div class="mid-header">
-        <a id="headerLink" href="https://github.com/ldthomas/apg-js2" target="_blank">JavaScript <strong>APG</strong> 2.0
+        <a id="headerLink" href="https://github.com/ldthomas/apg-js2" target="_blank">JavaScript <strong>APG</strong>
         </a>
       </div>
       <div class="sub-header">
@@ -603,9 +603,9 @@ code {
             href="javascript:void(0)" onclick="apgweb.openTab(3)" title="the grammar rules attributes">Attributes</a> | <a class="tablinks"
             href="javascript:void(0)" onclick="apgweb.openTab(4)" title="the generated parser">Parser</a> |
           <div class="float-right">
-            | <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(5)">Examples</a>
-            | <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(6)">About</a> | <a class="tablinks" href="javascript:void(0)"
-              onclick="apgweb.openTab(7)">Help |</a>
+<!--             | <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(5)">Examples</a> -->
+            | <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(5)">About</a> | 
+            <a class="tablinks" href="javascript:void(0)" onclick="apgweb.openTab(6)">Help |</a>
           </div>
         </div>
       </div>
@@ -628,12 +628,8 @@ code {
         </div>
         <article id="generator" class="section">
           <div class="main-copy">
-            input <a href="https://github.com/ldthomas/apg-js2/blob/master/SABNF.md" target="_blank">SABNF</a> grammar
-
-            <!-- temp test grammar  -->
-            <textarea id="grammar-area" spellcheck="false"></textarea>
+            <textarea id="grammar-area" spellcheck="false" placeholder="Type or paste SABNF grammar here."></textarea>
           </div>
-          <!-- temp test grammar  -->
 
 
         </article>
@@ -712,7 +708,6 @@ code {
             | <a class="parser-tablinks" href="javascript:void(0)" onclick="apgweb.parser.openTab(4)">State</a> | <a class="parser-tablinks"
               href="javascript:void(0)" onclick="apgweb.parser.openTab(5)">Stats</a> | <a class="parser-tablinks" href="javascript:void(0)"
               onclick="apgweb.parser.openTab(6)">Trace</a> |
-            <!--         <a class="parser-tablinks float-right" href="javascript:void(0)" onclick="apgweb.parser.openTab(7)">| Help |</a> -->
           </div>
         </div>
         <article id="parser">
@@ -789,7 +784,7 @@ code {
                       <td><label><input type="checkbox" name="operators" value="abg"><span> ABG (%^)</span> begin of string</label></td>
                     </tr>
                     <tr>
-                      <td><label><input type="checkbox" name="operators" value="tls"><span> TLS ("")</span> literal string</label></td>
+                      <td><label><input type="checkbox" name="operators" value="tls"><span> TLS ("abc")</span> literal string</label></td>
                       <td><label><input type="checkbox" name="operators" value="tbs"><span> TBS (%d33.34)</span> binary string</label></td>
                       <td><label><input type="checkbox" name="operators" value="trg"><span> TRG (%d33-34)</span> character range</label></td>
                       <td><label><input type="checkbox" name="operators" value="aen"><span> AEN (%$)</span> end of string</label></td>
@@ -837,7 +832,8 @@ code {
                 <span class="modal-cancel" onclick="apgweb.parser.closeModal('cancel')">&times;&nbsp;&nbsp;</span>
               </div>
 
-              <textarea id="input-area" spellcheck="false" ondblclick="apgweb.parser.openModal(event)"></textarea>
+              <textarea id="input-area" spellcheck="false" ondblclick="apgweb.parser.openModal(event)" 
+              placeholder="Type or paste parser input here."></textarea>
             </div>
           </section>
 
@@ -905,78 +901,35 @@ code {
       </div> <!-- end tab 4 tabcontent -->
       <!-- ####  END tab 4 - the generated parser with a GUI for testing it with an input string #### -->
 
-      <!-- ####  BEGIN tab 5 - examples #### -->
-      <div class="tabcontent">
-      Examples go here.
-      </div>
-
-      <!-- ####  BEGIN tab 6 - the "about" page #### -->
+      <!-- ####  BEGIN tab 5 - the "about" page #### -->
       <div class="tabcontent">
         <div class="help-container">
-	<h2 id="help">About</h2>
-	<h3 id="input">About Me and the This Awesome App</h3>
-	<p>Lorem ipsum <a href="#">dolor sit amet</a>, neque elit quisquam amet vestibulum
-		mauris arcu, congue amet felis ut diam rhoncus id, dapibus odio massa.
-		Adipiscing pretium magna fringilla. Sit dolor vehicula mi. Natoque
-		rhoncus, vehicula felis, morbi nisl nulla etiam mauris suspendisse
-		aliquam. Felis ligula ac egestas condimentum ultrices ligula, sit sed
-		at sociis.</p>
-	<p>Eget et vivamus et egestas nec ut, ligula ligula ultrices,
-		vivamus lacus orci conubia convallis et, mi elementum suspendisse.
-		Placerat molestie ipsum integer ligula dis, eget dignissim est
-		pellentesque morbi a non, sem eu nam enim. Etiam sed metus leo risus,
-		et semper vel amet ipsum vestibulum a, aliquam viverra enim ac quis
-		odio in, eget at wisi, in mi blandit conubia nunc. Praesent praesent
-		nec etiam lacus, praesent nulla mi. Et tempor sapien, amet iaculis
-		maecenas vehicula nulla tempus nostra, semper sed massa in enim,
-		lacinia eu facilisis facilisi et ac, euismod erat aliquam sodales arcu
-		mi scelerisque. Leo adipiscing, est quam ac interdum donec. Ultricies
-		ac ut quam quis in semper, natoque natoque non velit dolor
-		ullamcorper. Nostra nonummy praesent sagittis dictum taciti orci,
-		adipiscing ut, duis adipiscing wisi tortor. Faucibus ut adipisicing
-		platea porta consectetuer sed, dapibus vel ridiculus proin porttitor
-		nec sit, consequat quisque lorem, eu sed lectus, et neque ante lorem.
-		Leo scelerisque urna mi justo vel accumsan, mauris a arcu praesent et.
-		Eget mauris ipsum, proin aliquet consectetuer volutpat hymenaeos,
-		venenatis metus amet posuere, urna sodales orci eget.</p>
-	<p>Convallis ullamcorper aliquam iaculis venenatis in tristique, ac
-		purus enim. Nunc orci ultricies tempor, aliquet rerum parturient in
-		erat arcu nulla. Sollicitudin posuere velit suspendisse, faucibus
-		imperdiet. Eget et auctor sed tincidunt integer, est sed consequat in
-		pede donec, iaculis etiam vitae massa massa wisi, nulla at lectus
-		diam, vel turpis ornare. Pulvinar nibh lectus pellentesque malesuada
-		molestie at, leo tempor id curabitur id in. Quis pede nisl per turpis
-		integer, iaculis velit porttitor. Commodo dis laboris ac velit, vitae
-		ipsum, lobortis sed nulla, porta lorem et nibh dolor feugiat.
-		Fringilla purus pellentesque, laoreet vivamus, sodales donec
-		pellentesque. Quis nunc.</p>
+<h2 id="about-apg">About APG</h2>
+
+<p><strong>APG</strong> was originally developed to generate parsers directly from the Augmented Backus-Naur Form (ABNF) syntax. ABNF is the grammar syntax used to describe many, if not most, Internet technical specifications. It has been standardized by the <a href="https://www.ietf.org/">IETF</a> with <a href="https://tools.ietf.org/html/rfc5234">RFC 5234</a> and recently updated it with <a href="https://tools.ietf.org/html/rfc7405">RFC 7405</a>. <strong>APG</strong> has since grown to include additional features and the syntax for those features generate additional syntax elements creating a “superset” of ABNF or <a href="https://github.com/ldthomas/apg-js2/blob/master/SABNF.md">SABNF</a>.</p>
+
+<p>Besides JavaScript, <strong>APG</strong> is available in the <a href="https://github.com/ldthomas/apg-6.3">C/C++</a> and <a href="https://github.com/ldthomas/apg-java">Java</a> languages. The C/C++ version has a small footprint, is fast and reliable and has been the parser of choice for a number of large Telecom companies. </p>
+
+<p><strong>APG</strong> is the generator and parser that powers the new pattern-matching alternative to RegExp, <a href="https://github.com/ldthomas/apg-js2-exp">apg-exp</a>. <em>(For an introduction to <strong>apg-exp</strong>, see this sitepoint.com <a href="https://www.sitepoint.com/alternative-to-regular-expressions/">tutorial</a>.)</em></p>
+
+<h2 id="about-the-author">About the Author</h2>
+
+<p>The author lives on the Gulf Coast of Florida, USA, loves JavaScript and has 30+ years experience with software development of many kinds in many languages. In his spare time he loves hard-boiled detective novels, historical fiction and outdoor photography among many other things. He serves as a volunteer executive director on the boards of multiple, local charitable organizations.</p>
+
+<p>February, 2017 <br>
+Lowell D. Thomas</p>
+<br>
         </div>
         <!-- end about.html -->
       </div>
-      <!-- ####  END tab 6 - the "about" page #### -->
+      <!-- ####  END tab 5 - the "about" page #### -->
 
-      <!-- ####  BEGIN tab 7 - the help page #### -->
+      <!-- ####  BEGIN tab 6 - the help page #### -->
       <div class="tabcontent">
         <div class="help-container">
-<p><a id="help-top"></a> <br>
-<a href="#overview">Overview</a> <br>
-<a href="#the-generatortop">The Generator</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#grammartop">Grammar</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#rulestop">Rules</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#attributestop">Attributes</a> <br>
-<a href="#the-parsertop">The Parser</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#configuretop">Configure</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#inputtop">Input</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#phrasestop">Phrases</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#statetop">State</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#statstop">Stats</a> <br>
-&nbsp;&nbsp;&nbsp;&nbsp;<a href="#tracetop">Trace</a></p>
+<h2 id="overviewtoc">Overview<span class="help-right"><a href="#help-top">↓toc</a></span></h2>
 
-
-
-<h2 id="overviewtop">Overview<span class="help-right"><a href="#help-top">↑top</a></span></h2>
-
-<p>JavaScript APG 2.0 is a static, stand-alone web page interface to <strong>APG</strong>, an ABNF Parser Generator. It can be launched in any modern web browser from a local file and requires no external resources. It provides easy visual access to the grammar, any grammar errors, the rules and their dependencies, the rule attributes and the generated parser. Additionally, once a parser has been successfully generated, facilities are provided for testing it against input strings of your choice. The user interface consists of a series of panels. Each panel presents one specific result or input opportunity. Access to the panels is through the main menu, the fixed dark blue bar across the top, and sub-menus that appear in the various panels. This User’s Guide will walk you through each of the menu and sub-menu items to explain how this <strong>APG</strong> interface works.</p>
+<p>This file, <strong>apg.html</strong>, is a static, stand-alone web page interface to <strong>APG</strong>, an ABNF Parser Generator. It can be launched in any modern web browser from a local file and requires no external resources. It provides easy visual access to the grammar, any grammar errors, the rules and their dependencies, the rule attributes and the generated parser. Additionally, once a parser has been successfully generated, facilities are provided for testing it against input strings of your choice. The user interface consists of a series of panels. Each panel presents one specific result or input opportunity. Access to the panels is through the main menu, the fixed dark blue bar across the top, and sub-menus that appear in the various panels. This User’s Guide will walk you through each of the menu and sub-menu items to explain how this <strong>APG</strong> interface works.</p>
 
 <p>There are a couple of sub-menu items that appear on most panels consistently and those will be described here once and for all and not specifically referenced in the other panel specifics presented below.</p>
 
@@ -987,22 +940,54 @@ code {
 
 <p><sup>†</sup><em>The HTML5 <a href="https://dev.w3.org/2009/dap/file-system/pub/FileSystem/">FIle API</a> does not have sufficiently universal support here to be considered.</em></p>
 
+<p><a id="help-top"></a></p>
+
+<h2 id="table-of-contents">Table of Contents</h2>
+
+<table>
+<thead>
+<tr>
+  <th><strong><a href="#the-generatortoc">The Generator</a></strong></th>
+  <th><strong><a href="#the-parsertoc">The Parser</a></strong></th>
+  <th></th>
+</tr>
+</thead>
+<tbody><tr>
+  <td><a href="#overviewtoc">Overview</a></td>
+  <td><a href="#parsertoc">Parser</a></td>
+  <td><a href="#statetoc">State</a></td>
+</tr>
+<tr>
+  <td><a href="#grammartoc">Grammar</a></td>
+  <td><a href="#configuretoc">Configure</a></td>
+  <td><a href="#statstoc">Stats</a></td>
+</tr>
+<tr>
+  <td><a href="#rulestoc">Rules</a></td>
+  <td><a href="#inputtoc">Input</a></td>
+  <td><a href="#tracetoc">Trace</a></td>
+</tr>
+<tr>
+  <td><a href="#attributestoc">Attributes</a></td>
+  <td><a href="#phrasestoc">Phrases</a></td>
+  <td></td>
+</tr>
+</tbody></table>
 
 
-<h2 id="the-generatortop">The Generator<span class="help-right"><a href="#help-top">↑top</a></span></h2>
+<h2 id="the-generatortoc">The Generator<span class="help-right"><a href="#help-top">↑toc</a></span></h2>
 
-<p>The first panel is the generator itself. It presents a sub-menu, a check box, and a textarea. </p>
+<p>The first panel is the generator itself. It presents a sub-menu and a textarea. </p>
 
 <ul>
 <li><strong>sub-menu:</strong> <br>
-<ul><li><strong>Generate:</strong> Click this link to generate a parser from the grammar in the textarea. If the grammar has errors the <a href="#grammartop">Grammar panel</a> will open automatically displaying an annotated version of the grammar with error messages. If there are no errors the <a href="#parsertop">Parser panel</a> will open automatically, displaying the generated parser in a text area.</li></ul></li>
-<li><strong>checkbox:</strong> If this box is checked, the generator will restrict the grammar to ABNF as defined in RFCs <a href="https://tools.ietf.org/html/rfc5234">5234</a> and <a href="https://tools.ietf.org/html/rfc7405">7405</a>. If any Superset <a href="https://github.com/ldthomas/apg-js2/blob/master/SABNF.md">SABNF</a>  features are included a grammar error will be reported. (See <a href="#help-md-1">line end note</a> below.)</li>
+<ul><li><strong>Generate:</strong> Click this link to generate a parser from the grammar in the textarea. If the grammar has errors the <a href="#grammartoc">Grammar panel</a> will open automatically displaying an annotated version of the grammar with error messages. If there are no errors the <a href="#parsertoc">Parser panel</a> will open automatically, displaying the generated parser in a text area.</li></ul></li>
 <li><strong>textarea:</strong> The grammar to be used by the generator is typed or pasted into the textarea.</li>
 </ul>
 
 
 
-<h3 id="grammartop">Grammar<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h3 id="grammartoc">Grammar<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
 <p>The generator will display an annotated version of the input grammar in this panel. If there are grammar errors, this panel will open automatically. However, the annotated grammar is always available here, with or without errors. The grammar is presented in tabular form with a row for each grammar line.</p>
 
@@ -1015,10 +1000,10 @@ code {
 
 <p>If there are errors in the grammar, a second table will follow the first, with two lines for each error. The first is the same as described above except that a red marker will precede the location of the discovered error. The second line will give a brief description of the error type.</p>
 
-<p><strong>APG</strong> generates four types of errors.</p>
+<p><strong>APG</strong> generates four types of grammar errors.</p>
 
 <ul>
-<li><strong>invalid characters:</strong> The first step is to validate the input grammar’s character set. SABNF grammars accept only the printing ASCII character set, <code>0x20-7E</code> plus tab<code>(0x09)</code>, linefeed<code>(0x0A)</code> and carriage return<code>(0x0D)</code>. Any other character will generate a grammar error. Also, each line must end with a line end character<sup>†</sup>, including the last line. A missing line end will be reported as a part of this initial input validation.</li>
+<li><strong>invalid characters:</strong> The first step is to validate the input grammar’s character set. SABNF grammars accept only the printing ASCII character set, <code>0x20-7E</code> plus tab<code>(0x09)</code>, linefeed<code>(0x0A)</code> and carriage return<code>(0x0D)</code>. Any other character will generate a grammar error. Also, each line must end with a line end character<sup>†</sup>, including the last line. A missing line end will be reported as a part of this initial input validation. <em>(Note that forgetting or missing a last line end is a common and easy-to-make error and it may seem that it would be and easy fix to insert one on the user’s behalf. However, ABNF syntax requires a line end for each line and reporting this as an error rather than inserting one and proceeding is a considered feature, not an oversight.)</em></li>
 <li><strong>syntax errors:</strong> The second step is to parse the SABNF grammar against its <a href="https://github.com/ldthomas/apg-js2/blob/master/resources/abnf-for-sabnf-grammar.bnf">ABNF definition</a>. If the input is not a valid SABNF grammar, errors will be reported here.</li>
 <li><strong>semantic errors:</strong> The third step is to translate the Abstract Syntax Tree (AST) of the previous step into a parser object. Semantic, or translation errors, are reported here. A semantic error might be, for example, <code>%d57-48</code>. While this character range is syntactically correct, <code>min &gt; max</code> is a semantic error.</li>
 <li><strong>attribute errors:</strong> Recursive-descent parsers cannot accept left-recursive, cyclic or infinite grammars. These are characterized, respectively, in the simple examples below. <br>
@@ -1027,20 +1012,18 @@ S = S "x" / "y" <br>
 S = S <br>
 S = "y" S <br>
 </code> <br>
-If any of these errors occur, the <a href="#attributestop">Attributes panel</a> will automatically open with the errors appearing in the top lines, but the errors are also reported in the <a href="grammartop">Grammar panel</a>.</li>
+If any of these errors occur, the <a href="#attributestoc">Attributes panel</a> will automatically open with the errors appearing in the top lines, but the errors are also reported in the <a href="#grammartoc">Grammar panel</a>.</li>
 </ul>
 
-<p><a id="help-md-1"></a><sup>†</sup>Strict ABNF accepts only the carriage return, linefeed pair, <em><code>CRLF</code></em>, as a line end. However, because of the ways different browsers handle textareas, it is sometimes difficult or impossible to insert this line end pair into the grammar text. Therefore, the generator always follows the SABNF rules regarding line ends. That is, it accepts any of <em><code>CRLF</code></em>, <em><code>LF</code></em> or <em><code>CR</code></em>.</p>
+<p><a id="help-md-1"></a><sup>†</sup>Strict ABNF accepts only the carriage return, linefeed pair, <em><code>CRLF</code></em>, as a line end. However, because of the ways different browsers handle textareas, it is sometimes difficult or impossible to insert this line end pair into the grammar text. Therefore, the generator always follows the SABNF rules regarding line ends. That is, it accepts any of <em><code>CRLF</code></em>, <em><code>LF</code></em> or <em><code>CR</code></em> as a line end.</p>
 
-
-
-<h3 id="rulestop">Rules<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h3 id="rulestoc">Rules<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
 <p>This panel displays a table of all the rule and UDT names defined in the grammar. The first column is the rule index—the order in which the rules appear in the grammar. Clicking the <code>index</code> column label will toggle between ascending and descending ordering on the indexes.</p>
 
-<p>The second column is the rule name. Clicking the <code>rule</code> column label will toggle between ascending and descending ordering on the names.</p>
+<p>The second column is the rule name. Clicking the <code>rule</code> column label will toggle between ascending and descending alphabetic ordering on the names.</p>
 
-<p>The third column lists all of the rule names referenced by the named rule. The first entry, for each rule, is a <code>show/hide</code> link. This link will toggle the display of the rule dependencies on and off. For example, the first rule will often reference all of the other rules. For large grammars this is a lot of uninteresting information that you may like to hide.</p>
+<p>The third column lists all of the rule names referenced by the named rule. The first entry, for each rule, is a <code>show/hide</code> link. This link will toggle the display of the rule dependencies on and off. For example, the first rule will usually reference all of the other rules. For large grammars this is a lot of uninteresting information that you may like to hide.</p>
 
 <p>The sub-menu has links to show or hide all of the rule dependencies for all of the rules and UDTs simultaneously.</p>
 
@@ -1048,7 +1031,7 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 
 
 
-<h3 id="attributestop">Attributes<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h3 id="attributestoc">Attributes<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
 <p>It is <a href="https://en.wikipedia.org/wiki/Left_recursion">well-known</a> that recursive-descent parsers cannot parse left-recursive grammars. Left-recursion is a fatal “attribute” of the grammar. <strong>APG</strong> looks for left-recursion and six other attributes as it analyses a grammar. These attributes are displayed here in table form. The seven attributes types, with simple examples of each are:</p>
 
@@ -1071,7 +1054,7 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 
 <p>Note that these are “aggregate” attributes, in that if the attribute is true it only means that it <em>can</em> be true, not that it will always be true for every input string. It also means that more than one attribute may be true for a given rule.</p>
 
-<p>You may wonder why we would be interested in both <code>empty</code> and <code>not empty</code> as separate attributes. The importance is not apparent here, and won’t be explained in detail, but both attributes turn out to be important to the algorithms that determine the recursiveness of a rule.</p>
+<p>You may wonder why we would be interested in both <code>empty</code> and <code>not empty</code> as separate attributes. The importance is not apparent here, and won’t be explained in detail, but they are not mutually exclusive and both attributes turn out to be important to the algorithms that determine the recursiveness of a rule.</p>
 
 <ul>
 <li>first column, the rule index: the order in which the rules appear in the grammar. Clicking the “index” column label will toggle between ascending and descending ordering on the indexes.</li>
@@ -1087,7 +1070,7 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 
 
 
-<h2 id="the-parsertop">The Parser<span class="help-right"><a href="#help-top">↑top</a></span></h2>
+<h2 id="the-parsertoc">The Parser<span class="help-right"><a href="#help-top">↑toc</a></span></h2>
 
 <p>If the grammar is error-free, the Generator will be successful and this panel will open automatically. The generated parser will be in the textarea and can be copied and pasted into your parser application. Numerous <a href="https://github.com/ldthomas/apg-js2-examples">examples</a> are available to show you how to use this parser in both <a href="https://nodejs.org/api/">node.js</a> and web page applications. However, the parser can also be tested right here. The sub-menu has panels that let you try the parser against various input strings. You can view the phrases matched by the individual rules, look at the parsing statistics and a trace of the parser’s path through the parse tree. The trace is especially useful as a debugging tool for failed parses. The details are in the following discussions of the sub-menu panels.</p>
 
@@ -1095,15 +1078,15 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 
 
 
-<h3 id="parsertop">Parser<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h3 id="parsertoc">Parser<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
 <p>This panel is a textarea containing the generated parser as a JavaScript function. You might want to change the variable name before you copy it into your application, but any other changes may invalidate the parser.</p>
 
-<p>To test the parser, use the <a href="#inputtop">Input</a> and <a href="#configuretop">Configure</a> panels.</p>
+<p>To test the parser, use the <a href="#inputtoc">Input</a> and <a href="#configuretoc">Configure</a> panels.</p>
 
 
 
-<h3 id="configuretop">Configure<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h3 id="configuretoc">Configure<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
 <p>This panel allows a degree of control over how the input string is interpreted and what tracing information is produced.</p>
 
@@ -1111,11 +1094,12 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 
 <h4 id="input-mode">Input Mode:</h4>
 
-<p>Only the printing ASCII characters, <code>0x20-7F</code> plus the control characters, tab<code>(0x09</code>, linefeed<code>(0x0A)</code> and carriage return<code>(0x0D)</code> are allowed in the input textarea. Any other character, in either mode, will be flagged as an input error. However, an escaped mode is available for non-ASCII characters, as described int the <a href="#inputtop">Input panel</a>.</p>
+<p>Only the printing ASCII characters, <code>0x20-7F</code> plus the control characters, tab<code>(0x09</code>, linefeed<code>(0x0A)</code> and carriage return<code>(0x0D)</code> are allowed in the input <code>&lt;textarea&gt;</code>. Any other character, in any mode, will be flagged as an input error. For non-ASCII characters, however, an escaped mode, as well as a base 64 option, are available.</p>
 
 <ul>
-<li>ASCII characters only - (default) the ASCII characters are interpreted literally. The grammar defining the parser in this case must only define ASCII character sentences and phrases.</li>
-<li>escaped characters - escaped characters can be used to generate a string of non-ASCII character codes as input to the parser.</li>
+<li>auto (default) - the application will scan the input to determine which mode to use. If all of the characters (ignoring white space and control characters \r and \n) are limited to the base 64 character set, a dialog will allow the user to select the underlying encoding. If any escape sequences are found, `x or `u, it will choose escaped mode. Otherwise, it will select ASCII mode.</li>
+<li>ASCII characters only - the ASCII characters are interpreted literally. The grammar defining the parser in this case must only define ASCII sentences and phrases.</li>
+<li>escaped characters - escaped characters can be used to generate a string of non-ASCII character codes as input to the parser. (See the <a href="#inputtoc">Input</a> section for a complete description.)</li>
 </ul>
 
 
@@ -1126,8 +1110,6 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 <li>on - Turns tracing on. Opens further tracing configuration options.</li>
 <li>off - (default) No tracing is done. The other tracing options are hidden.</li>
 </ul>
-
-
 
 <h4 id="display-mode">Display Mode:</h4>
 
@@ -1167,38 +1149,42 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 <p>The node visits to the non-rule name nodes are often not of interest and trace records for these are not kept by default. However, these may be turned on by checking the boxes by the operator names. The <code>all/none</code> buttons can be used to turn them all on or off with one click. In either state, the check boxes can be selected individually.</p>
 
 <ul>
-<li>all - Check all operator boxes.</li>
-<li>off - (default) Uncheck all operator boxes.</li>
+<li>all - check all operator boxes</li>
+<li>none - (default) uncheck all operator boxes</li>
 </ul>
-
-
 
 <h4 id="rule-nodes">Rule Nodes:</h4>
 
 <p>Once a parser has been successfully generated from a grammar, all rule names defined by the grammar will appear here in alphabetical order. Often there are many rule names of little or no interest. For example, if an alphanumeric name is defined, the name is usually of interest, but the individual characters are not. The rule names to trace can be selected with the checkbox by each name.</p>
 
 <ul>
-<li>all - (default) Check all rule name boxes.</li>
-<li>off - Uncheck all rule name boxes.</li>
+<li>all - (default) check all rule name boxes</li>
+<li>none - uncheck all rule name boxes</li>
 </ul>
 
-<p>Note that only the checked rules will appear in the phrases displayed in the <a href="#phrasestop">Phrases panel</a>.</p>
+<p>Note that only the checked rules will appear in the phrases displayed in the <a href="#phrasestoc">Phrases panel</a>.</p>
+
+<h3 id="inputtoc">Input<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
+
+<p>Testing the parser is as simple as typing or pasting an input string into the textarea and clicking <code>Parse Input</code>. The <a href="#phrasestoc">Phrases panel</a> will open up automatically to display the parsed phrases.</p>
+
+<p>While an SABNF grammar can easily define sentences and phrases with arbitrary character codes, handling anything other than the printing ASCII characters in a <code>&lt;textarea&gt;</code> is tricky to impossible. <strong>apg.html</strong> offers two ways to handle non-ASCII characters—base 64 encoded and escaped format. <em>(To convert your data to either of these formats, see <a href="https://github.com/ldthomas/apg-conv">apg-conv</a>.)</em></p>
+
+<h4 id="base-64">Base 64</h4>
+
+<p>Data in any of the Unicode formats or 8-, 16- or 32-bit integer formats can be base 64 encoded. The base 64 data is purely ASCII and can be pasted into the input <code>&lt;textarea&gt;</code>. When <code>Parse Input</code> is clicked a dialog will open up to allow a selection of the underlying data format. The data will be base 64 decoded and replaced with an escaped format before parsing.</p>
 
 
 
-<h3 id="inputtop">Input<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h4 id="escaped-format">Escaped Format</h4>
 
-<p>Testing the parser is as simple as typing or pasting an input string into the textarea and clicking <code>Parse Input</code>. The <a href="#phrasestop">Phrases panel</a> will open up automatically to display the parsed phrases.</p>
-
-<p>While an SABNF grammar can easily define sentences and phrases with arbitrary binary characters, handling anything other than the printing ASCII characters in a textarea is tricky to impossible. Therefore, an escaped mode of input is available by checking <code>escaped characters</code> under <code>Input Mode:</code> in the <a href="#configuretop">Configure panel</a>.</p>
-
-<p>In escaped character mode, the escape character is the grave accent (`). This choice was made because the  grave accent is rarely used in English and does not require the shift key. The backslash (\) was rejected because of annoying conflicts with the JavaScript string escape character and other special characters were rejected because they required the shift key. The escaped encoding rules are:</p>
+<p>In escaped character mode, escaping is identical to escaping in JavaScript strings except that the escape character is the grave accent (`). This choice was made because the backslash (\) causes annoying conflicts with actual JavaScript strings. Other special characters were rejected because they required the shift key. The escaped encoding rules are:</p>
 
 <ul>
 <li>`` – literal grave accent (`)</li>
 <li>`xhh – 8-bit integer</li>
-<li>`Xhhhh – 16-bit integer</li>
-<li>`uhhhhhhhh – 32-bit integer</li>
+<li>`uhhhh – 16-bit integer</li>
+<li>`u{h[hhhhhhh]} – 8- to 32-bit integer, i.e. 1 to 8 hexidecimal characters</li>
 <li>h – hexadecimal digit, 0-9, a-f, or A-F</li>
 </ul>
 
@@ -1208,13 +1194,13 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 
 <h4 id="parse-input">Parse Input</h4>
 
-<p>This action will run the generated parser against the string in the Input panel. If the parse is successful, the <a href="#phrasestop">Phrases panel</a> will open automatically, allowing you to peruse the matched phrases. If not successful, the <a href="#statetop">State panel</a> will open automatically, displaying the failed state. While the State panel does have some useful information, you will probably need to turn on tracing and study the <a href="#tracetop">Trace panel</a> to locate the error. It may be a grammar error; you didn’t accurately describe the intended phrases. Or it may be an error in the input string; it does not belong to the language, or set of sentences, defined by the grammar.</p>
+<p>This action will run the generated parser against the string in the <a href="#inputtoc">Input panel</a>. If the parse is successful, the <a href="#phrasestoc">Phrases panel</a> will open automatically, allowing you to peruse the matched phrases. If not successful, the <a href="#statetoc">State panel</a> will open automatically, displaying the failed state. While the State panel does have some useful information, you will probably need to turn on tracing and study the <a href="#tracetoc">Trace panel</a> to locate the error. It may be a grammar error; you didn’t accurately describe the intended phrases. Or it may be an error in the input string; it does not belong to the language, or set of sentences, defined by the grammar.</p>
 
 
 
-<h3 id="phrasestop">Phrases<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h3 id="phrasestoc">Phrases<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
-<p>This panel gives you the opportunity to peruse the phrases matched by the grammar’s rules. The sub-sub-menu has a drop-down combo box for selecting a rule name. The names are listed alphabetically, and the number in parenthesis is the number of phrases matched by the rule. Only rule names with one or more matched phrases appear. To further limit the rule names appearing here, see the <a href="#configuretop">Configure panel</a>. Selecting a rule name will highlight the first matched phrase for that rule in the input string, scrolling the window if necessary. </p>
+<p>This panel gives you the opportunity to peruse the phrases matched by the grammar’s rules. The sub-sub-menu has a drop-down combo box for selecting a rule name. The names are listed alphabetically, and the number in parenthesis is the number of phrases matched by the rule. Only rule names with one or more matched phrases appear. To further limit the rule names appearing here, see the <a href="#configuretoc">Configure panel</a>. Selecting a rule name will highlight the first matched phrase for that rule in the input string, scrolling the window if necessary. </p>
 
 <p>Next to the combo box of names are the phrase controls. The have the following functions:</p>
 
@@ -1226,18 +1212,18 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 <li>⏭ - display the last matched phrase for this rule</li>
 </ul>
 
-<p>Note that the empty string often qualifies as a correctly matched phrase. In this case, a green epsilon, (<span class="apg-empty"><i>ε</i></span>) will be inserted.</p>
+<p>Note that the empty string often qualifies as a correctly matched phrase. In this case, a green epsilon, (<span class="apg-empty"><i>ε</i></span>), will be inserted to make the match visible.</p>
 
 
 
-<h3 id="statetop">State<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+<h3 id="statetoc">State<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
 <p>This panel shows the state of the parse in tabular form. The main thing to note is that a successful parse requires that the entire string be matched. It is quite possible for the parser to find a matched sentence before it reaches the end of the string.</p>
 
 <ul>
 <li>success - true if the parser ends in a <code><span class="apg-match">MATCH</span></code> state <em>and</em> the entire string was matched.</li>
 <li>state - <code><span class="apg-match">MATCH</span></code>, <code><span class="apg-empty">EMPTY</span></code>(a successful match of 0 characters), <code><span class="apg-nomatch">NOMATCH</span></code>.</li>
-<li>string length - the number of characters in the sub-string (the parser has facilities for parsing sub-strings, but no access to that facility is available here.)</li>
+<li>string length - the number of characters in the sub-string <em>(the parser has facilities for parsing sub-strings, but no access to that facility is available here.)</em></li>
 <li>matched length - the number of characters matched</li>
 <li>max matched - the maximum number of characters matched. Approximate if the state is <code><span class="apg-nomatch">NOMATCH</span></code>.</li>
 <li>max tree depth - maximum tree depth reached in the traversal of the parse tree.</li>
@@ -1248,13 +1234,33 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
 <li>sub-string length - number of characters in the sub-string (end - begin). (Not available here.)</li>
 </ul>
 
-<h3 id="statstop">Stats<span class="help-right"><a href="#help-top">↑top</a></span></h3>
+
+
+<h3 id="statstoc">Stats<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
 
 <p>This panel displays the parsing statistics. The first table shows the number of node hits for each of the 18 operator types. The columns show the  <code><span class="apg-empty">EMPTY</span></code>, <code><span class="apg-match">MATCH</span></code>, <code><span class="apg-nomatch">NOMATCH</span></code> and total hits. The second table shows the same information for the <code>RNM</code> operators broken down by individual rule names. The rule names are in descending order on the number of hits. Rules with 0 hits are not listed.</p>
 
-<h3 id="tracetop">Trace<span class="help-right"><a href="#help-top">↑top</a></span></h3>
 
-<p>Lorem ipsum dolor sit amet, ante adipiscing vestibulum hendrerit libero suspendisse, ac at. Netus iaculis feugiat odio ut, est nulla etiam aenean fringilla, etiam varius mauris urna mauris pretium, mauris erat auctor consequat vel eleifend venenatis. Quis wisi vehicula, maecenas non mauris. Leo pulvinar scelerisque, arcu placerat venenatis fusce urna eget, fermentum interdum porttitor magna id id dui, parturient urna felis sollicitudin sit, consequatur tempor eros. A nec laoreet et quam at, ante mattis. Pellentesque commodo mauris mattis et tincidunt justo, in elementum, erat mus enim voluptas donec, sagittis est, mollis nibh hendrerit orci in suscipit sit. Ipsum nam egestas orci magna risus pellentesque, ante tristique fusce ridiculus adipiscing vestibulum, consectetuer id orci dignissim, orci sit. Conubia proin quisque interdum platea massa, erat ex natoque commodi velit, maecenas cursus pharetra elementum sed lobortis. Tellus euismod ut, commodo morbi ultrices. Nec massa erat vehicula nostrum, aut ut, urna suspendisse tellus pede temporibus viverra.</p>
+
+<h3 id="tracetoc">Trace<span class="help-right"><a href="#help-top">↑toc</a></span></h3>
+
+<p><strong>APG</strong> generates recursive-descent parsers. These are parsers that start at the root node of the syntax tree and proceed down the left-most branch of the tree until a terminal node is reached. The terminal node will attempt to match a character or phrase in the remaining input string. If the match is successful, the matched characters are removed from the remaining string and the parser proceeds back up the branch looking for further instructions (concatenation, repetition, etc.) from the nodes it finds along the way. If the match does not succeed, the parser will proceed up to the nearest <code>ALT</code>(Alternate) node and try the next alternate branch, if any. This continues until the parser has returned to the root node. If the entire string has been consumed, the parse is a success, otherwise, not. </p>
+
+<p>For <strong>APG</strong> a terminal node is one of the node operators, <code>TLS</code>, <code>TBS</code> or <code>TRG</code>. <em>(User-Defined Terminals will not be discussed here.)</em> Only terminal nodes actually match and consume characters or phrases in the input string.</p>
+
+<ul>
+<li><code>TLS</code>—Terminal Literal String. This node attempts to make a case-insensitive match of a grammar-defined phrase to the remaining characters in the input string.</li>
+<li><code>TBS</code>—Terminal Binary String. This node attempts to make a case-sensitive match of a grammar-defined phrase to the remaining characters in the input string.</li>
+<li><code>TRG</code>—Terminal Range. This node attempts to match a character within a grammar-defined range to the leading character of the remaining the input string.</li>
+</ul>
+
+<p>Tracing is the process of generating a record of each node visit and this panel displays a text version of those records. The legend at the bottom of the Trace panel will explain the details of the data columns. See the <a href="#configuretoc">Configure panel</a> for instructions on how to control the selection of records displayed.  </p>
+
+<p>The important thing to note is that as you read down from the first record, you see the path the parser has taken through the parse tree and which characters and phrases are matched or missed along the way.</p>
+
+<p>While this can be illuminating in its own right, the chief purpose of the trace is to find where and what has gone wrong with a failed parse. It may be that the grammar does not correctly describe the language specification. Or it might be that the input string fails to match the language specification—or both, of course. It’s not automatic and a bit of an art. It may take some practice. But an examination of the trace usually pinpoints the problem quickly.</p>
+
+<p>One tip though, if you don’t see the error right away with the default trace options, one of the first things to try is to check the <code>TLS</code>, <code>TBS</code> and <code>TRG</code> operators. Since these are the ones that actually consume input string characters they might be the first to allow you to see when and where a phrase is incorrectly missed or consumed.</p>
 
 <blockquote>
   <p>Written with <a href="https:stackedit.io/">StackEdit</a>.</p>
@@ -1281,8 +1287,1393 @@ If any of these errors occur, the <a href="#attributestop">Attributes panel</a> 
   </div>
   <script type="text/javascript">
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function (Buffer){
+// This module performs validation of the input and output requests
+// and public functions for encoding and decoding as well as data conversion.
+//
+"use strict;"
+var _this = this;
+var trans = require('./transformers.js');
 
-},{}],2:[function(require,module,exports){
+/* types */
+var UTF8     = "UTF8";
+var UTF16    = "UTF16";
+var UTF16BE  = "UTF16BE";
+var UTF16LE  = "UTF16LE";
+var UTF32    = "UTF32";
+var UTF32BE  = "UTF32BE";
+var UTF32LE  = "UTF32LE";
+var UINT7    = "UINT7";
+var ASCII    = "ASCII";
+var BINARY   = "BINARY";
+var UINT8    = "UINT8";
+var UINT16   = "UINT16";
+var UINT16LE = "UINT16LE";
+var UINT16BE = "UINT16BE";
+var UINT32   = "UINT32";
+var UINT32LE = "UINT32LE";
+var UINT32BE = "UINT32BE";
+var ESCAPED  = "ESCAPED";
+var STRING   = "STRING";
+
+/* private functions */
+// Find the UTF8 Byte Order Mark, if any.
+var bom8 = function(src) {
+  src.type = UTF8;
+  var buf = src.data;
+  src.bom = 0;
+  if(buf.length >= 3){
+    if (buf[0] === 0xEF && buf[1] === 0xBB && buf[2] === 0xBF) {
+      src.bom = 3;
+    }
+  }
+}
+// Find the UTF16 Byte Order Mark, if any, and determine the UTF16 type.
+// Defaults to UTF16BE.
+// Throws exception if BOM does not match the specified type.
+var bom16 = function(src) {
+  var buf = src.data;
+  src.bom = 0;
+  switch (src.type) {
+  case UTF16:
+    src.type = UTF16BE;
+    if(buf.length >= 2){
+      if (buf[0] === 0xFE && buf[1] === 0xFF) {
+        src.bom = 2;
+      }else if (buf[0] === 0xFF && buf[1] === 0xFE) {
+        src.type = UTF16LE;
+        src.bom = 2;
+      }
+    }
+    break;
+  case UTF16BE:
+    src.type = UTF16BE;
+    if(buf.length >= 2){
+      if (buf[0] === 0xFE && buf[1] === 0xFF) {
+        src.bom = 2;
+      }else if (buf[0] === 0xFF && buf[1] === 0xFE) {
+        throw new TypeError('src type: "' + UTF16BE + '" specified but BOM is for "' + UTF16LE + '"');
+      }
+    }
+    break;
+  case UTF16LE:
+    src.type = UTF16LE;
+    if(buf.length >= 0){
+      if (buf[0] === 0xFE && buf[1] === 0xFF) {
+        throw new TypeError('src type: "' + UTF16LE + '" specified but BOM is for "' + UTF16BE + '"');
+      }else if (buf[0] === 0xFF && buf[1] === 0xFE) {
+        src.bom = 2;
+      }
+    }
+    break;
+  default:
+    throw new TypeError('UTF16 BOM: src type "' + src.type + '" unrecognized');
+    break;
+  }
+}
+//Find the UTF32 Byte Order Mark, if any, and determine the UTF32 type..
+//Defaults to UTF32BE.
+//Throws exception if BOM does not match the specified type.
+var bom32 = function(src) {
+  var buf = src.data;
+  src.bom = 0;
+  switch (src.type) {
+  case UTF32:
+    src.type = UTF32BE;
+    if(buf.length >= 4){
+      if (buf[0] === 0 && buf[1] === 0 && buf[2] === 0xFE && buf[3] === 0xFF) {
+        src.bom = 4;
+      }
+      if (buf[0] === 0xFF && buf[1] === 0xFE && buf[2] === 0 && buf[3] === 0) {
+        src.type = UTF32LE;
+        src.bom = 4;
+      }
+    }
+    break;
+  case UTF32BE:
+    src.type = UTF32BE;
+    if(buf.length >= 4){
+      if (buf[0] === 0 && buf[1] === 0 && buf[2] === 0xFE && buf[3] === 0xFF) {
+        src.bom = 4;
+      }
+      if (buf[0] === 0xFF && buf[1] === 0xFE && buf[2] === 0 && buf[3] === 0) {
+        throw new TypeError('src type: ' + UTF32BE + ' specified but BOM is for ' + UTF32LE + '"');
+      }
+    }
+    break;
+  case UTF32LE:
+    src.type = UTF32LE;
+    if(buf.length >= 4){
+      if (buf[0] === 0 && buf[1] === 0 && buf[2] === 0xFE && buf[3] === 0xFF) {
+        throw new Error('src type: "' + UTF32LE + '" specified but BOM is for "' + UTF32BE + '"');
+      }
+      if (buf[0] === 0xFF && buf[1] === 0xFE && buf[2] === 0 && buf[3] === 0) {
+        src.bom = 4;
+      }
+    }
+    break;
+  default:
+    throw new TypeError('UTF32 BOM: src type "' + src.type + '" unrecognized');
+    break;
+  }
+}
+// Validates the source encoding type and matching data.
+// If the BASE64: prefix is present, the base 64 decoding is done here as the initial step.
+// For type STRING, data must be a JavaScript string.
+// For type BASE64:*, data may be a string or Buffer.
+// For all other types, data must be a Buffer.
+//The BASE64: prefix is not allowed for type STRING.
+var validateSrc = function(type, data){
+  function getType(type){
+    var ret = {
+        type: "",
+        base64: false
+    }
+    var rx = /^(base64:)?([a-zA-Z0-9]+)$/i;
+    var result = rx.exec(type);
+    if (result) {
+      if (result[2]) {
+        ret.type = result[2].toUpperCase();
+      }
+      if (result[1]) {
+        ret.base64 = true;
+      }
+    }
+    return ret;
+  }
+  if (typeof(type) !== "string" || type === "") {
+    throw new TypeError('type: "' + type + '" not recognized');
+  }
+  var ret = getType(type.toUpperCase());
+  if(ret.base64){
+    /* handle base 64 */
+    if(ret.type === STRING){
+      throw new TypeError('type: "' + type + ' "BASE64:" prefix not allowed with type '+STRING);
+    }
+    if(Buffer.isBuffer(data)){
+      ret.data = trans.base64.decode(data);
+    }else if(typeof(data) === "string"){
+      var buf = Buffer.from(data, "ascii");
+      ret.data = trans.base64.decode(buf);
+    }else{
+      throw new TypeError('type: "' + type + ' unrecognized data type: typeof(data): ' + typeof(data));
+    }
+  }else{
+    ret.data = data;
+  }
+  switch (ret.type) {
+  case UTF8:
+    bom8(ret);
+    break;
+  case UTF16:
+  case UTF16BE:
+  case UTF16LE:
+    bom16(ret);
+    break;
+  case UTF32:
+  case UTF32BE:
+  case UTF32LE:
+    bom32(ret);
+    break;
+  case UINT16:
+    ret.type = UINT16BE;
+    break;
+  case UINT32:
+    ret.type = UINT32BE;
+    break;
+  case ASCII:
+    ret.type = UINT7;
+    break;
+  case BINARY:
+    ret.type = UINT8;
+    break;
+  case UINT7:
+  case UINT8:
+  case UINT16LE:
+  case UINT16BE:
+  case UINT32LE:
+  case UINT32BE:
+  case STRING:
+  case ESCAPED:
+    break;
+  default:
+    throw new TypeError('type: "' + type + '" not recognized');
+    break;
+  }
+  if(ret.type === STRING){
+    if(typeof(ret.data) !== "string"){
+      throw new TypeError('type: "' + type + '" but data is not a string');
+    }
+  }else{
+    if(!Buffer.isBuffer(ret.data)){
+      throw new TypeError('type: "' + type + '" but data is not a Buffer');
+    }
+  }
+  return ret;
+}
+// Disassembles and validates the destination type.
+// `chars` must be an Array of integers.
+// The :BASE64 suffix is not allowed for type STRING.
+var validateDst = function(type, chars){
+  function getType(type){
+    var fix, rem;
+    var ret = {
+        crlf: false,
+        lf: false,
+        base64: false,
+        type: ""
+    }
+    /*prefix, if any */
+    while(true){
+      rem = type;
+      fix = type.slice(0, 5);
+      if(fix === "CRLF:"){
+        ret.crlf = true;
+        rem = type.slice(5);
+        break;
+      }
+      fix = type.slice(0, 3);
+      if(fix === "LF:"){
+        ret.lf = true;
+        rem = type.slice(3);
+        break;
+      }
+      break;
+    }
+    /*suffix, if any */
+    fix = rem.split(":");
+    if(fix.length === 1){
+      ret.type = fix[0];
+      
+    }else if(fix.length === 2 && fix[1] === "BASE64"){
+      ret.base64 = true;
+      ret.type = fix[0];
+    }
+    return ret;
+  }
+  if(!Array.isArray(chars)){
+    throw new TypeError('dst chars: not array: "' + typeof(chars));
+  }
+  if (typeof(type) !== "string") {
+    throw new TypeError('dst type: not string: "' + typeof(type));
+  }
+  ret = getType(type.toUpperCase());
+  switch (ret.type) {
+  case UTF8:
+  case UTF16BE:
+  case UTF16LE:
+  case UTF32BE:
+  case UTF32LE:
+  case UINT7:
+  case UINT8:
+  case UINT16LE:
+  case UINT16BE:
+  case UINT32LE:
+  case UINT32BE:
+  case ESCAPED:
+    break;
+  case STRING:
+    if(ret.base64){
+      throw new TypeError('":BASE64" suffix not allowed with type '+STRING);
+    }
+    break;
+  case ASCII:
+    ret.type = UINT7;
+    break;
+  case BINARY:
+    ret.type = UINT8;
+    break;
+  case UTF16:
+    ret.type = UTF16BE;
+    break;
+  case UTF32:
+    ret.type = UTF32BE;
+    break;
+  case UINT16:
+    ret.type = UINT16BE;
+    break;
+  case UINT32:
+    ret.type = UINT32BE;
+    break;
+  default:
+    throw new TypeError('dst type unrecognized: "' + type + '" : must have form [crlf:|lf:]type[:base64]');
+    break;
+  }
+  return ret;
+}
+// Select and call the requested encoding function.
+var encode = function(type, chars){
+  switch(type){
+  case UTF8:
+    return trans.utf8.encode(chars);
+  case UTF16BE:
+    return trans.utf16be.encode(chars);
+  case UTF16LE:
+    return trans.utf16le.encode(chars);
+  case UTF32BE:
+    return trans.utf32be.encode(chars);
+  case UTF32LE:
+    return trans.utf32le.encode(chars);
+  case UINT7:
+    return trans.uint7.encode(chars);
+  case UINT8:
+    return trans.uint8.encode(chars);
+  case UINT16BE:
+    return trans.uint16be.encode(chars);
+  case UINT16LE:
+    return trans.uint16le.encode(chars);
+  case UINT32BE:
+    return trans.uint32be.encode(chars);
+  case UINT32LE:
+    return trans.uint32le.encode(chars);
+  case STRING:
+    return trans.string.encode(chars);
+  case ESCAPED:
+    return trans.escaped.encode(chars);
+  default:
+    throw new Error('encode type "'+type+'" not recognized')
+  }
+}
+// Select and call the requested decoding function.
+// `src` contains Byte Order Mark information as well as the source type and data.
+var decode = function(src){
+  switch(src.type){
+  case UTF8:
+    return trans.utf8.decode(src);
+  case UTF16LE:
+    return trans.utf16le.decode(src);
+  case UTF16BE:
+    return trans.utf16be.decode(src);
+  case UTF32BE:
+    return trans.utf32be.decode(src);
+  case UTF32LE:
+    return trans.utf32le.decode(src);
+  case UINT7:
+    return trans.uint7.decode(src.data);
+  case UINT8:
+    return trans.uint8.decode(src.data);
+  case UINT16BE:
+    return trans.uint16be.decode(src.data);
+  case UINT16LE:
+    return trans.uint16le.decode(src.data);
+  case UINT32BE:
+    return trans.uint32be.decode(src.data);
+  case UINT32LE:
+    return trans.uint32le.decode(src.data);
+  case STRING:
+    return trans.string.decode(src.data);
+  case ESCAPED:
+    return trans.escaped.decode(src.data);
+  default:
+    throw new Error('decode type "'+src.type+'" not recognized')
+  }
+}
+
+// The public decoding function. Returns an array of integers.
+exports.decode = function(type, data) {
+  var src = validateSrc(type, data);
+  return decode(src);
+}
+// The public encoding function. Returns a Buffer-typed byte array.
+exports.encode = function(type, chars) {
+  var c, buf;
+  var dst = validateDst(type, chars);
+  if(dst.crlf){
+    /* prefix with CRLF line end conversion, don't contaminate caller's chars array */
+    c = trans.lineEnds.crlf(chars);
+    buf = encode(dst.type, c);
+  }else if(dst.lf){
+    /* prefix with LF line end conversion, don't contaminate caller's chars array */
+    c = trans.lineEnds.lf(chars);
+    buf = encode(dst.type, c);
+  }else{
+    buf = encode(dst.type, chars);
+  }
+  if(dst.base64){
+    /* post base 64 encoding */
+    buf = trans.base64.encode(buf);
+  }
+  return buf;
+}
+// Converts data of type `srcType` to data of type `dstType`.
+// `srcData` may be a JavaScript String, or node.js Buffer, depending on the corresponding type.
+exports.convert = function(srcType, srcData, dstType) {
+  return _this.encode(dstType, _this.decode(srcType, srcData));
+}
+
+}).call(this,require("buffer").Buffer)
+},{"./transformers.js":2,"buffer":4}],2:[function(require,module,exports){
+(function (Buffer){
+// This module contains the actual encoding and decoding algorithms.
+"use strict;"
+var _this = this;
+
+/* decoding error codes */
+var NON_SHORTEST = 0xFFFFFFFC;
+var TRAILING     = 0xFFFFFFFD;
+var RANGE        = 0xFFFFFFFE;
+var ILL_FORMED   = 0xFFFFFFFF;
+
+/* mask[n] = 2**n - 1, ie. mask[n] = n bits on. e.g. mask[6] = %b111111 */
+var mask = [0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023];
+
+/* ascii[n] = 'HH', where 0xHH = n, eg. ascii[254] = 'FE' */
+var ascii = [ 
+  '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '0A', '0B', '0C', '0D', '0E', '0F', '10', '11', '12', '13', '14', '15', '16', '17',
+  '18', '19', '1A', '1B', '1C', '1D', '1E', '1F', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '2A', '2B', '2C', '2D', '2E', '2F', '30',
+  '31', '32', '33', '34', '35', '36', '37', '38', '39', '3A', '3B', '3C', '3D', '3E', '3F', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49',
+  '4A', '4B', '4C', '4D', '4E', '4F', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '5A', '5B', '5C', '5D', '5E', '5F', '60', '61', '62',
+  '63', '64', '65', '66', '67', '68', '69', '6A', '6B', '6C', '6D', '6E', '6F', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '7A', '7B',
+  '7C', '7D', '7E', '7F', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '8A', '8B', '8C', '8D', '8E', '8F', '90', '91', '92', '93', '94',
+  '95', '96', '97', '98', '99', '9A', '9B', '9C', '9D', '9E', '9F', 'A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'AA', 'AB', 'AC', 'AD',
+  'AE', 'AF', 'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6',
+  'C7', 'C8', 'C9', 'CA', 'CB', 'CC', 'CD', 'CE', 'CF', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'DA', 'DB', 'DC', 'DD', 'DE', 'DF',
+  'E0', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'EA', 'EB', 'EC', 'ED', 'EE', 'EF', 'F0', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8',
+  'F9', 'FA', 'FB', 'FC', 'FD', 'FE', 'FF' ];
+
+/* vector of base 64 characters */
+var base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".split("");
+
+/* vector of base 64 character codes */
+var base64codes = [];
+base64chars.forEach(function(char){
+  base64codes.push(char.charCodeAt(0));
+});
+
+// The UTF8 algorithms.
+exports.utf8 = {
+    encode : function(chars) {
+      var x,y,z,u;
+      var bytes = [];
+      chars.forEach(function(char){
+        var byte;
+        if(char >= 0 && char <= 0x7f){
+          bytes.push(char);
+        }else if(char <= 0x7ff){
+          bytes.push(0xc0 + ((char >> 6) & mask[5]));
+          bytes.push(0x80 + (char & mask[6]));
+        }else if(char < 0xD800 || (char > 0xDFFF && char <= 0xffff)){
+          bytes.push(0xe0 + ((char >> 12) & mask[4]));
+          bytes.push(0x80 + ((char >> 6) & mask[6]));
+          bytes.push(0x80 + (char & mask[6]));
+        }else if(char >= 0x10000 && char <= 0x10ffff){
+          u = (char >> 16) & mask[5];
+          bytes.push(0xf0 + (u >> 2));
+          bytes.push(0x80 + ((u & mask[2]) << 4) + ((char >> 12) & mask[4]));
+          bytes.push(0x80 + ((char >> 6) & mask[6]));
+          bytes.push(0x80 + (char & mask[6]));
+        }else{
+          throw new RangeError("utf8.encode: character out of range: char: " + char);
+        }
+      });
+      return Buffer.from(bytes);
+    },
+  decode : function(src) {
+    /* bytes functions return error for non-shortest forms & values out of range */
+    function bytes2(b1, b2){
+      /*U+0080..U+07FF */
+      /* 00000000 00000yyy yyxxxxxx | 110yyyyy 10xxxxxx */
+      if((b2 & 0xC0) !== 0x80){
+        return TRAILING;
+      }
+      var x = ((b1 & mask[5]) << 6) + (b2 & mask[6]);
+      if(x < 0x80){
+        return NON_SHORTEST;
+      }
+      return x;
+    }
+    function bytes3(b1, b2, b3){
+      /*U+0800..U+FFFF */
+      /* 00000000 zzzzyyyy yyxxxxxx | 1110zzzz 10yyyyyy 10xxxxxx */
+      if(((b3 & 0xC0) !== 0x80) || ((b2 & 0xC0) !== 0x80)){
+        return TRAILING;
+      }
+      var x = ((b1 & mask[4]) << 12) + ((b2 & mask[6]) << 6) + (b3 & mask[6]);
+      if(x < 0X800){
+        return NON_SHORTEST;
+      }
+      if((x >= 0xD800) && (x <= 0xDFFF)){
+        return RANGE;
+      }
+      return x;
+    }
+    function bytes4(b1, b2, b3, b4){
+      /*U+10000..U+10FFFF */
+      /* 000uuuuu zzzzyyyy yyxxxxxx | 11110uuu 10uuzzzz 10yyyyyy 10xxxxxx */
+      if(((b4 & 0xC0) !== 0x80) || ((b3 & 0xC0) !== 0x80) || ((b2 & 0xC0) !== 0x80)){
+        return TRAILING;
+      }
+      var x = ((((b1 & mask[3]) << 2)
+          + ((b2 >> 4) & mask[2])) << 16)
+          + ((b2 & mask[4]) << 12)
+          + ((b3 & mask[6]) << 6)
+          + (b4 & mask[6]);
+      if(x < 0x10000){
+        return NON_SHORTEST;
+      }
+      if(x > 0x10FFFF){
+        return RANGE;
+      }
+      return x;
+    }
+    var c, b1, b2, b3, b4, i1, i2, i3, inc;
+    var len = src.data.length;
+    var i = src.bom;
+    var chars = [];
+    while(i < len){
+      b1 = src.data[i];
+      c = ILL_FORMED;
+      while(true){
+        if(b1 >=0 && b1 <=0x7f){
+          /*U+0000..U+007F 00..7F*/
+          c = b1;
+          inc = 1;
+          break;
+        }
+        i1 = i + 1;
+        if((i1 < len) && (b1 >= 0xc2 && b1 <= 0xdf)){
+          /*U+0080..U+07FF C2..DF 80..BF*/
+          c = bytes2(b1, src.data[i1]);
+          inc = 2;
+          break;
+        }
+        i2 = i + 2
+        if((i2 < len) && (b1 >= 0xe0 && b1 <= 0xef)){
+          /*U+0800..U+FFFF */
+          c = bytes3(b1, src.data[i1], src.data[i2]);
+          inc = 3;
+          break;
+        }
+        i3 = i + 3
+        if((i3 < len) && (b1 >= 0xf0 && b1 <= 0xf4)){
+          /*U+10000..U+10FFFF */
+          c = bytes4(b1, src.data[i1], src.data[i2], src.data[i3]);
+          inc = 4;
+          break;
+        }
+        /* if we fall through to here, it is an ill-formed sequence*/
+        break;
+      }
+      if(c > 0x10FFFF){
+        var at = "byte["+i+"]";
+        if(c === ILL_FORMED){
+          throw new RangeError("utf8.decode: ill-formed UTF8 byte sequence found at: "+at);
+        }
+        if(c === TRAILING){
+          throw new RangeError("utf8.decode: illegal trailing byte found at: "+at);
+        }
+        if(c === RANGE){
+          throw new RangeError("utf8.decode: code point out of range found at: "+at);
+        }
+        if(c === NON_SHORTEST){
+          throw new RangeError("utf8.decode: non-shortest form found at: "+at);
+        }
+        throw new RangeError("utf8.decode: unrecognized error found at: "+at);
+      }
+      chars.push(c);
+      i += inc;
+    }
+    return chars;
+  },
+}
+
+//The UTF16BE algorithms.
+exports.utf16be = {
+  encode : function(chars) {
+    var bytes = [];
+    var char, h, l;
+    for(var i = 0; i < chars.length; i += 1){
+      char = chars[i];
+      if( ((char >= 0) && (char <= 0xD7FF)) || ((char >= 0xE000) && (char <= 0xFFFF)) ){
+        bytes.push((char >> 8) & mask[8]);
+        bytes.push(char & mask[8]);
+      }else if(char >= 0x10000 && char <= 0x10FFFF){
+        l = char - 0x10000;
+        h = 0xD800 + (l >> 10);
+        l = 0xDC00 + (l & mask[10]);
+        bytes.push((h >> 8) & mask[8]);
+        bytes.push(h & mask[8]);
+        bytes.push((l >> 8) & mask[8]);
+        bytes.push(l & mask[8]);
+      }else{
+        throw new RangeError("utf16be.encode: UTF16BE value out of range: char["+i+"]: "+char);
+      }
+    }
+    return Buffer.from(bytes);
+  },
+  decode : function(src) {
+    /* assumes caller has insured that src.data is a Buffer of bytes */
+    if(src.data.length % 2 > 0){
+      throw new RangeError("utf16be.decode: data length must be even multiple of 2: length: "+src.data.length);
+    }
+    var chars = [];
+    var len = src.data.length;
+    var i = src.bom;
+    var j = 0;
+    var c, inc, i1, i2, i3, high, low;
+    while(i < len){
+      while(true){
+        i1 = i + 1;
+        if(i1 < len){
+          high = (src.data[i] << 8) + src.data[i1];
+          if((high < 0xD800) || (high > 0xDFFF)){
+            c = high;
+            inc = 2;
+            break;
+          }
+          i3 = i + 3;
+          if(i3 < len){
+            low = (src.data[i + 2] << 8) + src.data[i3];
+            if((high <= 0xDBFF) && (low >= 0xDC00) && (low <= 0xDFFF)){
+              c = 0x10000 + ((high - 0xD800) << 10) + (low - 0xDC00);
+              inc = 4;
+              break;
+            }
+          }
+        }
+        /* if we fall through to here, it is an ill-formed sequence*/
+        throw new RangeError("utf16be.decode: ill-formed UTF16BE byte sequence found: byte["+i+"]");
+        break;
+      }
+      chars[j++] = c;
+      i += inc;
+    }
+    return chars;
+  },
+}
+
+//The UTF16LE algorithms.
+exports.utf16le = {
+  encode : function(chars) {
+    var bytes = [];
+    var char, h, l;
+    for(var i = 0; i < chars.length; i += 1){
+      char = chars[i];
+      if( ((char >= 0) && (char <= 0xD7FF)) || ((char >= 0xE000) && (char <= 0xFFFF)) ){
+        bytes.push(char & mask[8]);
+        bytes.push((char >> 8) & mask[8]);
+      }else if(char >= 0x10000 && char <= 0x10FFFF){
+        l = char - 0x10000;
+        h = 0xD800 + (l >> 10);
+        l = 0xDC00 + (l & mask[10]);
+        bytes.push(h & mask[8]);
+        bytes.push((h >> 8) & mask[8]);
+        bytes.push(l & mask[8]);
+        bytes.push((l >> 8) & mask[8]);
+      }else{
+        throw new RangeError("utf16le.encode: UTF16LE value out of range: char["+i+"]: "+char);
+      }
+    }
+    return Buffer.from(bytes);
+  },
+  decode : function(src) {
+    /* assumes caller has insured that src.data is a Buffer of bytes */
+    if(src.data.length % 2 > 0){
+      throw new RangeError("utf16le.decode: data length must be even multiple of 2: length: "+src.data.length);
+    }
+    var chars = [];
+    var len = src.data.length;
+    var i = src.bom;
+    var j = 0;
+    var c, inc, i1, i2, i3, high, low;
+    while(i < len){
+      while(true){
+        i1 = i + 1;
+        if(i1 < len){
+          high = (src.data[i1] << 8) + src.data[i];
+          if((high < 0xD800) || (high > 0xDFFF)){
+            c = high;
+            inc = 2;
+            break;
+          }
+          i3 = i + 3;
+          if(i3 < len){
+            low = (src.data[i3] << 8) + src.data[i + 2];
+            if((high <= 0xDBFF) && (low >= 0xDC00) && (low <= 0xDFFF)){
+              c = 0x10000 + ((high - 0xD800) << 10) + (low - 0xDC00);
+              inc = 4;
+              break;
+            }
+          }
+        }
+        /* if we fall through to here, it is an ill-formed sequence*/
+        throw new RangeError("utf16le.decode: ill-formed UTF16LE byte sequence found: byte["+i+"]");
+        break;
+      }
+      chars[j++] = c;
+      i += inc;
+    }
+    return chars;
+  },
+}
+
+//The UTF32BE algorithms.
+exports.utf32be = {
+  encode : function(chars) {
+    var buf = Buffer.alloc(chars.length * 4);
+    var i = 0;
+    chars.forEach(function(char){
+      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
+        throw new RangeError("utf32be.encode: UTF32BE character code out of range: char["+i/4+"]: " + char);
+      }
+      buf[i++] = (char >> 24) & mask[8];
+      buf[i++] = (char >> 16) & mask[8];
+      buf[i++] = (char >> 8) & mask[8];
+      buf[i++] = char & mask[8];
+    });
+    return buf;
+  },
+  decode : function(src) {
+    /* caller to insure src.data is a Buffer of bytes */
+    if(src.data.length % 4 > 0 ){
+      throw new RangeError("utf32be.decode: UTF32BE byte length must be even multiple of 4: length: " + src.data.length);
+    }
+    var chars = [];
+    for(var i = src.bom; i < src.data.length; i += 4){
+      var char = (src.data[i]<<24) + (src.data[i+1]<<16) + (src.data[i+2]<<8) + src.data[i+3];
+      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
+        throw new RangeError("utf32be.decode: UTF32BE character code out of range: char["+i/4+"]: " + char);
+      }
+      chars.push(char);
+    }
+    return chars;
+  }
+}
+
+//The UTF32LE algorithms.
+exports.utf32le = {
+  encode : function(chars) {
+    var buf = Buffer.alloc(chars.length * 4);
+    var i = 0;
+    chars.forEach(function(char){
+      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
+        throw new RangeError("utf32le.encode: UTF32LE character code out of range: char["+i/4+"]: " + char);
+      }
+      buf[i++] = char & mask[8];
+      buf[i++] = (char >> 8) & mask[8];
+      buf[i++] = (char >> 16) & mask[8];
+      buf[i++] = (char >> 24) & mask[8];
+    });
+    return buf;
+  },
+  decode : function(src) {
+    /* caller to insure src.data is a Buffer of bytes */
+    if(src.data.length % 4 > 0 ){
+      throw new RangeError("utf32be.decode: UTF32LE byte length must be even multiple of 4: length: " + src.data.length);
+    }
+    var chars = [];
+    for(var i = src.bom; i < src.data.length; i += 4){
+      var char = (src.data[i+3]<<24) + (src.data[i+2]<<16) + (src.data[i+1]<<8) + src.data[i];
+      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
+        throw new RangeError("utf32le.encode: UTF32LE character code out of range: char["+i/4+"]: " + char);
+      }
+      chars.push(char);
+    }
+    return chars;
+  }
+}
+
+//The UINT7 algorithms. ASCII or 7-bit unsigned integers.
+exports.uint7 = {
+    encode : function(chars) {
+      var buf = Buffer.alloc(chars.length);
+      for(var i = 0; i < chars.length; i += 1){
+        if(chars[i] > 0x7f){
+          throw new RangeError("uint7.encode: UINT7 character code out of range: char["+i+"]: " + chars[i]);
+        }
+        buf[i] = chars[i];
+      }
+      return buf;
+    },
+    decode : function(buf) {
+      var chars = [];
+      for(var i = 0; i < buf.length; i += 1){
+        if(buf[i] > 0x7f){
+          throw new RangeError("uint7.decode: UINT7 character code out of range: byte["+i+"]: " + buf[i]);
+        }
+        chars[i] = buf[i];
+      }
+      return chars;
+    }
+  }
+
+//The UINT8 algorithms. BINARY, Latin 1 or 8-bit unsigned integers.
+exports.uint8 = {
+  encode : function(chars) {
+    var buf = Buffer.alloc(chars.length);
+    for(var i = 0; i < chars.length; i += 1){
+      if(chars[i] > 0xff){
+        throw new RangeError("uint8.encode: UINT8 character code out of range: char["+i+"]: " + chars[i]);
+      }
+      buf[i] = chars[i];
+    }
+    return buf;
+  },
+  decode : function(buf) {
+    var chars = [];
+    for(var i = 0; i < buf.length; i += 1){
+      chars[i] = buf[i];
+    }
+    return chars;
+  }
+}
+
+//The UINT16BE algorithms. Big-endian 16-bit unsigned integers.
+exports.uint16be = {
+  encode : function(chars) {
+    var buf = Buffer.alloc(chars.length * 2);
+    var i = 0;
+    chars.forEach(function(char){
+      if(char > 0xffff){
+        throw new RangeError("uint16be.encode: UINT16BE character code out of range: char["+i/2+"]: " + char);
+      }
+      buf[i++] = (char >> 8) & mask[8];
+      buf[i++] = char & mask[8];
+    });
+    return buf;
+  },
+  decode : function(buf) {
+    if(buf.length % 2 > 0 ){
+      throw new RangeError("uint16be.decode: UINT16BE byte length must be even multiple of 2: length: " + buf.length);
+    }
+    var chars = [];
+    for(var i = 0; i < buf.length; i += 2){
+      chars.push((buf[i]<<8) + buf[i+1]);
+    }
+    return chars;
+  }
+}
+
+//The UINT16LE algorithms. Little-endian 16-bit unsigned integers.
+exports.uint16le = {
+  encode : function(chars) {
+    var buf = Buffer.alloc(chars.length * 2);
+    var i = 0;
+    chars.forEach(function(char){
+      if(char > 0xffff){
+        throw new RangeError("uint16le.encode: UINT16LE character code out of range: char["+i/2+"]: " + char);
+      }
+      buf[i++] = char & mask[8];
+      buf[i++] = (char >> 8) & mask[8];
+    });
+    return buf;
+  },
+  decode : function(buf) {
+    if(buf.length % 2 > 0 ){
+      throw new RangeError("uint16le.decode: UINT16LE byte length must be even multiple of 2: length: " + buf.length);
+    }
+    var chars = [];
+    for(var i = 0; i < buf.length; i += 2){
+      chars.push((buf[i+1]<<8) + buf[i]);
+    }
+    return chars;
+  }
+}
+
+//The UINT32BE algorithms. Big-endian 32-bit unsigned integers.
+exports.uint32be = {
+  encode : function(chars) {
+    var buf = Buffer.alloc(chars.length * 4);
+    var i = 0;
+    chars.forEach(function(char){
+      buf[i++] = (char >> 24) & mask[8];
+      buf[i++] = (char >> 16) & mask[8];
+      buf[i++] = (char >> 8) & mask[8];
+      buf[i++] = char & mask[8];
+    });
+    return buf;
+  },
+  decode : function(buf) {
+    if(buf.length % 4 > 0 ){
+      throw new RangeError("uint32be.decode: UINT32BE byte length must be even multiple of 4: length: " + buf.length);
+    }
+    var chars = [];
+    for(var i = 0; i < buf.length; i += 4){
+      chars.push((buf[i]<<24) + (buf[i+1]<<16) + (buf[i+2]<<8) + buf[i+3]);
+    }
+    return chars;
+  }
+}
+
+//The UINT32LE algorithms. Little-endian 32-bit unsigned integers.
+exports.uint32le = {
+  encode : function(chars) {
+    var buf = Buffer.alloc(chars.length * 4);
+    var i = 0;
+    chars.forEach(function(char){
+      buf[i++] = char & mask[8];
+      buf[i++] = (char >> 8) & mask[8];
+      buf[i++] = (char >> 16) & mask[8];
+      buf[i++] = (char >> 24) & mask[8];
+    });
+    return buf;
+  },
+  decode : function(buf) {
+    /* caller to insure buf is a Buffer of bytes */
+    if(buf.length % 4 > 0 ){
+      throw new RangeError("uint32le.decode: UINT32LE byte length must be even multiple of 4: length: " + buf.length);
+    }
+    var chars = [];
+    for(var i = 0; i < buf.length; i += 4){
+      chars.push((buf[i+3]<<24) + (buf[i+2]<<16) + (buf[i+1]<<8) + buf[i]);
+    }
+    return chars;
+  }
+}
+
+// The STRING algorithms. Converts JavaScript strings to Array of 32-bit integers and vice versa. 
+// Uses the node.js Buffer's native "utf16le" capabilites.
+exports.string = {
+  encode: function(chars){
+    return _this.utf16le.encode(chars).toString("utf16le");
+  },
+  decode: function(str){
+    return _this.utf16le.decode({bom: 0, data: Buffer.from(str, "utf16le")});
+  }
+}
+
+//The ESCAPED algorithms. 
+// Note that ESCAPED format contains only ASCII characters.
+// The characters are always in the form of a Buffer of bytes.
+exports.escaped = {
+// Encodes an Array of 32-bit integers into ESCAPED format.
+  encode : function(chars) {
+    var bytes = [];
+    for (var i = 0; i < chars.length; i += 1) {
+      var char = chars[i];
+      if (char === 96) {
+        bytes.push(char);
+        bytes.push(char);
+      } else if (char === 10) {
+        bytes.push(char);
+      } else if (char >= 32 && char <= 126) {
+        bytes.push(char);
+      } else{
+        var str = "";
+        if (char >= 0 && char <= 31) {
+          str += "`x" + ascii[char];
+        } else if (char >= 127 && char <= 255) {
+          str += "`x" + ascii[char];
+        } else if (char >= 0x100 && char <= 0xffff) {
+          str += "`u" + ascii[(char >> 8) & mask[8]] + ascii[char & mask[8]];
+        } else if (char >= 0x10000 && char <= 0xffffffff) {
+          str += "`u{";
+          var digit = (char >> 24) & mask[8];
+          if (digit > 0) {
+            str += ascii[digit];
+          }
+          str += ascii[(char >> 16) & mask[8]] + ascii[(char >> 8) & mask[8]] + ascii[char & mask[8]] + "}";
+        } else {
+          throw new Error("escape.encode(char): char > 0xffffffff not allowed");
+        }
+        var buf = Buffer.from(str);
+        buf.forEach(function(b){
+          bytes.push(b);
+        });
+      }
+    }
+    return Buffer.from(bytes);
+  },
+  // Decodes ESCAPED format from a Buffer of bytes to an Array of 32-bit integers.
+  decode : function(buf) {
+    function isHex(hex){
+      if((hex >= 48 && hex <= 57) || (hex >= 65 && hex <= 70) || (hex >= 97 && hex <= 102)){
+        return true;
+      }
+      return false;
+    }
+    function getx(i, len, buf){
+      var ret = {char: null, nexti: i + 2, error: true};
+      if(i + 1 < len ){
+        if(isHex(buf[i]) && isHex(buf[i+1])){
+          var str = String.fromCodePoint(buf[i], buf[i+1]);
+          ret.char = parseInt(str, 16);
+          if(!isNaN(ret.char)){
+            ret.error = false;
+          }
+        }
+      }
+      return ret;
+    }
+    function getu(i, len, buf){
+      var ret = {char: null, nexti: i + 4, error: true};
+      if(i + 3 < len ){
+        if(isHex(buf[i]) && isHex(buf[i+1]) && isHex(buf[i+2]) && isHex(buf[i+3])){
+          var str = String.fromCodePoint(buf[i], buf[i+1], buf[i+2], buf[i+3]);
+          ret.char = parseInt(str, 16);
+          if(!isNaN(ret.char)){
+            ret.error = false
+          }
+        }
+      }
+      return ret;
+    }
+    function getU(i, len, buf){
+      var ret = {char: null, nexti: i + 4, error: true};
+      var str = "";
+      while(i < len && isHex(buf[i])){
+        str += String.fromCodePoint(buf[i]);
+        i += 1;
+      }
+      ret.char = parseInt(str, 16);
+      if(buf[i] === 125 && !isNaN(ret.char)){
+        ret.error = false
+      }
+      ret.nexti = i + 1;
+      return ret;
+    }
+    var chars = [];
+    var len = buf.length;
+    var i1, ret, error;
+    var i = 0;
+    while(i < len){
+      while(true){
+        error = true;
+        if(buf[i] !== 96){
+          /* unescaped character */
+          chars.push(buf[i]);
+          i += 1;
+          error = false;
+          break;
+        }
+        i1 = i + 1;
+        if(i1 >= len){
+          break;
+        }
+        if(buf[i1] === 96){
+          /* escaped grave accent */
+          chars.push(96);
+          i += 2;
+          error = false;
+          break;
+        }
+        if(buf[i1] === 120){
+          ret = getx(i1+1, len, buf);
+          if(ret.error){
+            break;
+          }
+          /* escaped hex */
+          chars.push(ret.char);
+          i = ret.nexti;
+          error = false;
+          break;
+        }
+        if(buf[i1] === 117){
+          if(buf[i1+1] === 123){
+            ret = getU(i1 + 2, len, buf);
+            if(ret.error){
+              break;
+            }
+            /* escaped utf-32 */
+            chars.push(ret.char);
+            i = ret.nexti;
+            error = false;
+            break;
+          }
+          ret = getu(i1 + 1, len, buf);
+          if(ret.error){
+            break;
+          }
+          /* escaped utf-16 */
+          chars.push(ret.char);
+          i = ret.nexti;
+          error = false;
+          break;
+        }
+        break;
+      }
+      if(error){
+        throw new Error("escaped.decode: ill-formed escape sequence at buf["+i+"]");
+      }
+    }
+    return chars;
+  }
+}
+
+// The line end conversion algorigthms.
+var CR = 13;
+var LF = 10;
+exports.lineEnds = {
+    crlf: function(chars){
+      var lfchars = [];
+      var i = 0;
+      while(i < chars.length){
+        switch(chars[i]){
+        case CR:
+          if((i + 1) < chars.length && chars[i + 1] === LF){
+            i += 2;
+          }else{
+            i += 1
+          }
+          lfchars.push(CR);
+          lfchars.push(LF);
+          break;
+        case LF:
+          lfchars.push(CR);
+          lfchars.push(LF);
+          i += 1;
+          break;
+        default:
+          lfchars.push(chars[i]);
+          i += 1;
+          break;
+        }
+      }
+      if(lfchars.length > 0 && lfchars[lfchars.length - 1] !== LF){
+        lfchars.push(CR);
+        lfchars.push(LF);
+      }
+      return lfchars;
+    },
+    lf: function(chars){
+      var lfchars = [];
+      var i = 0;
+      while(i < chars.length){
+        switch(chars[i]){
+        case CR:
+          if((i + 1) < chars.length && chars[i + 1] === LF){
+            i += 2;
+          }else{
+            i += 1
+          }
+          lfchars.push(LF);
+          break;
+        case LF:
+          lfchars.push(LF);
+          i += 1;
+          break;
+        default:
+          lfchars.push(chars[i]);
+          i += 1;
+          break;
+        }
+      }
+      if(lfchars.length > 0 && lfchars[lfchars.length - 1] !== LF){
+        lfchars.push(LF);
+      }
+      return lfchars;
+    }
+}
+
+// The base 64 algorithms.
+exports.base64 = {
+  encode : function(buf) {
+    if(buf.length === 0){
+      return Buffer.alloc(0);
+    }
+    var i, j, n;
+    var tail = buf.length % 3;
+    tail = (tail > 0) ? 3-tail : 0;
+    var units = (buf.length + tail)/3;
+    var base64 = Buffer.alloc(units * 4);
+    if(tail > 0){
+      units -= 1;
+    }
+    i = 0;
+    j = 0;
+    for(var u = 0; u < units; u += 1){
+      n = buf[i++] << 16;
+      n += buf[i++] << 8;
+      n += buf[i++];
+      base64[j++] = base64codes[(n >> 18) & mask[6]];
+      base64[j++] = base64codes[(n >> 12) & mask[6]];
+      base64[j++] = base64codes[(n >> 6) & mask[6]];
+      base64[j++] = base64codes[n & mask[6]];
+    }
+    if (tail === 0) {
+      return base64;
+    }
+    if (tail === 1) {
+      n = buf[i++] << 16;
+      n += buf[i] << 8;
+      base64[j++] = base64codes[(n >> 18) & mask[6]];
+      base64[j++] = base64codes[(n >> 12) & mask[6]];
+      base64[j++] = base64codes[(n >> 6) & mask[6]];
+      base64[j] = base64codes[64];
+      return base64;
+    }
+    if (tail === 2) {
+      n = buf[i] << 16;
+      base64[j++] = base64codes[(n >> 18) & mask[6]];
+      base64[j++] = base64codes[(n >> 12) & mask[6]];
+      base64[j++] = base64codes[64];
+      base64[j] = base64codes[64];
+      return base64;
+    }
+  },
+  decode: function(codes){
+    /* remove white space and ctrl characters, validate & translate characters */
+    function validate(buf){
+      var chars = [];
+      var tail = 0;
+      for (var i = 0; i < buf.length; i += 1) {
+        var char = buf[i];
+        while(true){
+          if (char === 32 || char === 9 || char === 10 || char === 13) {
+            break;
+          }
+          if (char >= 65 && char <= 90) {
+            chars.push(char - 65);
+            break;
+          }
+          if (char >= 97 && char <= 122) {
+            chars.push(char - 71);
+            break;
+          }
+          if (char >= 48 && char <= 57) {
+            chars.push(char + 4);
+            break;
+          }
+          if (char === 43) {
+            chars.push(62);
+            break;
+          }
+          if (char === 47) {
+            chars.push(63);
+            break;
+          }
+          if (char === 61) {
+            chars.push(64);
+            tail += 1;
+            break;
+          }
+          /* invalid character */
+          throw new RangeError("base64.decode: invalid character buf[" + i + "]: " + char);
+          break;
+        }
+      }
+      /* validate length */
+      if (chars.length % 4 > 0) {
+        throw new RangeError("base64.decode: string length not integral multiple of 4: " + chars.length);
+      }
+      /* validate tail */
+      switch(tail){
+      case 0:
+        break;
+      case 1:
+        if (chars[chars.length - 1] !== 64) {
+          throw new RangeError("base64.decode: one tail character found: not last character");
+        }
+        break;
+      case 2:
+        if ((chars[chars.length - 1] !== 64) || (chars[chars.length - 2] !== 64)) {
+          throw new RangeError("base64.decode: two tail characters found: not last characters");
+        }
+        break;
+      default:
+        throw new RangeError("base64.decode: more than two tail characters found: " + tail);
+        break;
+      }
+      return {tail: tail, buf: Buffer.from(chars)}
+    }
+    
+    if(codes.length === 0){
+      return Buffer.alloc(0);
+    }
+    var val = validate(codes);
+    var tail = val.tail;
+    var base64 = val.buf;
+    var i, j, n;
+    var units = base64.length / 4;
+    var buf = Buffer.alloc((units*3) - tail);
+    if(tail > 0){
+      units -= 1;
+    }
+    j = 0;
+    i = 0;
+    for(var u = 0; u < units; u += 1) {
+      n = base64[i++] << 18;
+      n += base64[i++] << 12;
+      n += base64[i++] << 6;
+      n += base64[i++];
+      buf[j++] = (n >> 16) & mask[8];
+      buf[j++] = (n >> 8) & mask[8];
+      buf[j++] = n & mask[8];
+    }
+    if (tail === 1) {
+      n = base64[i++] << 18;
+      n += base64[i++] << 12;
+      n += base64[i] << 6;
+      buf[j++] = (n >> 16) & mask[8];
+      buf[j] = (n >> 8) & mask[8];
+    }
+    if (tail === 2) {
+      n = base64[i++] << 18;
+      n += base64[i++] << 12;
+      buf[j] = (n >> 16) & mask[8];
+    }
+    return buf;
+    
+  },
+  // Converts a base 64 Buffer of bytes to a JavaScript string with line breaks.
+  toString: function(buf){
+    if(buf.length % 4 > 0){
+      throw new RangeError("base64.toString: input buffer length not multiple of 4: " + buf.length);
+    }
+    var str = "";
+    var lineLen = 0;
+    function buildLine(c1, c2, c3, c4) {
+      switch (lineLen) {
+      case 76:
+        str += "\r\n" + c1 + c2 + c3 + c4;
+        lineLen = 4;
+        break;
+      case 75:
+        str += c1 + "\r\n" + c2 + c3 + c4;
+        lineLen = 3;
+        break;
+      case 74:
+        str += c1 + c2 + "\r\n" + c3 + c4;
+        lineLen = 2;
+        break;
+      case 73:
+        str += c1 + c2 + c3 + "\r\n" + c4;
+        lineLen = 1;
+        break;
+      default:
+        str += c1 + c2 + c3 + c4;
+        lineLen += 4;
+        break;
+      }
+    }
+    function validate(c){
+      if(c >= 65 && c <= 90){
+        return true
+      }
+      if(c >= 97 && c <= 122){
+        return true
+      }
+      if(c >= 48 && c <= 57){
+        return true
+      }
+      if(c === 43){
+        return true
+      }
+      if(c === 47){
+        return true
+      }
+      if(c === 61){
+        return true
+      }
+      return false;
+    }
+    for(var i = 0; i < buf.length; i += 4){
+      for(var j = i; j < i+4; j +=1){
+        if(!validate(buf[j])){
+          throw new RangeError("base64.toString: buf["+j+"]: "+buf[j]+" : not valid base64 character code");
+        }
+      }
+      buildLine(String.fromCharCode(buf[i]), String.fromCharCode(buf[i+1]), String.fromCharCode(buf[i+2]), String.fromCharCode(buf[i+3]));
+      
+    }
+    return str;
+  },
+}
+
+}).call(this,require("buffer").Buffer)
+},{"buffer":4}],3:[function(require,module,exports){
+
+},{}],4:[function(require,module,exports){
 (function (global){
 /*!
  * The buffer module from node.js, for the browser.
@@ -3075,7 +4466,7 @@ function isnan (val) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"base64-js":3,"ieee754":4,"isarray":5}],3:[function(require,module,exports){
+},{"base64-js":5,"ieee754":6,"isarray":7}],5:[function(require,module,exports){
 'use strict'
 
 exports.byteLength = byteLength
@@ -3191,7 +4582,7 @@ function fromByteArray (uint8) {
   return parts.join('')
 }
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
   var e, m
   var eLen = nBytes * 8 - mLen - 1
@@ -3277,1517 +4668,14 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
   buffer[offset + i - d] |= s * 128
 }
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var toString = {}.toString;
 
 module.exports = Array.isArray || function (arr) {
   return toString.call(arr) == '[object Array]';
 };
 
-},{}],6:[function(require,module,exports){
-(function (Buffer){
-// This function takes a node.js Buffer byte stream as input,
-// converts it to an array of 32-bit integers and
-// outputs the array or an ASCII string translation of it.
-// Input types and output types control the respective formats.
-// The function argument is an object that supplies the input,
-// controls the interpetations of the input and output and
-// returns the output to the caller.
-// ````
-// io:         the function argument
-// io.typeIn:  the input data type,
-//             controls the interpretation of the byte stream
-// io.bufIn:   a node.js buffer of 8-bit bytes
-// io.typeOut: the output data type,
-//             controls the form of the output.
-// io.bufOut:  the output data,
-//             an array of 32-bit integers or a string
-// io.chars:   integer array of character codes,
-//             may be input or output, depending on types
-//````
-//  /* io prototype */
-//  var io = {
-//      typeIn: "",  /* type of data in the input byte stream, if any */
-//      bufIn: null, /* input byte stream, must be node.js Buffer, if any */
-//      typeOut: "", /* type of data in the output byte stream, if any */
-//      bufOut: null,/* output byte stream, a node.js Buffer, if any */
-//      chars: []    /* integer array of character codes */
-//                   /* may be input or output, depending on typeIn & typeOut */
-//  }
-
-//
-// The input types and their meaning:<br />
-// (For Unicode formats, see the [Unicode Encoding Forms](http://www.unicode.org/versions/Unicode9.0.0/ch03.pdf#G7404).)
-//````
-// [base64:]UTF8:    see D92 and D95
-// [base64:]UTF16:   see D91
-// [base64:]UTF16BE: see D91 and D96-98
-// [base64:]UTF16LE: see D91 and D96-98
-// [base64:]UTF32:   see D90
-// [base64:]UTF32BE: see D90 and D99-101
-// [base64:]UTF32LE: see D90 and D99-101
-// [base64:]UINT7:    7-bit integers, ASCII
-// [base64:]UINT8:    8-bit integers, binary or Latin-1
-// [base64:]UINT16:   16-bit integers, big endian byte order
-// [base64:]UINT16BE: 16-bit integers, big endian byte order
-// [base64:]UINT16LE: 16-bit integers, little endian byte order
-// [base64:]UINT32:   32-bit integers, big endian byte order
-// [base64:]UINT32BE: 32-bit integers, big endian byte order
-// [base64:]UINT32LE: 32-bit integers, little endian byte order
-// [base64:]ESCAPED:  7-bit ASCII, escaped non-ASCII characters
-//````
-//
-// The optional `base64:` prefix means that
-// the input will be interpreted as a [base64](https://en.wikipedia.org/wiki/Base64)
-// version of the format. For example:
-//
-// * `base64:UTF8` means that the input is a base64 encoding of a UTF-8 byte stream.<br />
-// * `base64:UINT32LE` means that the input is a base64 encoding of a little endian, 32-bit integer stream.
-//
-// Escaping is a format used by `apg.html` as a means of providing input of non-printing ASCII characters
-// in an HTML `textarea` to the generated parser.
-// (In fact, this module is the result that grew from the original
-// simple need to translate from an arbitrary integer character code array
-// to an `ESCAPED` format of printing, ASCII characters, suitable for use in an HTML page.)
-//
-// The JavaScript string escaping rules are used except that
-// the escape character is the grave accent (\`).
-// The backslash (\\) was rejected because of annoying conflicts with
-// the JavaScript string escape character.
-// Other special characters
-// were rejected because they required the shift key.
-// The escaped encoding rules are:
-//````
-// ``         literal grave accent (`)
-// `xhh       8-bit integer
-// `uhhhh     16-bit integer
-// `u{h...h}  h...h, 1-8 hex digits
-// h          hexadecimal digit, 0-9, a-f, or A-F
-//````
-// Reference: [UTF-16 converter](https://r12a.github.io/apps/conversion/)
-//
-// Note that the `"STRING"` type refers to JavaScript strings.
-// While JavaScript strings seem to usually be UTF-16 encoded characters
-// (see these [notes](https://mathiasbynens.be/notes/javascript-encoding))
-//`apg-conv` relies on the node.js Buffer to interpret them.
-//
-// Notes:
-//
-// * String means JavaScript string
-// * Buffer means node.js Buffer object
-//
-// Regarding `encode(type, data)`:
-//
-// * if type is "STRING", data must be a String
-// * if type is prefixed with "BASE64:", data may be a String or Buffer
-// * for all other types, data must be a Buffer
-//
-// Regarding `decode(type, chars)`
-//
-// * chars is an array of 32-bit integers
-// * if type is `"STRING"` a String is returned
-// * otherwise, a Buffer is returned
-//   (Use Buffer.toString([encoding]) with the appropriate encoding if a String output is desired.)
-//
-"use strict;"
-var _this = this;
-var trans = require('./transformers.js');
-
-/* types */
-var UTF8     = "UTF8";
-var UTF16    = "UTF16";
-var UTF16BE  = "UTF16BE";
-var UTF16LE  = "UTF16LE";
-var UTF32    = "UTF32";
-var UTF32BE  = "UTF32BE";
-var UTF32LE  = "UTF32LE";
-var UINT7    = "UINT7";
-var ASCII    = "ASCII";
-var BINARY   = "BINARY";
-var UINT8    = "UINT8";
-var UINT16   = "UINT16";
-var UINT16LE = "UINT16LE";
-var UINT16BE = "UINT16BE";
-var UINT32   = "UINT32";
-var UINT32LE = "UINT32LE";
-var UINT32BE = "UINT32BE";
-var ESCAPED  = "ESCAPED";
-var STRING   = "STRING";
-
-/* private functions */
-var bom8 = function(src) {
-  src.type = UTF8;
-  var buf = src.data;
-  src.bom = 0;
-  if(buf.length >= 3){
-    if (buf[0] === 0xEF && buf[1] === 0xBB && buf[2] === 0xBF) {
-      src.bom = 3;
-    }
-  }
-}
-var bom16 = function(src) {
-  var buf = src.data;
-  src.bom = 0;
-  switch (src.type) {
-  case UTF16:
-    src.type = UTF16BE;
-    if(buf.length >= 2){
-      if (buf[0] === 0xFE && buf[1] === 0xFF) {
-        src.bom = 2;
-      }else if (buf[0] === 0xFF && buf[1] === 0xFE) {
-        src.type = UTF16LE;
-        src.bom = 2;
-      }
-    }
-    break;
-  case UTF16BE:
-    src.type = UTF16BE;
-    if(buf.length >= 2){
-      if (buf[0] === 0xFE && buf[1] === 0xFF) {
-        src.bom = 2;
-      }else if (buf[0] === 0xFF && buf[1] === 0xFE) {
-        throw new TypeError('src type: "' + UTF16BE + '" specified but BOM is for "' + UTF16LE + '"');
-      }
-    }
-    break;
-  case UTF16LE:
-    src.type = UTF16LE;
-    if(buf.length >= 0){
-      if (buf[0] === 0xFE && buf[1] === 0xFF) {
-        throw new TypeError('src type: "' + UTF16LE + '" specified but BOM is for "' + UTF16BE + '"');
-      }else if (buf[0] === 0xFF && buf[1] === 0xFE) {
-        src.bom = 2;
-      }
-    }
-    break;
-  default:
-    throw new TypeError('UTF16 BOM: src type "' + src.type + '" unrecognized');
-    break;
-  }
-}
-var bom32 = function(src) {
-  var buf = src.data;
-  src.bom = 0;
-  switch (src.type) {
-  case UTF32:
-    src.type = UTF32BE;
-    if(buf.length >= 4){
-      if (buf[0] === 0 && buf[1] === 0 && buf[2] === 0xFE && buf[3] === 0xFF) {
-        src.bom = 4;
-      }
-      if (buf[0] === 0xFF && buf[1] === 0xFE && buf[2] === 0 && buf[3] === 0) {
-        src.type = UTF32LE;
-        src.bom = 4;
-      }
-    }
-    break;
-  case UTF32BE:
-    src.type = UTF32BE;
-    if(buf.length >= 4){
-      if (buf[0] === 0 && buf[1] === 0 && buf[2] === 0xFE && buf[3] === 0xFF) {
-        src.bom = 4;
-      }
-      if (buf[0] === 0xFF && buf[1] === 0xFE && buf[2] === 0 && buf[3] === 0) {
-        throw new TypeError('src type: ' + UTF32BE + ' specified but BOM is for ' + UTF32LE + '"');
-      }
-    }
-    break;
-  case UTF32LE:
-    src.type = UTF32LE;
-    if(buf.length >= 4){
-      if (buf[0] === 0 && buf[1] === 0 && buf[2] === 0xFE && buf[3] === 0xFF) {
-        throw new Error('src type: "' + UTF32LE + '" specified but BOM is for "' + UTF32BE + '"');
-      }
-      if (buf[0] === 0xFF && buf[1] === 0xFE && buf[2] === 0 && buf[3] === 0) {
-        src.bom = 4;
-      }
-    }
-    break;
-  default:
-    throw new TypeError('UTF32 BOM: src type "' + src.type + '" unrecognized');
-    break;
-  }
-}
-var validateSrc = function(type, data){
-  function getType(type){
-    var ret = {
-        type: "",
-        base64: false
-    }
-    var rx = /^(base64:)?([a-zA-Z0-9]+)$/i;
-    var result = rx.exec(type);
-    if (result) {
-      if (result[2]) {
-        ret.type = result[2].toUpperCase();
-      }
-      if (result[1]) {
-        ret.base64 = true;
-      }
-    }
-    return ret;
-  }
-  if (typeof(type) !== "string" || type === "") {
-    throw new TypeError('type: "' + type + '" not recognized');
-  }
-  var ret = getType(type.toUpperCase());
-  if(ret.base64){
-    /* handle base 64 */
-    if(ret.type === STRING){
-      throw new TypeError('type: "' + type + ' "base64:" prefix not allowed with type '+STRING);
-    }
-    if(Buffer.isBuffer(data)){
-      ret.data = trans.base64.decode(data);
-    }else if(typeof(data) === "string"){
-      var buf = Buffer.from(data, "ascii");
-      ret.data = trans.base64.decode(buf);
-    }else{
-      throw new TypeError('type: "' + type + ' unrecognized data type: typeof(data): ' + typeof(data));
-    }
-  }else{
-    ret.data = data;
-  }
-  switch (ret.type) {
-  case UTF8:
-    bom8(ret);
-    break;
-  case UTF16:
-  case UTF16BE:
-  case UTF16LE:
-    bom16(ret);
-    break;
-  case UTF32:
-  case UTF32BE:
-  case UTF32LE:
-    bom32(ret);
-    break;
-  case UINT16:
-    ret.type = UINT16BE;
-    break;
-  case UINT32:
-    ret.type = UINT32BE;
-    break;
-  case ASCII:
-    ret.type = UINT7;
-    break;
-  case BINARY:
-    ret.type = UINT8;
-    break;
-  case UINT7:
-  case UINT8:
-  case UINT16LE:
-  case UINT16BE:
-  case UINT32LE:
-  case UINT32BE:
-  case STRING:
-  case ESCAPED:
-    break;
-  default:
-    throw new TypeError('type: "' + type + '" not recognized');
-    break;
-  }
-  if(ret.type === STRING){
-    if(typeof(ret.data) !== "string"){
-      throw new TypeError('type: "' + type + '" but data is not a string');
-    }
-  }else{
-    if(!Buffer.isBuffer(ret.data)){
-      throw new TypeError('type: "' + type + '" but data is not a Buffer');
-    }
-  }
-  return ret;
-}
-var validateDst = function(type, chars){
-  function getType(type){
-    var fix, rem;
-    var ret = {
-        crlf: false,
-        lf: false,
-        base64: false,
-        type: ""
-    }
-    /*prefix, if any */
-    while(true){
-      rem = type;
-      fix = type.slice(0, 5);
-      if(fix === "CRLF:"){
-        ret.crlf = true;
-        rem = type.slice(5);
-        break;
-      }
-      fix = type.slice(0, 3);
-      if(fix === "LF:"){
-        ret.lf = true;
-        rem = type.slice(3);
-        break;
-      }
-      break;
-    }
-    /*suffix, if any */
-    fix = rem.split(":");
-    if(fix.length === 1){
-      ret.type = fix[0];
-      
-    }else if(fix.length === 2 && fix[1] === "BASE64"){
-      ret.base64 = true;
-      ret.type = fix[0];
-    }
-    return ret;
-  }
-  if(!Array.isArray(chars)){
-    throw new TypeError('dst chars: not array: "' + typeof(chars));
-  }
-  if (typeof(type) !== "string") {
-    throw new TypeError('dst type: not string: "' + typeof(type));
-  }
-  ret = getType(type.toUpperCase());
-  switch (ret.type) {
-  case UTF8:
-  case UTF16BE:
-  case UTF16LE:
-  case UTF32BE:
-  case UTF32LE:
-  case UINT7:
-  case UINT8:
-  case UINT16LE:
-  case UINT16BE:
-  case UINT32LE:
-  case UINT32BE:
-  case ESCAPED:
-    break;
-  case STRING:
-    if(ret.base64){
-      throw new TypeError('":base64" suffix not allowed with type '+STRING);
-    }
-    break;
-  case ASCII:
-    ret.type = UINT7;
-    break;
-  case BINARY:
-    ret.type = UINT8;
-    break;
-  case UTF16:
-    ret.type = UTF16BE;
-    break;
-  case UTF32:
-    ret.type = UTF32BE;
-    break;
-  case UINT16:
-    ret.type = UINT16BE;
-    break;
-  case UINT32:
-    ret.type = UINT32BE;
-    break;
-  default:
-    throw new TypeError('dst type unrecognized: "' + type + '" : must have form [crlf:|lf:]type[:base64]');
-    break;
-  }
-  return ret;
-}
-/* converts an integer (character) array to encoded byte stream */
-var encode = function(type, chars){
-  switch(type){
-  case UTF8:
-    return trans.utf8.encode(chars);
-  case UTF16BE:
-    return trans.utf16be.encode(chars);
-  case UTF16LE:
-    return trans.utf16le.encode(chars);
-  case UTF32BE:
-    return trans.utf32be.encode(chars);
-  case UTF32LE:
-    return trans.utf32le.encode(chars);
-  case UINT7:
-    return trans.uint7.encode(chars);
-  case UINT8:
-    return trans.uint8.encode(chars);
-  case UINT16BE:
-    return trans.uint16be.encode(chars);
-  case UINT16LE:
-    return trans.uint16le.encode(chars);
-  case UINT32BE:
-    return trans.uint32be.encode(chars);
-  case UINT32LE:
-    return trans.uint32le.encode(chars);
-  case STRING:
-    return trans.string.encode(chars);
-  case ESCAPED:
-    return trans.escaped.encode(chars);
-  default:
-    throw new Error('encode type "'+type+'" not recognized')
-  }
-}
-/* converts a byte stream to an integer (character) array */
-var decode = function(src){
-  switch(src.type){
-  case UTF8:
-    return trans.utf8.decode(src);
-  case UTF16LE:
-    return trans.utf16le.decode(src);
-  case UTF16BE:
-    return trans.utf16be.decode(src);
-  case UTF32BE:
-    return trans.utf32be.decode(src);
-  case UTF32LE:
-    return trans.utf32le.decode(src);
-  case UINT7:
-    return trans.uint7.decode(src.data);
-  case UINT8:
-    return trans.uint8.decode(src.data);
-  case UINT16BE:
-    return trans.uint16be.decode(src.data);
-  case UINT16LE:
-    return trans.uint16le.decode(src.data);
-  case UINT32BE:
-    return trans.uint32be.decode(src.data);
-  case UINT32LE:
-    return trans.uint32le.decode(src.data);
-  case STRING:
-    return trans.string.decode(src.data);
-  case ESCAPED:
-    return trans.escaped.decode(src.data);
-  default:
-    throw new Error('decode type "'+src.type+'" not recognized')
-  }
-}
-
-
-/* converts byte stream of "type" to character (integer) array */
-exports.decode = function(type, data) {
-  var src = validateSrc(type, data);
-  return decode(src);
-}
-/* converts character (integer) array to byte stream of "type" */
-exports.encode = function(type, chars) {
-  var c, buf;
-  var dst = validateDst(type, chars);
-  if(dst.crlf){
-    /* prefix with CRLF line end conversion, don't contaminate caller's chars array */
-    c = trans.lineEnds.crlf(chars);
-    buf = encode(dst.type, c);
-  }else if(dst.lf){
-    /* prefix with LF line end conversion, don't contaminate caller's chars array */
-    c = trans.lineEnds.lf(chars);
-    buf = encode(dst.type, c);
-  }else{
-    buf = encode(dst.type, chars);
-  }
-  if(dst.base64){
-    /* post base 64 encoding */
-    buf = trans.base64.encode(buf);
-  }
-  return buf;
-}
-/* converts data of type srcType, to byte stream of type dstType */
-exports.convert = function(srcType, srcData, dstType) {
-  return _this.encode(dstType, _this.decode(srcType, srcData));
-}
-
-}).call(this,require("buffer").Buffer)
-},{"./transformers.js":7,"buffer":2}],7:[function(require,module,exports){
-(function (Buffer){
-"use strict;"
-var _this = this;
-
-/* !!!! DEBUG !!!! */
-//  var assert = require("assert");
-
-/* decoding error codes */
-var NON_SHORTEST = 0xFFFFFFFC;
-var TRAILING     = 0xFFFFFFFD;
-var RANGE        = 0xFFFFFFFE;
-var ILL_FORMED   = 0xFFFFFFFF;
-
-/* mask[n] = 2**n - 1, ie. mask[n] = bits on, mask[6] = %b111111 */
-var mask = [0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023];
-
-/* ascii[n] = 'HH', where 0xHH = n, eg. ascii[254] = 'FE' */
-var ascii = [ 
-  '00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '0A', '0B', '0C', '0D', '0E', '0F', '10', '11', '12', '13', '14', '15', '16', '17',
-  '18', '19', '1A', '1B', '1C', '1D', '1E', '1F', '20', '21', '22', '23', '24', '25', '26', '27', '28', '29', '2A', '2B', '2C', '2D', '2E', '2F', '30',
-  '31', '32', '33', '34', '35', '36', '37', '38', '39', '3A', '3B', '3C', '3D', '3E', '3F', '40', '41', '42', '43', '44', '45', '46', '47', '48', '49',
-  '4A', '4B', '4C', '4D', '4E', '4F', '50', '51', '52', '53', '54', '55', '56', '57', '58', '59', '5A', '5B', '5C', '5D', '5E', '5F', '60', '61', '62',
-  '63', '64', '65', '66', '67', '68', '69', '6A', '6B', '6C', '6D', '6E', '6F', '70', '71', '72', '73', '74', '75', '76', '77', '78', '79', '7A', '7B',
-  '7C', '7D', '7E', '7F', '80', '81', '82', '83', '84', '85', '86', '87', '88', '89', '8A', '8B', '8C', '8D', '8E', '8F', '90', '91', '92', '93', '94',
-  '95', '96', '97', '98', '99', '9A', '9B', '9C', '9D', '9E', '9F', 'A0', 'A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'AA', 'AB', 'AC', 'AD',
-  'AE', 'AF', 'B0', 'B1', 'B2', 'B3', 'B4', 'B5', 'B6', 'B7', 'B8', 'B9', 'BA', 'BB', 'BC', 'BD', 'BE', 'BF', 'C0', 'C1', 'C2', 'C3', 'C4', 'C5', 'C6',
-  'C7', 'C8', 'C9', 'CA', 'CB', 'CC', 'CD', 'CE', 'CF', 'D0', 'D1', 'D2', 'D3', 'D4', 'D5', 'D6', 'D7', 'D8', 'D9', 'DA', 'DB', 'DC', 'DD', 'DE', 'DF',
-  'E0', 'E1', 'E2', 'E3', 'E4', 'E5', 'E6', 'E7', 'E8', 'E9', 'EA', 'EB', 'EC', 'ED', 'EE', 'EF', 'F0', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8',
-  'F9', 'FA', 'FB', 'FC', 'FD', 'FE', 'FF' ];
-
-/* vector of base 64 characters */
-var base64chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".split("");
-
-/* vaector of base 64 character codes */
-var base64codes = [];
-base64chars.forEach(function(char){
-  base64codes.push(char.charCodeAt(0));
-});
-
-exports.utf8 = {
-    encode : function(chars) {
-      var x,y,z,u;
-      var bytes = [];
-      chars.forEach(function(char){
-        var byte;
-        if(char >= 0 && char <= 0x7f){
-          bytes.push(char);
-        }else if(char <= 0x7ff){
-          bytes.push(0xc0 + ((char >> 6) & mask[5]));
-          bytes.push(0x80 + (char & mask[6]));
-        }else if(char < 0xD800 || (char > 0xDFFF && char <= 0xffff)){
-          bytes.push(0xe0 + ((char >> 12) & mask[4]));
-          bytes.push(0x80 + ((char >> 6) & mask[6]));
-          bytes.push(0x80 + (char & mask[6]));
-        }else if(char >= 0x10000 && char <= 0x10ffff){
-          u = (char >> 16) & mask[5];
-          bytes.push(0xf0 + (u >> 2));
-          bytes.push(0x80 + ((u & mask[2]) << 4) + ((char >> 12) & mask[4]));
-          bytes.push(0x80 + ((char >> 6) & mask[6]));
-          bytes.push(0x80 + (char & mask[6]));
-        }else{
-          throw new RangeError("utf8.encode: character out of range: char: " + char);
-        }
-      });
-      return Buffer.from(bytes);
-    },
-  decode : function(src) {
-    /* bytes functions return error for non-shortest forms & values out of range */
-    function bytes2(b1, b2){
-      /*U+0080..U+07FF */
-      /* 00000000 00000yyy yyxxxxxx | 110yyyyy 10xxxxxx */
-      if((b2 & 0xC0) !== 0x80){
-        return TRAILING;
-      }
-      var x = ((b1 & mask[5]) << 6) + (b2 & mask[6]);
-      if(x < 0x80){
-        return NON_SHORTEST;
-      }
-      return x;
-    }
-    function bytes3(b1, b2, b3){
-      /*U+0800..U+FFFF */
-      /* 00000000 zzzzyyyy yyxxxxxx | 1110zzzz 10yyyyyy 10xxxxxx */
-      if(((b3 & 0xC0) !== 0x80) || ((b2 & 0xC0) !== 0x80)){
-        return TRAILING;
-      }
-      var x = ((b1 & mask[4]) << 12) + ((b2 & mask[6]) << 6) + (b3 & mask[6]);
-      if(x < 0X800){
-        return NON_SHORTEST;
-      }
-      if((x >= 0xD800) && (x <= 0xDFFF)){
-        return RANGE;
-      }
-      return x;
-    }
-    function bytes4(b1, b2, b3, b4){
-      /*U+10000..U+10FFFF */
-      /* 000uuuuu zzzzyyyy yyxxxxxx | 11110uuu 10uuzzzz 10yyyyyy 10xxxxxx */
-      if(((b4 & 0xC0) !== 0x80) || ((b3 & 0xC0) !== 0x80) || ((b2 & 0xC0) !== 0x80)){
-        return TRAILING;
-      }
-      var x = ((((b1 & mask[3]) << 2)
-          + ((b2 >> 4) & mask[2])) << 16)
-          + ((b2 & mask[4]) << 12)
-          + ((b3 & mask[6]) << 6)
-          + (b4 & mask[6]);
-      if(x < 0x10000){
-        return NON_SHORTEST;
-      }
-      if(x > 0x10FFFF){
-        return RANGE;
-      }
-      return x;
-    }
-    var c, b1, b2, b3, b4, i1, i2, i3, inc;
-    var len = src.data.length;
-    var i = src.bom;
-    var chars = [];
-    while(i < len){
-      b1 = src.data[i];
-      c = ILL_FORMED;
-      while(true){
-        if(b1 >=0 && b1 <=0x7f){
-          /*U+0000..U+007F 00..7F*/
-          c = b1;
-          inc = 1;
-          break;
-        }
-        i1 = i + 1;
-        if((i1 < len) && (b1 >= 0xc2 && b1 <= 0xdf)){
-          /*U+0080..U+07FF C2..DF 80..BF*/
-          c = bytes2(b1, src.data[i1]);
-          inc = 2;
-          break;
-        }
-        i2 = i + 2
-        if((i2 < len) && (b1 >= 0xe0 && b1 <= 0xef)){
-          /*U+0800..U+FFFF */
-          c = bytes3(b1, src.data[i1], src.data[i2]);
-          inc = 3;
-          break;
-        }
-        i3 = i + 3
-        if((i3 < len) && (b1 >= 0xf0 && b1 <= 0xf4)){
-          /*U+10000..U+10FFFF */
-          c = bytes4(b1, src.data[i1], src.data[i2], src.data[i3]);
-          inc = 4;
-          break;
-        }
-        /* if we fall through to here, it is an ill-formed sequence*/
-        break;
-      }
-      if(c > 0x10FFFF){
-        var at = "byte["+i+"]";
-        if(c === ILL_FORMED){
-          throw new RangeError("utf8.decode: ill-formed UTF8 byte sequence found at: "+at);
-        }
-        if(c === TRAILING){
-          throw new RangeError("utf8.decode: illegal trailing byte found at: "+at);
-        }
-        if(c === RANGE){
-          throw new RangeError("utf8.decode: code point out of range found at: "+at);
-        }
-        if(c === NON_SHORTEST){
-          throw new RangeError("utf8.decode: non-shortest form found at: "+at);
-        }
-        throw new RangeError("utf8.decode: unrecognized error found at: "+at);
-      }
-      chars.push(c);
-      i += inc;
-    }
-    return chars;
-  },
-}
-
-/*var UTF16BE  = "UTF16BE";*/
-exports.utf16be = {
-  encode : function(chars) {
-    var bytes = [];
-    var char, h, l;
-    for(var i = 0; i < chars.length; i += 1){
-      char = chars[i];
-      if( ((char >= 0) && (char <= 0xD7FF)) || ((char >= 0xE000) && (char <= 0xFFFF)) ){
-        bytes.push((char >> 8) & mask[8]);
-        bytes.push(char & mask[8]);
-      }else if(char >= 0x10000 && char <= 0x10FFFF){
-        l = char - 0x10000;
-        h = 0xD800 + (l >> 10);
-        l = 0xDC00 + (l & mask[10]);
-        bytes.push((h >> 8) & mask[8]);
-        bytes.push(h & mask[8]);
-        bytes.push((l >> 8) & mask[8]);
-        bytes.push(l & mask[8]);
-      }else{
-        throw new RangeError("utf16be.encode: UTF16BE value out of range: char["+i+"]: "+char);
-      }
-    }
-    return Buffer.from(bytes);
-  },
-  decode : function(src) {
-    /* assumes caller has insured that src.data is a Buffer of bytes */
-    if(src.data.length % 2 > 0){
-      throw new RangeError("utf16be.decode: data length must be even multiple of 2: length: "+src.data.length);
-    }
-    var chars = [];
-    var len = src.data.length;
-    var i = src.bom;
-    var j = 0;
-    var c, inc, i1, i2, i3, high, low;
-    while(i < len){
-      while(true){
-        i1 = i + 1;
-        if(i1 < len){
-          high = (src.data[i] << 8) + src.data[i1];
-          if((high < 0xD800) || (high > 0xDFFF)){
-            c = high;
-            inc = 2;
-            break;
-          }
-          i3 = i + 3;
-          if(i3 < len){
-            low = (src.data[i + 2] << 8) + src.data[i3];
-            if((high <= 0xDBFF) && (low >= 0xDC00) && (low <= 0xDFFF)){
-              c = 0x10000 + ((high - 0xD800) << 10) + (low - 0xDC00);
-              inc = 4;
-              break;
-            }
-          }
-        }
-        /* if we fall through to here, it is an ill-formed sequence*/
-        throw new RangeError("utf16be.decode: ill-formed UTF16BE byte sequence found: byte["+i+"]");
-        break;
-      }
-      chars[j++] = c;
-      i += inc;
-    }
-    return chars;
-  },
-}
-
-/*var UTF16LE  = "UTF16LE";*/
-exports.utf16le = {
-  encode : function(chars) {
-    var bytes = [];
-    var char, h, l;
-    for(var i = 0; i < chars.length; i += 1){
-      char = chars[i];
-      if( ((char >= 0) && (char <= 0xD7FF)) || ((char >= 0xE000) && (char <= 0xFFFF)) ){
-        bytes.push(char & mask[8]);
-        bytes.push((char >> 8) & mask[8]);
-      }else if(char >= 0x10000 && char <= 0x10FFFF){
-        l = char - 0x10000;
-        h = 0xD800 + (l >> 10);
-        l = 0xDC00 + (l & mask[10]);
-        bytes.push(h & mask[8]);
-        bytes.push((h >> 8) & mask[8]);
-        bytes.push(l & mask[8]);
-        bytes.push((l >> 8) & mask[8]);
-      }else{
-        throw new RangeError("utf16le.encode: UTF16LE value out of range: char["+i+"]: "+char);
-      }
-    }
-    return Buffer.from(bytes);
-  },
-  decode : function(src) {
-    /* assumes caller has insured that src.data is a Buffer of bytes */
-    if(src.data.length % 2 > 0){
-      throw new RangeError("utf16le.decode: data length must be even multiple of 2: length: "+src.data.length);
-    }
-    var chars = [];
-    var len = src.data.length;
-    var i = src.bom;
-    var j = 0;
-    var c, inc, i1, i2, i3, high, low;
-    while(i < len){
-      while(true){
-        i1 = i + 1;
-        if(i1 < len){
-          high = (src.data[i1] << 8) + src.data[i];
-          if((high < 0xD800) || (high > 0xDFFF)){
-            c = high;
-            inc = 2;
-            break;
-          }
-          i3 = i + 3;
-          if(i3 < len){
-            low = (src.data[i3] << 8) + src.data[i + 2];
-            if((high <= 0xDBFF) && (low >= 0xDC00) && (low <= 0xDFFF)){
-              c = 0x10000 + ((high - 0xD800) << 10) + (low - 0xDC00);
-              inc = 4;
-              break;
-            }
-          }
-        }
-        /* if we fall through to here, it is an ill-formed sequence*/
-        throw new RangeError("utf16le.decode: ill-formed UTF16LE byte sequence found: byte["+i+"]");
-        break;
-      }
-      chars[j++] = c;
-      i += inc;
-    }
-    return chars;
-  },
-}
-
-/*var UTF32BE  = "UTF32BE";*/
-exports.utf32be = {
-  encode : function(chars) {
-    var buf = Buffer.alloc(chars.length * 4);
-    var i = 0;
-    chars.forEach(function(char){
-      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
-        throw new RangeError("utf32be.encode: UTF32BE character code out of range: char["+i/4+"]: " + char);
-      }
-      buf[i++] = (char >> 24) & mask[8];
-      buf[i++] = (char >> 16) & mask[8];
-      buf[i++] = (char >> 8) & mask[8];
-      buf[i++] = char & mask[8];
-    });
-    return buf;
-  },
-  decode : function(src) {
-    /* caller to insure src.data is a Buffer of bytes */
-    if(src.data.length % 4 > 0 ){
-      throw new RangeError("utf32be.decode: UTF32BE byte length must be even multiple of 4: length: " + src.data.length);
-    }
-    var chars = [];
-    for(var i = src.bom; i < src.data.length; i += 4){
-      var char = (src.data[i]<<24) + (src.data[i+1]<<16) + (src.data[i+2]<<8) + src.data[i+3];
-      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
-        throw new RangeError("utf32be.decode: UTF32BE character code out of range: char["+i/4+"]: " + char);
-      }
-      chars.push(char);
-    }
-    return chars;
-  }
-}
-
-/*var UTF32LE  = "UTF32LE";*/
-exports.utf32le = {
-  encode : function(chars) {
-    var buf = Buffer.alloc(chars.length * 4);
-    var i = 0;
-    chars.forEach(function(char){
-      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
-        throw new RangeError("utf32le.encode: UTF32LE character code out of range: char["+i/4+"]: " + char);
-      }
-      buf[i++] = char & mask[8];
-      buf[i++] = (char >> 8) & mask[8];
-      buf[i++] = (char >> 16) & mask[8];
-      buf[i++] = (char >> 24) & mask[8];
-    });
-    return buf;
-  },
-  decode : function(src) {
-    /* caller to insure src.data is a Buffer of bytes */
-    if(src.data.length % 4 > 0 ){
-      throw new RangeError("utf32be.decode: UTF32LE byte length must be even multiple of 4: length: " + src.data.length);
-    }
-    var chars = [];
-    for(var i = src.bom; i < src.data.length; i += 4){
-      var char = (src.data[i+3]<<24) + (src.data[i+2]<<16) + (src.data[i+1]<<8) + src.data[i];
-      if(((char >= 0xD800) && (char <= 0xDFFF)) || (char > 0x10FFFF)){
-        throw new RangeError("utf32le.encode: UTF32LE character code out of range: char["+i/4+"]: " + char);
-      }
-      chars.push(char);
-    }
-    return chars;
-  }
-}
-
-/*var UINT7    = "UINT7";*/
-exports.uint7 = {
-    encode : function(chars) {
-      var buf = Buffer.alloc(chars.length);
-      for(var i = 0; i < chars.length; i += 1){
-        if(chars[i] > 0x7f){
-          throw new RangeError("uint7.encode: UINT7 character code out of range: char["+i+"]: " + chars[i]);
-        }
-        buf[i] = chars[i];
-      }
-      return buf;
-    },
-    decode : function(buf) {
-      var chars = [];
-      for(var i = 0; i < buf.length; i += 1){
-        if(buf[i] > 0x7f){
-          throw new RangeError("uint7.decode: UINT7 character code out of range: byte["+i+"]: " + buf[i]);
-        }
-        chars[i] = buf[i];
-      }
-      return chars;
-    }
-  }
-/*var UINT8    = "UINT8";*/
-exports.uint8 = {
-  encode : function(chars) {
-    var buf = Buffer.alloc(chars.length);
-    for(var i = 0; i < chars.length; i += 1){
-      if(chars[i] > 0xff){
-        throw new RangeError("uint8.encode: UINT8 character code out of range: char["+i+"]: " + chars[i]);
-      }
-      buf[i] = chars[i];
-    }
-    return buf;
-  },
-  decode : function(buf) {
-    var chars = [];
-    for(var i = 0; i < buf.length; i += 1){
-      chars[i] = buf[i];
-    }
-    return chars;
-  }
-}
-
-/*var UINT16BE = "UINT16BE";*/
-exports.uint16be = {
-  encode : function(chars) {
-    var buf = Buffer.alloc(chars.length * 2);
-    var i = 0;
-    chars.forEach(function(char){
-      if(char > 0xffff){
-        throw new RangeError("uint16be.encode: UINT16BE character code out of range: char["+i/2+"]: " + char);
-      }
-      buf[i++] = (char >> 8) & mask[8];
-      buf[i++] = char & mask[8];
-    });
-    return buf;
-  },
-  decode : function(buf) {
-    if(buf.length % 2 > 0 ){
-      throw new RangeError("uint16be.decode: UINT16BE byte length must be even multiple of 2: length: " + buf.length);
-    }
-    var chars = [];
-    for(var i = 0; i < buf.length; i += 2){
-      chars.push((buf[i]<<8) + buf[i+1]);
-    }
-    return chars;
-  }
-}
-
-/*var UINT16LE = "UINT16LE";*/
-exports.uint16le = {
-  encode : function(chars) {
-    var buf = Buffer.alloc(chars.length * 2);
-    var i = 0;
-    chars.forEach(function(char){
-      if(char > 0xffff){
-        throw new RangeError("uint16le.encode: UINT16LE character code out of range: char["+i/2+"]: " + char);
-      }
-      buf[i++] = char & mask[8];
-      buf[i++] = (char >> 8) & mask[8];
-    });
-    return buf;
-  },
-  decode : function(buf) {
-    if(buf.length % 2 > 0 ){
-      throw new RangeError("uint16le.decode: UINT16LE byte length must be even multiple of 2: length: " + buf.length);
-    }
-    var chars = [];
-    for(var i = 0; i < buf.length; i += 2){
-      chars.push((buf[i+1]<<8) + buf[i]);
-    }
-    return chars;
-  }
-}
-
-/*var UINT32BE = "UINT32BE";*/
-exports.uint32be = {
-  encode : function(chars) {
-    var buf = Buffer.alloc(chars.length * 4);
-    var i = 0;
-    chars.forEach(function(char){
-      buf[i++] = (char >> 24) & mask[8];
-      buf[i++] = (char >> 16) & mask[8];
-      buf[i++] = (char >> 8) & mask[8];
-      buf[i++] = char & mask[8];
-    });
-    return buf;
-  },
-  decode : function(buf) {
-    if(buf.length % 4 > 0 ){
-      throw new RangeError("uint32be.decode: UINT32BE byte length must be even multiple of 4: length: " + buf.length);
-    }
-    var chars = [];
-    for(var i = 0; i < buf.length; i += 4){
-      chars.push((buf[i]<<24) + (buf[i+1]<<16) + (buf[i+2]<<8) + buf[i+3]);
-    }
-    return chars;
-  }
-}
-
-/*var UINT32LE = "UINT32LE";*/
-exports.uint32le = {
-  encode : function(chars) {
-    var buf = Buffer.alloc(chars.length * 4);
-    var i = 0;
-    chars.forEach(function(char){
-      buf[i++] = char & mask[8];
-      buf[i++] = (char >> 8) & mask[8];
-      buf[i++] = (char >> 16) & mask[8];
-      buf[i++] = (char >> 24) & mask[8];
-    });
-    return buf;
-  },
-  decode : function(buf) {
-    /* caller to insure buf is a Buffer of bytes */
-    if(buf.length % 4 > 0 ){
-      throw new RangeError("uint32le.decode: UINT32LE byte length must be even multiple of 4: length: " + buf.length);
-    }
-    var chars = [];
-    for(var i = 0; i < buf.length; i += 4){
-      chars.push((buf[i+3]<<24) + (buf[i+2]<<16) + (buf[i+1]<<8) + buf[i]);
-    }
-    return chars;
-  }
-}
-
-/*var STRING   = "STRING";*/
-exports.string = {
-  encode: function(chars){
-//      var str = "";
-//      for(var i = 0; i < chars.length; i += 1){
-//        var char = chars[i];
-//        if((char >= 0xd800 && char <= 0xdfff) || char > 0x10ffff){
-//          throw new RangeError("string.encode: character to encode out of range: " + char)
-//        }
-//        str += String.fromCodePoint(char);
-//      }
-//      return str;
-    return _this.utf16le.encode(chars).toString("utf16le");
-  },
-  decode: function(str){
-    /* use Buffer to interpret the character encoding of a JavaScript string */
-    return _this.utf16le.decode({bom: 0, data: Buffer.from(str, "utf16le")});
-  }
-}
-
-/*var ESCAPED  = "ESCAPED";*/
-exports.escaped = {
-  encode : function(chars) {
-    var bytes = [];
-    for (var i = 0; i < chars.length; i += 1) {
-      var char = chars[i];
-      if (char === 96) {
-        bytes.push(char);
-        bytes.push(char);
-      } else if (char === 10) {
-        bytes.push(char);
-      } else if (char >= 32 && char <= 126) {
-        bytes.push(char);
-      } else{
-        var str = "";
-        if (char >= 0 && char <= 31) {
-          str += "`x" + ascii[char];
-        } else if (char >= 127 && char <= 255) {
-          str += "`x" + ascii[char];
-        } else if (char >= 0x100 && char <= 0xffff) {
-          str += "`u" + ascii[(char >> 8) & mask[8]] + ascii[char & mask[8]];
-        } else if (char >= 0x10000 && char <= 0xffffffff) {
-          str += "`u{";
-          var digit = (char >> 24) & mask[8];
-          if (digit > 0) {
-            str += ascii[digit];
-          }
-          str += ascii[(char >> 16) & mask[8]] + ascii[(char >> 8) & mask[8]] + ascii[char & mask[8]] + "}";
-        } else {
-          throw new Error("escape.encode(char): char > 0xffffffff not allowed");
-        }
-        var buf = Buffer.from(str);
-        buf.forEach(function(b){
-          bytes.push(b);
-        });
-      }
-    }
-    return Buffer.from(bytes);
-  },
-  decode : function(buf) {
-    function isHex(hex){
-      if((hex >= 48 && hex <= 57) || (hex >= 65 && hex <= 70) || (hex >= 97 && hex <= 102)){
-        return true;
-      }
-      return false;
-    }
-    function getx(i, len, buf){
-      var ret = {char: null, nexti: i + 2, error: true};
-      if(i + 1 < len ){
-        if(isHex(buf[i]) && isHex(buf[i+1])){
-          var str = String.fromCodePoint(buf[i], buf[i+1]);
-          ret.char = parseInt(str, 16);
-          if(!isNaN(ret.char)){
-            ret.error = false;
-          }
-        }
-      }
-      return ret;
-    }
-    function getu(i, len, buf){
-      var ret = {char: null, nexti: i + 4, error: true};
-      if(i + 3 < len ){
-        if(isHex(buf[i]) && isHex(buf[i+1]) && isHex(buf[i+2]) && isHex(buf[i+3])){
-          var str = String.fromCodePoint(buf[i], buf[i+1], buf[i+2], buf[i+3]);
-          ret.char = parseInt(str, 16);
-          if(!isNaN(ret.char)){
-            ret.error = false
-          }
-        }
-      }
-      return ret;
-    }
-    function getU(i, len, buf){
-      var ret = {char: null, nexti: i + 4, error: true};
-      var str = "";
-      while(i < len && isHex(buf[i])){
-        str += String.fromCodePoint(buf[i]);
-        i += 1;
-      }
-      ret.char = parseInt(str, 16);
-      if(buf[i] === 125 && !isNaN(ret.char)){
-        ret.error = false
-      }
-      ret.nexti = i + 1;
-      return ret;
-    }
-    var chars = [];
-    var len = buf.length;
-    var i1, ret, error;
-    var i = 0;
-    while(i < len){
-      while(true){
-        error = true;
-        if(buf[i] !== 96){
-          /* unescaped character */
-          chars.push(buf[i]);
-          i += 1;
-          error = false;
-          break;
-        }
-        i1 = i + 1;
-        if(i1 >= len){
-          break;
-        }
-        if(buf[i1] === 96){
-          /* escaped grave accent */
-          chars.push(96);
-          i += 2;
-          error = false;
-          break;
-        }
-        if(buf[i1] === 120){
-          ret = getx(i1+1, len, buf);
-          if(ret.error){
-            break;
-          }
-          /* escaped hex */
-          chars.push(ret.char);
-          i = ret.nexti;
-          error = false;
-          break;
-        }
-        if(buf[i1] === 117){
-          if(buf[i1+1] === 123){
-            ret = getU(i1 + 2, len, buf);
-            if(ret.error){
-              break;
-            }
-            /* escaped utf-32 */
-            chars.push(ret.char);
-            i = ret.nexti;
-            error = false;
-            break;
-          }
-          ret = getu(i1 + 1, len, buf);
-          if(ret.error){
-            break;
-          }
-          /* escaped utf-16 */
-          chars.push(ret.char);
-          i = ret.nexti;
-          error = false;
-          break;
-        }
-        break;
-      }
-      if(error){
-        throw new Error("escaped.decode: ill-formed escape sequence at buf["+i+"]");
-      }
-    }
-    return chars;
-  }
-}
-
-/* CRLF: & LF: prefix line conversions */
-var CR = 13;
-var LF = 10;
-exports.lineEnds = {
-    crlf: function(chars){
-      var lfchars = [];
-      var i = 0;
-      while(i < chars.length){
-        switch(chars[i]){
-        case CR:
-          if((i + 1) < chars.length && chars[i + 1] === LF){
-            i += 2;
-          }else{
-            i += 1
-          }
-          lfchars.push(CR);
-          lfchars.push(LF);
-          break;
-        case LF:
-          lfchars.push(CR);
-          lfchars.push(LF);
-          i += 1;
-          break;
-        default:
-          lfchars.push(chars[i]);
-          i += 1;
-          break;
-        }
-      }
-      if(lfchars.length > 0 && lfchars[lfchars.length - 1] !== LF){
-        lfchars.push(CR);
-        lfchars.push(LF);
-      }
-      return lfchars;
-    },
-    lf: function(chars){
-      var lfchars = [];
-      var i = 0;
-      while(i < chars.length){
-        switch(chars[i]){
-        case CR:
-          if((i + 1) < chars.length && chars[i + 1] === LF){
-            i += 2;
-          }else{
-            i += 1
-          }
-          lfchars.push(LF);
-          break;
-        case LF:
-          lfchars.push(LF);
-          i += 1;
-          break;
-        default:
-          lfchars.push(chars[i]);
-          i += 1;
-          break;
-        }
-      }
-      if(lfchars.length > 0 && lfchars[lfchars.length - 1] !== LF){
-        lfchars.push(LF);
-      }
-      return lfchars;
-    }
-}
-exports.base64 = {
-  /* Converts Buffer of arbitrary 8-bit integers to a Buffer of 7-bit base 64 character codes. */
-  /* buf[8-bit data] -> buf[base64] */
-  encode : function(buf) {
-    if(buf.length === 0){
-      return Buffer.alloc(0);
-    }
-    var i, j, n;
-    var tail = buf.length % 3;
-    tail = (tail > 0) ? 3-tail : 0;
-    var units = (buf.length + tail)/3;
-    var base64 = Buffer.alloc(units * 4);
-    if(tail > 0){
-      units -= 1;
-    }
-    i = 0;
-    j = 0;
-    for(var u = 0; u < units; u += 1){
-      n = buf[i++] << 16;
-      n += buf[i++] << 8;
-      n += buf[i++];
-      base64[j++] = base64codes[(n >> 18) & mask[6]];
-      base64[j++] = base64codes[(n >> 12) & mask[6]];
-      base64[j++] = base64codes[(n >> 6) & mask[6]];
-      base64[j++] = base64codes[n & mask[6]];
-    }
-    if (tail === 0) {
-      return base64;
-    }
-    if (tail === 1) {
-      n = buf[i++] << 16;
-      n += buf[i] << 8;
-      base64[j++] = base64codes[(n >> 18) & mask[6]];
-      base64[j++] = base64codes[(n >> 12) & mask[6]];
-      base64[j++] = base64codes[(n >> 6) & mask[6]];
-      base64[j] = base64codes[64];
-      return base64;
-    }
-    if (tail === 2) {
-      n = buf[i] << 16;
-      base64[j++] = base64codes[(n >> 18) & mask[6]];
-      base64[j++] = base64codes[(n >> 12) & mask[6]];
-      base64[j++] = base64codes[64];
-      base64[j] = base64codes[64];
-      return base64;
-    }
-  },
-  /* Converts Buffer of 7-bit, base 64 character codes to a Buffer of 8-bit integers. */
-  /* buf[base64] -> buf[8-bit data] */
-  decode: function(codes){
-    /* remove white space and ctrl characters, validate & translate characters */
-    function validate(buf){
-      var chars = [];
-      var tail = 0;
-      for (var i = 0; i < buf.length; i += 1) {
-        var char = buf[i];
-        while(true){
-          if (char === 32 || char === 9 || char === 10 || char === 13) {
-            break;
-          }
-          if (char >= 65 && char <= 90) {
-            chars.push(char - 65);
-            break;
-          }
-          if (char >= 97 && char <= 122) {
-//              chars.push(char - 97 + 26);
-            chars.push(char - 71);
-            break;
-          }
-          if (char >= 48 && char <= 57) {
-//              chars.push(char - 48 + 52);
-            chars.push(char + 4);
-            break;
-          }
-          if (char === 43) {
-            chars.push(62);
-            break;
-          }
-          if (char === 47) {
-            chars.push(63);
-            break;
-          }
-          if (char === 61) {
-            chars.push(64);
-            tail += 1;
-            break;
-          }
-          /* invalid character */
-          throw new RangeError("base64.decode: invalid character buf[" + i + "]: " + char);
-          break;
-        }
-      }
-      /* validate length */
-      if (chars.length % 4 > 0) {
-        throw new RangeError("base64.decode: string length not integral multiple of 4: " + chars.length);
-      }
-      /* validate tail */
-      switch(tail){
-      case 0:
-        break;
-      case 1:
-        if (chars[chars.length - 1] !== 64) {
-          throw new RangeError("base64.decode: one tail character found: not last character");
-        }
-        break;
-      case 2:
-        if ((chars[chars.length - 1] !== 64) || (chars[chars.length - 2] !== 64)) {
-          throw new RangeError("base64.decode: two tail characters found: not last characters");
-        }
-        break;
-      default:
-        throw new RangeError("base64.decode: more than two tail characters found: " + tail);
-        break;
-      }
-      return {tail: tail, buf: Buffer.from(chars)}
-    }
-    
-    /**/
-    if(codes.length === 0){
-      return Buffer.alloc(0);
-    }
-    var val = validate(codes);
-    var tail = val.tail;
-    var base64 = val.buf;
-    var i, j, n;
-    var units = base64.length / 4;
-    var buf = Buffer.alloc((units*3) - tail);
-    if(tail > 0){
-      units -= 1;
-    }
-    j = 0;
-    i = 0;
-    for(var u = 0; u < units; u += 1) {
-      n = base64[i++] << 18;
-      n += base64[i++] << 12;
-      n += base64[i++] << 6;
-      n += base64[i++];
-      buf[j++] = (n >> 16) & mask[8];
-      buf[j++] = (n >> 8) & mask[8];
-      buf[j++] = n & mask[8];
-    }
-    if (tail === 1) {
-      n = base64[i++] << 18;
-      n += base64[i++] << 12;
-      n += base64[i] << 6;
-      buf[j++] = (n >> 16) & mask[8];
-      buf[j] = (n >> 8) & mask[8];
-    }
-    if (tail === 2) {
-      n = base64[i++] << 18;
-      n += base64[i++] << 12;
-      buf[j] = (n >> 16) & mask[8];
-    }
-    return buf;
-    
-  },
-  /* returns string with line breaks */
-  toString: function(buf){
-    if(buf.length % 4 > 0){
-      throw new RangeError("base64.toString: input buffer length not multiple of 4: " + buf.length);
-    }
-    var str = "";
-    var lineLen = 0;
-    function buildLine(c1, c2, c3, c4) {
-      switch (lineLen) {
-      case 76:
-        str += "\r\n" + c1 + c2 + c3 + c4;
-        lineLen = 4;
-        break;
-      case 75:
-        str += c1 + "\r\n" + c2 + c3 + c4;
-        lineLen = 3;
-        break;
-      case 74:
-        str += c1 + c2 + "\r\n" + c3 + c4;
-        lineLen = 2;
-        break;
-      case 73:
-        str += c1 + c2 + c3 + "\r\n" + c4;
-        lineLen = 1;
-        break;
-      default:
-        str += c1 + c2 + c3 + c4;
-        lineLen += 4;
-        break;
-      }
-    }
-    function validate(c){
-      if(c >= 65 && c <= 90){
-        return true
-      }
-      if(c >= 97 && c <= 122){
-        return true
-      }
-      if(c >= 48 && c <= 57){
-        return true
-      }
-      if(c === 43){
-        return true
-      }
-      if(c === 47){
-        return true
-      }
-      if(c === 61){
-        return true
-      }
-      return false;
-    }
-    for(var i = 0; i < buf.length; i += 4){
-      for(var j = i; j < i+4; j +=1){
-        if(!validate(buf[j])){
-          throw new RangeError("base64.toString: buf["+j+"]: "+buf[j]+" : not valid base64 character code");
-        }
-      }
-      buildLine(String.fromCharCode(buf[i]), String.fromCharCode(buf[i+1]), String.fromCharCode(buf[i+2]), String.fromCharCode(buf[i+3]));
-      
-    }
-    return str;
-  },
-  /* Encode a Buffer of 8-bit bytes. Return as base 64 string with line breaks. */
-  encodeString : function(buf) {
-    return this.toString(this.encode(buf));
-  },
-  /* Decode a base 64 string, ignoring white space and ctrl chars. Returns Buffer of 8-bit bytes. */
-  decodeString : function(str) {
-    return this.decode(this.toBuffer(str));
-  },
-}
-
-/* map of base 64 character codes to base 64 6-bit indexes */
-//var base64index = [
-//  /*  0*/0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-//  /* 10*/0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-//  /* 20*/0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-//  /* 30*/0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,0xff,
-//  /* 40*/0xff,0xff,0xff,62  ,0xff,0xff,0xff,63  ,52  ,53  ,
-//  /* 50*/54  ,55  ,56  ,57  ,58  ,59  ,60  ,61  ,0xff,0xff,
-//  /* 60*/0xff,64  ,0xff,0xff,0xff,0   ,1   ,2   ,3   ,4   ,
-//  /* 70*/5   ,6   ,7   ,8   ,9   ,10  ,11  ,12  ,13  ,14  ,
-//  /* 80*/15  ,16  ,17  ,18  ,19  ,20  ,21  ,22  ,23  ,24  ,
-//  /* 90*/25  ,0xff,0xff,0xff,0xff,0xff,0xff,26  ,27  ,28  ,
-//  /*100*/29  ,30  ,31  ,32  ,33  ,34  ,35  ,36  ,37  ,38  ,
-//  /*110*/39  ,40  ,41  ,42  ,43  ,44  ,45  ,46  ,47  ,48  ,
-//  /*120*/49  ,50  ,51  ,0xff,0xff,0xff,0xff,0xff,0xff,0xff
-//];
-
-}).call(this,require("buffer").Buffer)
-},{"buffer":2}],8:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 // This module is used by the parser to build an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
 // The AST can be thought of as a subset of the full parse tree.
 // Each node of the AST holds the phrase that was matched at the corresponding, named parse tree node.
@@ -6659,7 +6547,7 @@ module.exports = function() {
   };
 }
 
-},{"./identifiers.js":12,"./utilities.js":17,"apg-conv":6}],14:[function(require,module,exports){
+},{"./identifiers.js":12,"./utilities.js":17,"apg-conv":1}],14:[function(require,module,exports){
 // This module is the constructor for the statistics gathering object.
 // The statistics are nothing more than keeping a count of the 
 // number of times each node in the parse tree is traversed.
@@ -8175,7 +8063,7 @@ exports.stringToAsciiHtml = function(str){
 //  var chars = this.stringToChars(str);
   return this.charsToAsciiHtml(chars);
 }
-},{"./identifiers.js":12,"./style.js":15,"apg-conv":6}],18:[function(require,module,exports){
+},{"./identifiers.js":12,"./style.js":15,"apg-conv":1}],18:[function(require,module,exports){
 // Generated by JavaScript APG, Version 2.0 [`apg-js2`](https://github.com/ldthomas/apg-js2)
 module.exports = function(){
 "use strict";
@@ -9146,13 +9034,11 @@ module.exports = function(){
 },{}],19:[function(require,module,exports){
 // This module converts an input SABNF grammar text file into a 
 // grammar object that can be used with [`apg-lib`](https://github.com/ldthomas/apg-js2-lib) in an application parser.
-// The parser that does this is based on the grammar `resources/abnf-for-sabnf-grammar.bnf`.
-// The seemingly paradoxical fact that this parser generator is a parser generated from the ABNF grammar
-// `resources/abnf-for-sabnf-grammar.bnf`
-// can lead to some circular arguments in the discussion and caution is required.
-// There are two grammars involved and we need to make a clear distinction:
-// - ABNF for SABNF (`resources/abnf-for-sabnf-grammar.bnf`) is the grammar that this parser is built from.
-// - the grammar the user wants a parser for is the input to this module.
+// **apg** is, in fact itself, an ABNF parser that generates and SABNF parser.
+// It is based on the grammar<br>
+//`abnf/abnf-for-sabnf-grammar.bnf`.<br>
+// In its syntax phase, **apg** analyzes the user's input SABNF grammar for correct syntax, generating an AST as it goes.
+// In its semantic phase, **apg** translates the AST to generate the parser for the input grammar.
 module.exports = function() {
   "use strict";
   var thisFileName = "abnf-for-sabnf-parser.js: ";
@@ -9299,15 +9185,8 @@ module.exports = function() {
     }
     return ret;
   }
-  // Generate a parser or grammar file to be used with the `apg-lib` `parser()` function.
-//  this.generateJavaScript = function(rules, udts, fd) {
-//    try {
-//      fs.writeSync(fd, this.generateSource(rules, udts));
-//    } catch (e) {
-//      throw new Error(thisFileName + "generateJavaScript(): file system error\n" + e.message);
-//    }
-//  }
-  // Generate a parser or grammar file to be used with the `apg-lib` `parser()` function.
+  // Generate a grammar constructor function.
+  // An object instantiated from this constructor is used with the `apg-lib` `parser()` function.
   this.generateSource = function(rules, udts, name) {
     var source = "";
     var i;
@@ -9443,17 +9322,6 @@ module.exports = function() {
       }
       source += "\n";
       source += "  //```\n";
-//      source += "  /* CALLBACK LIST PROTOTYPE (callback[i] must be false or function reference) */\n";
-//      source += "  this.callbacks = [];\n";
-//      ruleNames.forEach(function(name) {
-//        source += "  this.callbacks['" + name + "'] = false;\n";
-//      });
-//      if (udts.length > 0) {
-//        udtNames.forEach(function(name) {
-//          source += "  this.callbacks['" + name + "'] = false;\n";
-//        });
-//      }
-//      source += "\n";
       source += "  /* OBJECT IDENTIFIER (for internal parser use) */\n";
       source += "  this.grammarObject = 'grammarObject';\n";
       source += "\n";
@@ -9628,9 +9496,10 @@ module.exports = function() {
     }
     return source;
   }
-  /* generate a grammar file object */
-  /* same object as instantiating the function defined in the output file above */
-  /* used internally by the apg-exp application */
+  // Generate a grammar file object.
+  // Returns the same object as instantiating the constructor function returned by<br>
+  //`this.generateSource()`.<br>
+  // It is used internally by the **apg-exp** application.
   this.generateObject = function(rules, udts) {
     var obj = {};
     if (grammarAnalysisParser) {
@@ -9669,8 +9538,7 @@ module.exports = function() {
 
 },{"./abnf-for-sabnf-grammar.js":18,"./semantic-callbacks.js":27,"./syntax-callbacks.js":28,"apg-lib":11}],20:[function(require,module,exports){
 window.apgweb = (function() {
-  // ## apgweb
-  // apgweb is the interface to the web page interface (GUI) to JavaScript APG 2.0.
+  // This function generates the object with all of the event handlers for the web interface events.
   /* Global HTML page information */
   var GRAMMAR_AREA = 'grammar-area';
   var PARSER_AREA = 'parser-area';
@@ -9734,14 +9602,14 @@ window.apgweb = (function() {
       element: null
   }
 
-  // apgInput is an object for processing the input to a generated parser.
-  // It take the input string from the parser input area, performs validation
+  // `apgInput` is the constructor for the object which processes the input to a generated parser.
+  // It takes the input string from the parser input area, performs validation
   // checks and, if no errors, produces an array of characters for the parser to parse.
-  // - input: the input string
-  // - chars: an array of character codes matching the input string
-  // - parseChars: the array of character codes for the parser to process; may different from chars due to escaped character coding
-  // - invalidChars: the number of invalid characters found
-  // - invalidEscapes: the number of invalid escape sequences found (e.g. \xg - escape sequence not followed by hex digits)
+  //````
+  // input: the input string
+  // mode: if "escaped", input is decoded from escaped format
+  //       otherwise, input is treated as pure ASCII.
+  //````
   var apgInput = function(input, mode) {
     var apglib = require("apg-lib");
     var strings = [];
@@ -10093,6 +9961,7 @@ window.apgweb = (function() {
       translateCtrl(input, this.pchars, pmap);
     }
   }
+  // Constructor function for the generated parser.
   var apgParser = function() {
     var TAB_PHRASES = 3;
     var TAB_STATE = 4;
@@ -10117,9 +9986,6 @@ window.apgweb = (function() {
     function iframeWrite(pageInfo, body) {
       var win = pageInfo.element.contentWindow
       var doc = win.document;
-      // font-family: monospace;
-      // font-size: .8em;
-      // margin-top: 3px;
       var lineHeight = 14;
       var fontSize = 12;
       var css = 'body{';
@@ -10222,11 +10088,12 @@ window.apgweb = (function() {
       return null;
     }
 
-    // Initialization:
-    // - src is the the generated grammar text file, null if none
-    // - obj is the constructed grammar object, null if none
-    // - msg is the error message, displayed only of src & obj are null
-    /* public functions */
+    // Initializes the generated parser.
+    //````
+    // src: is the the generated grammar text file, null if none
+    // obj: is the constructed grammar object, null if none
+    // msg: is the error message, displayed only of src & obj are null
+    //````
     this.init = function(src, obj, msg) {
       PAGE_INFO[PARSER_AREA].element.value = '<h4>No parser available.</h4>';
       PAGE_INFO[STATE_PAGE].element.innerHTML = '<h4>No parser state available.</h4>';
@@ -10523,14 +10390,6 @@ window.apgweb = (function() {
         }
 
         /* configure AST for all rule/UDT names */
-//        grammar.rules.forEach(function(rule) {
-//          parser.ast.callbacks[rule.name] = true;
-//        });
-//        grammar.udts.forEach(function(udt) {
-//          parser.ast.callbacks[udt.name] = true;
-//        });
-
-        /* get the start rule */
         startRule = 0;
         result = parser.parse(grammar, startRule, input.pchars);
         PAGE_INFO[STATE_PAGE].element.innerHTML = apglib.utils.parserResultToHtml(result, "Parser State");
@@ -10612,36 +10471,30 @@ window.apgweb = (function() {
       }
       iframeWrite(PAGE_INFO[PHRASES_FRAME], input.displayPhrases(phrases));
     }
-    /* double click in input textarea will validate the input */
-//    this.displayInput = function() {
-//      var obj = new apgInput(PAGE_INFO[INPUT_AREA].element.value);
-//      iframeWrite(PAGE_INFO[PHRASES_FRAME], obj.displayInput());
-//      this.openTab(TAB_PHRASES);
-//    }
     this.openTab = function(tabnumber) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("parser-tabcontent");
       tablinks = document.getElementsByClassName("parser-tablinks");
 
-      // hide all content
+      /* hide all content */
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].className = tabcontent[i].className.replace(" show", "");
         tabcontent[i].className = tabcontent[i].className.replace(" hide", "");
         tabcontent[i].className += " hide";
       }
 
-      // deactivate all menu links
+      /* deactivate all menu links */
       for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
 
-      // activate menu item (changes its color)
+      /* activate menu item (changes its color) */
       var tab = tablinks[tabnumber];
       if (tab) {
         tab.className += " active";
       }
 
-      // show the activated content
+      /* show the activated content */
       var content = tabcontent[tabnumber];
       if (content) {
         content.className = content.className.replace(" hide", "");
@@ -10651,6 +10504,7 @@ window.apgweb = (function() {
       return false;
     }
   }
+  // Constructor for the attributes object. Handles display and sorting of the rule attributes.
   var apgAttrs = function() {
     var DOWN = 1;
     var UP = 2;
@@ -10701,15 +10555,11 @@ window.apgweb = (function() {
     var colNames = [];
     var noDataMsg = "<h4>Attributes not initialized.</h4>";
 
-    // 'self' for accessing 'this' reference in anonymous functions.
-    // self.rulesData is the attribute data, if any.
-    // self.msg is a message to display on the attributes page if there is no data.
     var self = this;
     self.rulesData = null;
     self.udtsData = null;
     self.msg = noDataMsg;
 
-    // private sorting functions
     function sortIndex(sortDir, errors, others, udts) {
       function up(lhs, rhs) {
         return rhs.index - lhs.index;
@@ -10803,7 +10653,7 @@ window.apgweb = (function() {
       }
     }
 
-    // Generates and displays the attribute table.
+    /* Generates and displays the attribute table. */
     var tableGen = function(errors, others) {
       function yes(val) {
         return val ? "yes" : "no";
@@ -10833,8 +10683,6 @@ window.apgweb = (function() {
         var checked = sortState.topErrors ? "checked" : "";
         html += '<input type="checkbox" class="align-middle" id="' + CHECKED_ID + '" ' + checked + '> keep rules with attribute errors at top';
       }
-      // html += '<tr><th><a class="'+style.CLASS_RULESLINK+'" href="javascript:void(0)" onclick="apgweb.rules.sortIndex(event)">' + self.dir.index +
-      // '</a></th>';
       html += '<table class="' + style.CLASS_ATTRIBUTES + '">';
       html += ' <caption>Attributes</caption>'
       html += '<tr>';
@@ -10862,7 +10710,7 @@ window.apgweb = (function() {
       return html;
     }
 
-    // Initializes the attributes table state data for a descending sort on the index column.
+    /* Initializes the attributes table state data for a descending sort on the index column. */
     function initSort(col) {
       if (self.rulesData === null) {
         return;
@@ -10870,7 +10718,7 @@ window.apgweb = (function() {
       for (var i = 0; i < COL_NAMES.length; i += 1) {
         colNames[i] = COL_NAMES[i].NONE;
       }
-      // initialize to default sort state
+      /* initialize to default sort state */
       sortState.hasErrors = false;
       for (var i = 0; i < self.rulesData.length; i += 1) {
         if (self.rulesData[i].error) {
@@ -10884,8 +10732,8 @@ window.apgweb = (function() {
       colNames[sortState.col] = COL_NAMES[sortState.col].UP;
     }
 
-    // Called by the parser generator to initialize the attributes table, if any.
-    // Displays either the table or an error message on the attributes page.
+    /* Called by the parser generator to initialize the attributes table, if any. */
+    /* Displays either the table or an error message on the attributes page. */
     this.init = function(rules, udts, msg) {
       self.rulesData = rules;
       self.udtsData = udts;
@@ -10900,7 +10748,7 @@ window.apgweb = (function() {
       self.sort(0);
     }
 
-    // Event handler for the attribute table column header sorting anchors.
+    /* Event handler for the attribute table column header sorting anchors. */
     this.sort = function(col) {
       if (self.rulesData === null) {
         PAGE_INFO[ATTRS_PAGE].element.innerHTML = self.msg;
@@ -10965,9 +10813,10 @@ window.apgweb = (function() {
       return false;
     }
 
-    // initialize the attributes page message
+    /* initialize the attributes page message */
     this.init(null, null);
   }
+  // Constuctor for the display and sorting of the rules/UDT information.
   var apgRules = function() {
     var INDEX_DOWN = "index\u2193";
     var INDEX_UP = "index\u2191";
@@ -10979,9 +10828,6 @@ window.apgweb = (function() {
     var ROW_HIDE = "hide";
     var style = require('apg-lib').style;
 
-    // 'self' for accessing 'this' reference in anonymous functions.
-    // self.rulesData is the attribute data, if any.
-    // self.msg is a message to display on the attributes page if there is no data.
     var self = this;
     self.rulesData = null;
     self.udtsData = null;
@@ -11009,12 +10855,12 @@ window.apgweb = (function() {
         return lhs.index - rhs.index;
       }
       if (event.currentTarget.innerHTML === INDEX_DOWN) {
-        // sort up
+        /* sort up */
         self.rulesData.rows.sort(up);
         self.udtsData.sort(up);
         self.dir.index = INDEX_UP;
       } else {
-        // sort down
+        /* sort down */
         self.rulesData.rows.sort(down);
         self.udtsData.sort(down);
         self.dir.index = INDEX_DOWN;
@@ -11042,12 +10888,12 @@ window.apgweb = (function() {
         return 0;
       }
       if (event.currentTarget.innerHTML === RULES_DOWN) {
-        // sort up
+        /* sort up */
         self.rulesData.rows.sort(up);
         self.udtsData.sort(up);
         self.dir.rules = RULES_UP;
       } else {
-        // sort down
+        /* sort down */
         self.rulesData.rows.sort(down);
         self.udtsData.sort(down);
         self.dir.rules = RULES_DOWN;
@@ -11055,7 +10901,6 @@ window.apgweb = (function() {
       return tableGen();
     }
     this.init = function(rules, udts, msg) {
-      // constructor: initial sort of table descending on rule indexes; show all rule dependencies
       self.rulesData = rules;
       self.udtsData = udts;
       self.msg = (msg && typeof (msg) === "string") ? msg : "";
@@ -11067,7 +10912,7 @@ window.apgweb = (function() {
       tableGen();
     }
 
-    // Generate the rules table HTML.
+    /* Generate the rules table HTML. */
     var tableGen = function() {
       if (self.rulesData === null) {
         PAGE_INFO[RULES_PAGE].element.innerHTML = self.msg;
@@ -11119,37 +10964,37 @@ window.apgweb = (function() {
 
     self.init(null, null, "<h4>Rules not initialized.</h4>");
   }
-
+// Constructor for the generator function. Handles the main logic for parser generation.  
   var apgWeb = function() {
     var attributes = require("./attributes.js");
     var inputAnalysis = require("./input-analysis-parser.js");
     var sabnfParser = require("./abnf-for-sabnf-parser.js");
 
-    // public functions
+    /* handle the main menu tabs */
     this.openTab = function(tabnumber) {
       var i, tabcontent, tablinks;
       tabcontent = document.getElementsByClassName("tabcontent");
       tablinks = document.getElementsByClassName("tablinks");
 
-      // hide all content
+      /* hide all content */
       for (i = 0; i < tabcontent.length; i++) {
         tabcontent[i].className = tabcontent[i].className.replace(" show", "");
         tabcontent[i].className = tabcontent[i].className.replace(" hide", "");
         tabcontent[i].className += " hide";
       }
 
-      // deactivate all menu links
+      /* deactivate all menu links */
       for (i = 0; i < tablinks.length; i++) {
         tablinks[i].className = tablinks[i].className.replace(" active", "");
       }
 
-      // activate menu item (changes its color)
+      /* activate menu item (changes its color) */
       var tab = tablinks[tabnumber];
       if (tab) {
         tab.className += " active";
       }
 
-      // show the activated content
+      /* show the activated content */
       var content = tabcontent[tabnumber];
       if (content) {
         content.className = content.className.replace(" hide", "");
@@ -11236,7 +11081,7 @@ window.apgweb = (function() {
       var attrErrors = false;
       var validGrammar = false;
       while (true) {
-        // validate the input SABNF grammar
+        /* validate the input SABNF grammar */
         if (!sabnfGrammar || sabnfGrammar === "") {
           grammarHtml = '<h4 class="error">Input SABNF grammar is empty.</h4>';
           break;
@@ -11250,7 +11095,7 @@ window.apgweb = (function() {
           break;
         }
 
-        // validate the SABNF grammar syntax
+        /* validate the SABNF grammar syntax */
         sabnf = new sabnfParser();
         result = sabnf.syntax(analyzer, strict, false);
         if (result.hasErrors) {
@@ -11258,14 +11103,14 @@ window.apgweb = (function() {
           break;
         }
 
-        // validate the SABNF grammar semantics
+        /* validate the SABNF grammar semantics */
         result = sabnf.semantic();
         if (result.hasErrors) {
           grammarHtml += analyzer.errorsToHtml(result.errors, "SABNF grammar has semantic errors");
           break;
         }
 
-        // validate the SABNF grammar attributes
+        /* validate the SABNF grammar attributes */
         attrsObj = new attributes();
         var errors = attrsObj.getAttributes(result.rules, result.udts, result.rulesLineMap);
         if (errors.length > 0) {
@@ -11274,14 +11119,14 @@ window.apgweb = (function() {
           break;
         }
 
-        // success: have a valid grammar
+        /* success: have a valid grammar */
         validGrammar = true;
         break;
       }
 
-      // display the results
+      /* display the results */
       PAGE_INFO[GRAMMAR_PAGE].element.innerHTML = grammarHtml;
-      // Initialize the parser object.
+      /* Initialize the parser object. */
       if (validGrammar) {
         var src = sabnf.generateSource(result.rules, result.udts, "var generatedGrammar");
         var obj = sabnf.generateObject(result.rules, result.udts);
@@ -11289,8 +11134,8 @@ window.apgweb = (function() {
       } else {
         this.parser.init(null, null, parserErrorMsg);
       }
-      // Initialize the rules and attributes objects.
-      // Having attrsObj implies having result.udt
+      /* Initialize the rules and attributes objects. */
+      /* Having attrsObj implies having result.udt */
       if (attrsObj) {
         this.rules.init(attrsObj.rulesWithReferencesData(), result.udts);
         this.attrs.init(attrsObj.ruleAttrsData(), attrsObj.udtAttrsData());
@@ -11298,11 +11143,11 @@ window.apgweb = (function() {
         this.rules.init(null, null, rulesErrorMsg);
         this.attrs.init(null, null, attrsErrorMsg);
       }
-      // Open the proper tab to display the appropriate results.
-      // - the grammar tab if the grammar is invalid
-      // - the attributes tab if there are attribute errors
-      // - the parser tab if the grammar is valid
-      // - always initialize the parser page to the tab (even if the parser page is not displayed)
+      /* Open the proper tab to display the appropriate results. */
+      /* - the grammar tab if the grammar is invalid */
+      /* - the attributes tab if there are attribute errors */
+      /* - the parser tab if the grammar is valid */
+      /* - always initialize the parser page to the Parser tab (even if the parser page is not displayed) */
       this.parser.openTab(0)
       if (attrErrors) {
         this.openTab(3)
@@ -11406,7 +11251,7 @@ window.apgweb = (function() {
   return new apgWeb();
 })();
 
-},{"./abnf-for-sabnf-parser.js":19,"./attributes.js":24,"./input-analysis-parser.js":26,"apg-conv":6,"apg-lib":11}],21:[function(require,module,exports){
+},{"./abnf-for-sabnf-parser.js":19,"./attributes.js":24,"./input-analysis-parser.js":26,"apg-conv":1,"apg-lib":11}],21:[function(require,module,exports){
 // This module is used by [`attributes.js`](./attributes.html) to determine rule dependencies
 // (which rules are referenced by the given rule)
 // and the attribute type of each rule.
@@ -11425,12 +11270,6 @@ window.apgweb = (function() {
 //Additionally, and important to the algorithms internally, are
 // non-recursive rules that refer to mutually recursive sets, and simple recursive rules
 // that refer to mutually recursive sets.
-// On the output page `html/attributes.html` these are designated as:
-// - N - non-recursive
-// - R - simple recursive
-// - MR - belongs to a mutually recursive set
-// - NMR - non-recursive, but refers to one or more mutually recursive set member
-// - RMR -  simple recursive, but refers to one or more mutually recursive set member
 module.exports = function(rules) {
   "use strict";
   var thisFileName = "attribute-types.js: ";
@@ -12075,7 +11914,6 @@ module.exports = function(rules) {
 //  and [`attributes-non-recursive.js`](./attributes-non-recursive.html)
 // determines the rule dependencies (the list of rules referenced by each rule)
 // and rule attributes.
-// Attributes are displayed on the `html/attributes.html` output page.
 //
 // It is well known that recursive-descent parsers will fail if a rule is left recursive.
 // e.g.<br>
@@ -12682,7 +12520,8 @@ module.exports = function(){
 (function (Buffer){
 // This module reads the input grammar file and does a preliminary analysis
 //before attempting to parse it into a grammar object.
-// (*See `resources/input-analysis-grammar.bnf` for the grammar file this parser is based on.*)
+// See:<br> `abnf/input-analysis-grammar.bnf`<br>for the grammar file this parser is based on.
+//
 // It has two primary functions.
 // - verify the character codes - no non-printing ASCII characters
 // - catalog the lines - create an array with a line object for each line.
@@ -12790,41 +12629,6 @@ module.exports = function() {
     }
     return id.SEM_OK;
   }
-  // Get the grammar from the named file.
-//  this.get = function(filename) {
-//    var files = [];
-//    this.chars.length = 0;
-//    this.lines.length = 0;
-//    if (typeof (filename) === "string") {
-//      files.push(filename);
-//    } else if (Array.isArray(filename)) {
-//      files = filename
-//    } else {
-//      throw new Error("get(): unrecognized input: must be string or array of strings");
-//    }
-//    inputFileCount = files.length;
-//    try {
-//      for (var j = 0; j < files.length; j += 1) {
-//        var buf = fs.readFileSync(files[j]);
-//        for (var i = 0; i < buf.length; i += 1) {
-//          this.chars.push(buf[i]);
-//        }
-//        this.originalString = apglib.utils.charsToString(this.chars);
-//      }
-//    } catch (e) {
-//      throw new Error(thisFileName + "get(): error reading input grammar file\n" + e.message);
-//    }
-//  };
-  // Get the grammar from the input string.
-//  this.getString = function(str) {
-//    if (typeof (str) !== "string" || str === "") {
-//      throw new Error(thisFileName + 'getString(): input not a valid string: "' + str + '"');
-//    }
-//    this.originalString = str.slice(0);
-//    this.chars.length = 0;
-//    this.lines.length = 0;
-//    this.chars = converter.decode("STRING", str);
-//  }
   // Analyze the grammar for character code errors and catalog the lines.
   /*
    * grammar error format 
@@ -13052,14 +12856,6 @@ module.exports = function() {
       html += '<caption>' + title + '</caption>\n';
     }
     html += '<tr><th>line<br>no.</th><th>line<br>offset</th><th>error<br>offset</th><th><br>text</th></tr>\n';
-    /*
-     * grammar error format 
-     * { 
-     *  line: 0, 
-     *  char: 0, 
-     *  msg: "" 
-     * }
-     */
     errors.forEach(function(val) {
       var line, relchar, beg, end, len, length, text, prefix = "", suffix = "";
       if (lines.length === 0) {
@@ -13097,7 +12893,9 @@ module.exports = function() {
   this.toString = function() {
     return converter.encode("STRING", this.chars);
   }
-  // Display an array of errors of the form `{line: 0, char: 0, msg: "message"}` as ASCII text.
+  // Display an array of errors of the form<br>
+  //`{line: 0, char: 0, msg: "message"}`<br>
+  //as ASCII text.
   this.errorsToString = function(errors){
     var str, thisChars, thisLines, line, beg, end;
     str = "";
@@ -13156,9 +12954,10 @@ module.exports = function() {
 }
 
 }).call(this,require("buffer").Buffer)
-},{"./input-analysis-grammar.js":25,"apg-conv":6,"apg-lib":11,"buffer":2,"fs":1}],27:[function(require,module,exports){
+},{"./input-analysis-grammar.js":25,"apg-conv":1,"apg-lib":11,"buffer":4,"fs":3}],27:[function(require,module,exports){
 // This module has all of the semantic callback functions for the [ABNF for SABNF parser](./abnf-for-sabnf-parser.html).
-// (*See `resources/abnf-for-sabnf-grammar.bnf` for the grammar file these callback functions are based on.*)
+// See:<br> `abnf/abnf-for-sabnf-grammar.bnf`<br>
+//for the grammar file these callback functions are based on.
 // These functions are called by the parser's AST translation function (see `apg-lib` documentation).
 module.exports = function(grammar) {
   "use strict";
@@ -13232,20 +13031,23 @@ module.exports = function(grammar) {
     return num;
   }
 
-  /*
-   * This is the prototype for all semantic analysis callback functions.
-   * 
-   * state - the translator state
-   *   id.SEM_PRE for downward (pre-branch) traversal of the AST
-   *   id.SEM_POST for upward (post branch) traversal of the AST
-   * chars - the array of character codes for the input string
-   * phraseIndex - index into the chars array to the first character of the phrase
-   * phraseCount - the number of characters in the phrase
-   * data - user-defined data passed to the translator for use by the callback functions.
-   * @return id.SEM_OK, normal return.
-   *         id.SEM_SKIP in state id.SEM_PRE will skip the branch below.
-   *         Any thing else is an error which will stop the translation.
-   */
+  // This is the prototype for all semantic analysis callback functions.
+  //````
+  // state - the translator state
+  //   id.SEM_PRE for downward (pre-branch) traversal of the AST
+  //   id.SEM_POST for upward (post branch) traversal of the AST
+  // chars - the array of character codes for the input string
+  // phraseIndex - index into the chars array to the first
+  //               character of the phrase
+  // phraseCount - the number of characters in the phrase
+  // data - user-defined data passed to the translator
+  //        for use by the callback functions.
+  // @return id.SEM_OK, normal return.
+  //         id.SEM_SKIP in state id.SEM_PRE will
+  //         skip the branch below.
+  //         Any thing else is an error which will
+  //         stop the translation.
+  //````
   function semCallbackPrototype(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
@@ -13253,7 +13055,7 @@ module.exports = function(grammar) {
     }
     return ret;
   }
-  /* The AST callback functions. */
+  // The AST callback functions.
   function semFile(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
@@ -13901,7 +13703,7 @@ module.exports = function(grammar) {
     }
     return ret;
   }
-  /* define the callback functions to the AST object */
+  // Define the callback functions to the AST object.
   this.callbacks = [];
   this.callbacks['abgop'] = semAbgOp;
   this.callbacks['aenop'] = semAenOp;
@@ -13951,7 +13753,8 @@ module.exports = function(grammar) {
 
 },{"apg-lib":11}],28:[function(require,module,exports){
 // This module has all of the syntax callback functions for the [ABNF for SABNF parser](./abnf-for-sabnf-parser.html).
-// (*See `resources/abnf-for-sabnf-grammar.bnf` for the grammar file these callback functions are based on.*)
+// See:<br> `abnf/abnf-for-sabnf-grammar.bnf`<br>
+//for the grammar file these callback functions are based on.
 // These functions are called by the parser's RNM operators (see `apg-lib` documentation).
 module.exports = function() {
   "use strict";
@@ -14560,7 +14363,7 @@ module.exports = function() {
       break;
     }
   }
-  /* define the list of callback functions */
+  // Define the list of callback functions.
   this.callbacks = [];
   this.callbacks['andop'] = synAndOp;
   this.callbacks['basicelementerr'] = synBasicElementError;

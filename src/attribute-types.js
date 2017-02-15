@@ -16,12 +16,6 @@
 //Additionally, and important to the algorithms internally, are
 // non-recursive rules that refer to mutually recursive sets, and simple recursive rules
 // that refer to mutually recursive sets.
-// On the output page `html/attributes.html` these are designated as:
-// - N - non-recursive
-// - R - simple recursive
-// - MR - belongs to a mutually recursive set
-// - NMR - non-recursive, but refers to one or more mutually recursive set member
-// - RMR -  simple recursive, but refers to one or more mutually recursive set member
 module.exports = function(rules) {
   "use strict";
   var thisFileName = "attribute-types.js: ";

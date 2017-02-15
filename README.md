@@ -1,12 +1,25 @@
-##JavaScript APG
+## JavaScript APG
 
+**New in Version 3.0.0:**
+
+* The **apg** command line has been greatly simplified.
+* Command line **apg** has only console output. It no longer generates any HTML.
+* A GUI generator, **apg.html**, has been added.
+* **apg.html** is a self-contained, stand-alone, web-page interface to **apg**.
+* It does not load any external CSS, JavaScript or other resources.
+* It provides detailed information about the grammar and generated parser.
+* It allows testing of the generated parser.
+* It is a visual aid to writing [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md) grammars
+and the input strings or sentences that they are designed to accept.
+* Documentation for using **apg.html** is built in. Just click the 'Help' tab.
+  
 **Description:**  
 
 **APG** is an acronym for "ABNF Parser Generator". Originally written to generate parsers directly from ABNF syntax
 ([RFC 5234](https://tools.ietf.org/html/rfc5234)) it has since grown to include a number of additional features requiring additional syntax terms. The resulting syntax is a superset of ABNF or [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md).
-This version adds a number of new features to the last, primarily to support the new [`apg-exp`](https://github.com/ldthomas/apg-js2-exp) pattern-matching application. A general description of how **APG** works is given [here](http://coasttocoastresearch.com/apg).
+Some features have been primarily developed to support the new [apg-exp](https://github.com/ldthomas/apg-js2-exp) pattern-matching application. A general description of how **APG** works is given [here](http://coasttocoastresearch.com/apg).
 
-New features:  
+**apg-exp** features:  
 <ul>
 <li>
 Sub-string parsing - the option to parse only a sub-string of the entire input string. 
@@ -27,13 +40,9 @@ Statistics and limits on the node tree depth and hit count. Recursive-descent pa
   
 Other features:  
 <ul>
-<li>
-User-Defined Terminals (UDTs). These are user-written code snippets for matching phrases that are difficult or impossible to define with the SABNF syntax. They make for an effectively Turing complete parser.
-</li>
-<li>
-The use of callback functions to keep the parser's action code separate from the grammar.
-User-written callback functions provide complete monitoring and flow control of the parser.
-</li>
+<li>User-Defined Terminals (UDTs). These are user-written code snippets for matching phrases that are difficult or impossible to define with the SABNF syntax. They make for an effectively Turing complete parser.</li>
+<li>The use of callback functions to keep the parser's action code separate from the grammar.
+User-written callback functions provide complete monitoring and flow control of the parser.</li>
 <li>
 Generation of Abstract Syntax Trees (ASTs) with optional XML formatting.
 </li>
@@ -51,7 +60,7 @@ Parsers can easily be used in web page applications with tools such as <a href="
 More complete explanations of these features can be found in the [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md) documentation, in the code file documentation and the [examples](https://github.com/ldthomas/apg-js2-examples).
 
 **Installation:**    
-*Requires node.js and npm.*
+For command line usage:
 ```
 git clone https://github.com/ldthomas/apg-js2.git apg
 cd apg
@@ -65,7 +74,7 @@ apg -v
 ```
 You should see something like:
 
-`JavaScript APG 2.0, Copyright (C) 2016 Lowell D. Thomas, all rights reserved`
+`JavaScript APG, version 3.0.0, Copyright (C) 2017 Lowell D. Thomas, all rights reserved`
 
 Note: If there is a name conflict on your system
 (for example, Automated Password Generator) there are a couple of options for
@@ -75,22 +84,17 @@ resolving the conflict.
 <br><code>hash -r</code></li>
 <li>If the npm prefix is, say, <code>/my/npm/prefix</code>, create an alias<br>
 <code>alias apg='/my/npm/prefix/bin/apg'</code></li>
-<li>You probably know other ways to do it better to your suiting.</li>
 </ol>
 
-APG is meant to be installed globally and used as a command line application.
-However, if you want a local copy you can use it as follows.
+For the GUI version:
 ```
-mkdir mylocal
-cd mylocal
-npm install apg
-cd node_modules/apg
+git clone https://github.com/ldthomas/apg-js2.git apg
+cd apg
+(double click the apg.html file)
 ```
-To run the locally installed copy:<br>
-`node main.js args`<br>
 
 **Examples:**  
-See <a href="https://github.com/ldthomas/apg-js2-examples">apg-js2-examples</a> for examples of running JavaScript APG 2.0 and the parsers it generates.
+See <a href="https://github.com/ldthomas/apg-js2-examples">apg-js2-examples</a> for examples of running JavaScript APG and the parsers it generates.
   
 **Documentation:**  
 The documentation is in the code in [`docco`](https://jashkenas.github.io/docco/) format.
@@ -103,7 +107,7 @@ View `docs/index.html` in any web browser to get started.
 Or view it on the [APG website](http://coasttocoastresearch.com/docjs2/apg/index.html)
 
 **Copyright:**  
-  *Copyright &copy; 2016 Lowell D. Thomas, all rights reserved*  
+  *Copyright &copy; 2017 Lowell D. Thomas, all rights reserved*  
 
 **License:**  
 Released with the BSD-3-Clause license.

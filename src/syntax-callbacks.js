@@ -1,5 +1,6 @@
 // This module has all of the syntax callback functions for the [ABNF for SABNF parser](./abnf-for-sabnf-parser.html).
-// (*See `resources/abnf-for-sabnf-grammar.bnf` for the grammar file these callback functions are based on.*)
+// See:<br> `abnf/abnf-for-sabnf-grammar.bnf`<br>
+//for the grammar file these callback functions are based on.
 // These functions are called by the parser's RNM operators (see `apg-lib` documentation).
 module.exports = function() {
   "use strict";
@@ -608,7 +609,7 @@ module.exports = function() {
       break;
     }
   }
-  /* define the list of callback functions */
+  // Define the list of callback functions.
   this.callbacks = [];
   this.callbacks['andop'] = synAndOp;
   this.callbacks['basicelementerr'] = synBasicElementError;

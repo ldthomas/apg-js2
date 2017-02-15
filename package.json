@@ -12,16 +12,16 @@
   "files": [
     "src",
     "bin",
+    "abnf",
     "index.md",
     "SABNF.md",
     "docco-gen",
-    "abnf-for-sabnf-grammar.bnf",
     "apg.html",
     "main.js"
   ],
   "dependencies": {
-    "apg-lib": "*",
-    "apg-conv": "*"
+    "apg-lib": "3.x",
+    "apg-conv": "1.x"
   },
   "repository": {
     "type": "git",

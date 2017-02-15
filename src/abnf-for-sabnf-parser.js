@@ -1,12 +1,10 @@
 // This module converts an input SABNF grammar text file into a 
 // grammar object that can be used with [`apg-lib`](https://github.com/ldthomas/apg-js2-lib) in an application parser.
-// The parser that does this is based on the grammar `resources/abnf-for-sabnf-grammar.bnf`.
-// The seemingly paradoxical fact that this parser generator is a parser generated from the ABNF grammar
-// `resources/abnf-for-sabnf-grammar.bnf`
-// can lead to some circular arguments in the discussion and caution is required.
-// There are two grammars involved and we need to make a clear distinction:
-// - ABNF for SABNF (`resources/abnf-for-sabnf-grammar.bnf`) is the grammar that this parser is built from.
-// - the grammar the user wants a parser for is the input to this module.
+// **apg** is, in fact itself, an ABNF parser that generates and SABNF parser.
+// It is based on the grammar<br>
+//`abnf/abnf-for-sabnf-grammar.bnf`.<br>
+// In its syntax phase, **apg** analyzes the user's input SABNF grammar for correct syntax, generating an AST as it goes.
+// In its semantic phase, **apg** translates the AST to generate the parser for the input grammar.
 module.exports = function() {
   "use strict";
   var thisFileName = "abnf-for-sabnf-parser.js: ";
@@ -153,15 +151,8 @@ module.exports = function() {
     }
     return ret;
   }
-  // Generate a parser or grammar file to be used with the `apg-lib` `parser()` function.
-//  this.generateJavaScript = function(rules, udts, fd) {
-//    try {
-//      fs.writeSync(fd, this.generateSource(rules, udts));
-//    } catch (e) {
-//      throw new Error(thisFileName + "generateJavaScript(): file system error\n" + e.message);
-//    }
-//  }
-  // Generate a parser or grammar file to be used with the `apg-lib` `parser()` function.
+  // Generate a grammar constructor function.
+  // An object instantiated from this constructor is used with the `apg-lib` `parser()` function.
   this.generateSource = function(rules, udts, name) {
     var source = "";
     var i;
@@ -297,17 +288,6 @@ module.exports = function() {
       }
       source += "\n";
       source += "  //```\n";
-//      source += "  /* CALLBACK LIST PROTOTYPE (callback[i] must be false or function reference) */\n";
-//      source += "  this.callbacks = [];\n";
-//      ruleNames.forEach(function(name) {
-//        source += "  this.callbacks['" + name + "'] = false;\n";
-//      });
-//      if (udts.length > 0) {
-//        udtNames.forEach(function(name) {
-//          source += "  this.callbacks['" + name + "'] = false;\n";
-//        });
-//      }
-//      source += "\n";
       source += "  /* OBJECT IDENTIFIER (for internal parser use) */\n";
       source += "  this.grammarObject = 'grammarObject';\n";
       source += "\n";
@@ -482,9 +462,10 @@ module.exports = function() {
     }
     return source;
   }
-  /* generate a grammar file object */
-  /* same object as instantiating the function defined in the output file above */
-  /* used internally by the apg-exp application */
+  // Generate a grammar file object.
+  // Returns the same object as instantiating the constructor function returned by<br>
+  //`this.generateSource()`.<br>
+  // It is used internally by the **apg-exp** application.
   this.generateObject = function(rules, udts) {
     var obj = {};
     if (grammarAnalysisParser) {

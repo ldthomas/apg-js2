@@ -1,5 +1,6 @@
 // This module has all of the semantic callback functions for the [ABNF for SABNF parser](./abnf-for-sabnf-parser.html).
-// (*See `resources/abnf-for-sabnf-grammar.bnf` for the grammar file these callback functions are based on.*)
+// See:<br> `abnf/abnf-for-sabnf-grammar.bnf`<br>
+//for the grammar file these callback functions are based on.
 // These functions are called by the parser's AST translation function (see `apg-lib` documentation).
 module.exports = function(grammar) {
   "use strict";
@@ -73,20 +74,23 @@ module.exports = function(grammar) {
     return num;
   }
 
-  /*
-   * This is the prototype for all semantic analysis callback functions.
-   * 
-   * state - the translator state
-   *   id.SEM_PRE for downward (pre-branch) traversal of the AST
-   *   id.SEM_POST for upward (post branch) traversal of the AST
-   * chars - the array of character codes for the input string
-   * phraseIndex - index into the chars array to the first character of the phrase
-   * phraseCount - the number of characters in the phrase
-   * data - user-defined data passed to the translator for use by the callback functions.
-   * @return id.SEM_OK, normal return.
-   *         id.SEM_SKIP in state id.SEM_PRE will skip the branch below.
-   *         Any thing else is an error which will stop the translation.
-   */
+  // This is the prototype for all semantic analysis callback functions.
+  //````
+  // state - the translator state
+  //   id.SEM_PRE for downward (pre-branch) traversal of the AST
+  //   id.SEM_POST for upward (post branch) traversal of the AST
+  // chars - the array of character codes for the input string
+  // phraseIndex - index into the chars array to the first
+  //               character of the phrase
+  // phraseCount - the number of characters in the phrase
+  // data - user-defined data passed to the translator
+  //        for use by the callback functions.
+  // @return id.SEM_OK, normal return.
+  //         id.SEM_SKIP in state id.SEM_PRE will
+  //         skip the branch below.
+  //         Any thing else is an error which will
+  //         stop the translation.
+  //````
   function semCallbackPrototype(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
@@ -94,7 +98,7 @@ module.exports = function(grammar) {
     }
     return ret;
   }
-  /* The AST callback functions. */
+  // The AST callback functions.
   function semFile(state, chars, phraseIndex, phraseCount, data) {
     var ret = id.SEM_OK;
     if (state == id.SEM_PRE) {
@@ -742,7 +746,7 @@ module.exports = function(grammar) {
     }
     return ret;
   }
-  /* define the callback functions to the AST object */
+  // Define the callback functions to the AST object.
   this.callbacks = [];
   this.callbacks['abgop'] = semAbgOp;
   this.callbacks['aenop'] = semAenOp;
