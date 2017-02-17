@@ -80,12 +80,12 @@ module.exports = function(args){
   var i = 0;
   try{
     while( i < args.length){
-      var kv = args[i].toLowerCase().split("=");
+      var kv = args[i].split("=");
       if(kv.length === 2){
-        key = kv[0];
+        key = kv[0].toLowerCase();
         value = kv[1];
       }else if(kv.length === 1){
-        key = kv[0];
+        key = kv[0].toLowerCase();
         value = (i + 1 < args.length) ? args[i+1] : "";
       }else{
         throw new Error("command line error: ill-formed option: "+args[i]);
@@ -146,7 +146,11 @@ module.exports = function(args){
         /* dumb input file name, but just in case */
         config.outFilename = inFilenames[0] + ".js";
       }else{
-        config.outFilename = info.dir + "/" + info.name + ".js";
+        if(info.dir){
+          config.outFilename = info.dir + "/" + info.name + ".js";
+        }else{
+          config.outFilename = info.name + ".js";
+        }
       }
     }
     config.outfd = fs.openSync(config.outFilename, "w");

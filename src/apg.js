@@ -47,7 +47,7 @@ module.exports = function(args) {
     result = inputAnalysis.analyze(config.src, config.strict);
     if (result.hasErrors === true) {
       console.log("GRAMMAR CHARACTER ERRORS:");
-      console.log(result.errors);
+      console.log(inputAnalysis.errorsToString(result.errors));
       console.log("\nORIGINAL GRAMMAR:");
       console.log(converter.encode("STRING", config.src));
       throw new Error("invalid input grammar");
@@ -57,7 +57,7 @@ module.exports = function(args) {
     result = sabnf.syntax(inputAnalysis, config.strict, false);
     if (result.hasErrors) {
       console.log("GRAMMAR SYNTAX ERRORS:");
-      console.log(result.errors);
+      console.log(inputAnalysis.errorsToString(result.errors));
       console.log("\nORIGINAL GRAMMAR:");
       console.log(converter.encode("STRING", config.src));
       throw new Error("grammar has syntax errors");
@@ -67,7 +67,7 @@ module.exports = function(args) {
     result = sabnf.semantic();
     if (result.hasErrors) {
       console.log("GRAMMAR SEMANTIC ERRORS:");
-      console.log(result.errors);
+      console.log(inputAnalysis.errorsToString(result.errors));
       console.log("\nORIGINAL GRAMMAR:");
       console.log(converter.encode("STRING", config.src));
       throw new Error("grammar has semantic errors");
@@ -77,7 +77,7 @@ module.exports = function(args) {
     attrErrors = attrs.getAttributes(result.rules, result.udts, result.rulesLineMap);
     if (attrErrors.length > 0) {
       console.log("ATTRIBUTE ERRORS:");
-      console.log(attrErrors);
+      console.log(inputAnalysis.errorsToString(attrErrors));
       console.log("\nORIGINAL GRAMMAR:");
       console.log(converter.encode("STRING", config.src));
       throw new Error("grammar has attribute errors");

@@ -266,6 +266,16 @@ window.apgweb = (function() {
           pchars[pi] = char;
           pmap[pi] = '&nbsp;';
           break;
+        case 38:
+          ii = i + 1;
+          pchars[pi] = char;
+          pmap[pi] = '&amp;';
+          break;
+        case 60:
+          ii = i + 1;
+          pchars[pi] = char;
+          pmap[pi] = '&lt;';
+          break;
         default:
           ii = i + 1;
           pchars[pi] = char;
@@ -318,6 +328,16 @@ window.apgweb = (function() {
           ii = i + 1;
           pchars[pi] = char;
           pmap[pi] = '&nbsp;';
+          break;
+        case 38:
+          ii = i + 1;
+          pchars[pi] = char;
+          pmap[pi] = '&amp;';
+          break;
+        case 60:
+          ii = i + 1;
+          pchars[pi] = char;
+          pmap[pi] = '&lt;';
           break;
         default:
           ii = i + 1;
