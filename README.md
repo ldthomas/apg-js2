@@ -12,6 +12,8 @@
 * It is a visual aid to writing [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md) grammars
 and the input strings or sentences that they are designed to accept.
 * Documentation for using **apg.html** is built in. Just click the 'Help' tab.
+
+NOTE: * **apg.html** does not work in Internet Explorer.* **apg.html** was developed in Chrome 56 and tested in Firefox 51.
   
 **Description:**  
 
