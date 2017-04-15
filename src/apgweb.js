@@ -452,7 +452,7 @@ window.apgweb = (function() {
     var DISPLAY_NEXT = 4;
     var DISPLAY_LAST = 5;
     var apglib = require("apg-lib");
-    var converter = require("apg-conv");
+    var converter = require("apg-conv-api").converter;
     var currentTab = 0;
     var parser = null;
     var rules = [];
@@ -1447,9 +1447,7 @@ window.apgweb = (function() {
   }
 // Constructor for the generator function. Handles the main logic for parser generation.  
   var apgWeb = function() {
-    var attributes = require("./attributes.js");
-    var inputAnalysis = require("./input-analysis-parser.js");
-    var sabnfParser = require("./abnf-for-sabnf-parser.js");
+    var api = require("apg-api");
 
     /* handle the main menu tabs */
     this.openTab = function(tabnumber) {
@@ -1552,7 +1550,7 @@ window.apgweb = (function() {
       return false;
     }
     this.generate = function() {
-      var analyzer, sabnf, result, attrsObj;
+      var attrsObj;
       var strict = false;
       var sabnfGrammar = PAGE_INFO[GRAMMAR_AREA].element.value;
       var grammarHtml = "";
@@ -1568,34 +1566,33 @@ window.apgweb = (function() {
           break;
         }
         
-        analyzer = new inputAnalysis();
-        result = analyzer.analyze(sabnfGrammar, false);
-        grammarHtml = analyzer.toHtml();
-        if (result.hasErrors) {
-          grammarHtml += analyzer.errorsToHtml(result.errors, "SABNF grammar has invalid characters");
+        api = new api(sabnfGrammar);
+        api.scan();
+        grammarHtml = api.linesToHtml();
+        if(api.errors.length){
+          grammarHtml += api.errorsToHtml("SABNF grammar has invalid characters");
           break;
         }
 
         /* validate the SABNF grammar syntax */
-        sabnf = new sabnfParser();
-        result = sabnf.syntax(analyzer, strict, false);
-        if (result.hasErrors) {
-          grammarHtml += analyzer.errorsToHtml(result.errors, "SABNF grammar has syntax errors");
+        api.parse();
+        if(api.errors.length){
+          grammarHtml += api.errorsToHtml("SABNF grammar has syntax errors");
           break;
         }
 
         /* validate the SABNF grammar semantics */
-        result = sabnf.semantic();
-        if (result.hasErrors) {
-          grammarHtml += analyzer.errorsToHtml(result.errors, "SABNF grammar has semantic errors");
+        api.translate();
+        if(api.errors.length){
+          grammarHtml += api.errorsToHtml("SABNF grammar has semantic errors");
           break;
         }
 
         /* validate the SABNF grammar attributes */
-        attrsObj = new attributes();
-        var errors = attrsObj.getAttributes(result.rules, result.udts, result.rulesLineMap);
-        if (errors.length > 0) {
-          grammarHtml += analyzer.errorsToHtml(errors, "SABNF grammar has attribute errors");
+        attrsObj = api.getAttributesObject();
+        api.attributes();
+        if(api.errors.length){
+          grammarHtml += api.errorsToHtml("SABNF grammar has attribute errors");
           attrErrors = true;
           break;
         }
@@ -1609,8 +1606,8 @@ window.apgweb = (function() {
       PAGE_INFO[GRAMMAR_PAGE].element.innerHTML = grammarHtml;
       /* Initialize the parser object. */
       if (validGrammar) {
-        var src = sabnf.generateSource(result.rules, result.udts, "var generatedGrammar");
-        var obj = sabnf.generateObject(result.rules, result.udts);
+        var src = api.toSource("generatedGrammar");
+        var obj = api.toObject();
         this.parser.init(src, obj);
       } else {
         this.parser.init(null, null, parserErrorMsg);
@@ -1618,7 +1615,7 @@ window.apgweb = (function() {
       /* Initialize the rules and attributes objects. */
       /* Having attrsObj implies having result.udt */
       if (attrsObj) {
-        this.rules.init(attrsObj.rulesWithReferencesData(), result.udts);
+        this.rules.init(attrsObj.rulesWithReferencesData(), api.udts);
         this.attrs.init(attrsObj.ruleAttrsData(), attrsObj.udtAttrsData());
       } else {
         this.rules.init(null, null, rulesErrorMsg);

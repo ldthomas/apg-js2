@@ -1,25 +1,12 @@
 ## JavaScript APG
 
-**New in Version 3.0.0:**
+*See [release notes](https://github.com/ldthomas/apg-js2/blob/master/RELEASE-NOTES.md)*
 
-* The **apg** command line has been greatly simplified.
-* Command line **apg** has only console output. It no longer generates any HTML.
-* A GUI generator, **apg.html**, has been added.
-* **apg.html** is a self-contained, stand-alone, web-page interface to **apg**.
-* It does not load any external CSS, JavaScript or other resources.
-* It provides detailed information about the grammar and generated parser.
-* It allows testing of the generated parser.
-* It is a visual aid to writing [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md) grammars
-and the input strings or sentences that they are designed to accept.
-* Documentation for using **apg.html** is built in. Just click the 'Help' tab.
-
-NOTE: * **apg.html** does not work in Internet Explorer.* **apg.html** was developed in Chrome 56 and tested in Firefox 51.
-  
 **Description:**  
 
 **APG** is an acronym for "ABNF Parser Generator". Originally written to generate parsers directly from ABNF syntax
 ([RFC 5234](https://tools.ietf.org/html/rfc5234)) it has since grown to include a number of additional features requiring additional syntax terms. The resulting syntax is a superset of ABNF or [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md).
-Some features have been primarily developed to support the new [apg-exp](https://github.com/ldthomas/apg-js2-exp) pattern-matching application. A general description of how **APG** works is given [here](http://coasttocoastresearch.com/apg).
+Some features have been primarily developed to support the new [**apg-exp**](https://github.com/ldthomas/apg-js2-exp) pattern-matching application. A general description of how **APG** works is given [here](http://coasttocoastresearch.com/apg).
 
 **apg-exp** features:  
 <ul>

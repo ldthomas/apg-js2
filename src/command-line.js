@@ -55,7 +55,7 @@ module.exports = function(args){
   }
   var fs = require("fs");
   var path = require("path");
-  var converter = require("apg-conv");
+  var converter = require("apg-conv-api").converter;
   var STRICTL = "--strict";
   var STRICTS = "-s";
   var HELPL = "--help";

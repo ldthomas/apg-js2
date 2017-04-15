@@ -2,7 +2,7 @@
   "name": "apg",
   "version": "3.0.0",
   "description": "An ABNF Parser Generator - generates recursive-descent parsers from grammars written in a superset of Augmented Backus-Naur Form (ABNF)",
-  "main": "./src/exports.js",
+  "main": "./src/apg.js",
   "scripts": {
     "test": "apg -v"
   },
@@ -12,16 +12,16 @@
   "files": [
     "src",
     "bin",
-    "abnf",
     "index.md",
     "SABNF.md",
+    "RELEASE-NOTES.md",
     "docco-gen",
     "apg.html",
     "main.js"
   ],
   "dependencies": {
-    "apg-lib": "3.x",
-    "apg-conv": "1.x"
+    "apg-api": "1.x",
+    "apg-lib": "3.x"
   },
   "repository": {
     "type": "git",
