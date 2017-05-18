@@ -724,7 +724,7 @@ window.apgweb = (function() {
           if(isNaN(config.traceRecords.last)){
             throw new Error("apgParser: configuration error: last trace record must be integer >= -1");
           }
-          if(config.traceRecords.last <= 0 ){
+          if(config.traceRecords.last < 0 ){
             config.traceRecords.last = -1;
           }
           config.operatorsOnOff = checkedValue(TRACE.OPERATORS_ON.elements);

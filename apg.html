@@ -1373,14 +1373,14 @@ If any of these errors occur, the <a href="#attributestoc">Attributes panel</a> 
 *   WEBSITE: http://coasttocoastresearch.com/
 */
 
-exports.ast = __webpack_require__(25);
+exports.ast = __webpack_require__(26);
 exports.circular = __webpack_require__(7);
 exports.ids = __webpack_require__(1);
 exports.parser = __webpack_require__(27);
 exports.stats = __webpack_require__(28);
 exports.trace = __webpack_require__(29);
 exports.utils = __webpack_require__(2);
-exports.emitcss = __webpack_require__(26);
+exports.emitcss = __webpack_require__(8);
 exports.style = __webpack_require__(3);
 
 
@@ -1520,6 +1520,7 @@ var getBounds = function(length, beg, len) {
 // - *title* - the HTML page `<title>` - defaults to `htmlToPage`.
 exports.htmlToPage = function(html, title) {
   var thisFileName = "utilities.js: ";
+  var emitCss = __webpack_require__(8);
   if (typeof (html) !== "string") {
     throw new Error(thisFileName + "htmlToPage: input HTML is not a string");
   }
@@ -1532,7 +1533,9 @@ exports.htmlToPage = function(html, title) {
   page += '<head>\n';
   page += '<meta charset="utf-8">\n';
   page += '<title>' + title + '</title>\n';
-  page += '<link rel="stylesheet" href="apglib.css">\n';
+  page += '<style>\n';
+  page += "'" + emitCss() + "'";
+  page += '</style>\n';
   page += '</head>\n<body>\n';
   page += '<p>' + new Date() + '</p>\n';
   page += html;
@@ -1609,9 +1612,28 @@ exports.parserResultToHtml = function(result, caption) {
 // Translates a sub-array of integer character codes into a string.
 // Very useful in callback functions to translate the matched phrases into strings.
 exports.charsToString = function(chars, phraseIndex, phraseLength) {
-  var ar = chars.slice(phraseIndex, phraseIndex+phraseLength);
-  var buf = converter.encode("UTF16LE", ar);
-  return buf.toString("utf16le");
+  var beg, end, ar;
+  if(typeof(phraseIndex) === "number"){
+    if(phraseIndex >= chars.length){
+      return "";
+    }
+    beg = phraseIndex < 0 ? 0 : phraseIndex;
+  }else{
+    beg = 0;
+  }
+  if(typeof(phraseLength) === "number"){
+    if(phraseLength <= 0){
+      return "";
+    }
+    end = phraseLength > (chars.length - beg) ? chars.length : beg + phraseLength;
+  }else{
+    end = chars.length;
+  }
+  if(beg < end){
+    return converter.encode("UTF16LE", chars.slice(beg, end)).toString("utf16le");
+  }else{
+    return "";
+  }
 }
 // Translates a string into an array of integer character codes.
 exports.stringToChars = function(string) {
@@ -1666,6 +1688,26 @@ exports.opcodeToString = function(type) {
     break;
   case id.AEN:
     ret = 'AEN';
+    break;
+  }
+  return ret;
+};
+//Translates an state identifier into a human-readable string.
+exports.stateToString = function(state) {
+  var id = __webpack_require__(1);
+  var ret = 'unknown';
+  switch (state) {
+  case id.ACTIVE:
+    ret = 'ACTIVE';
+    break;
+  case id.MATCH:
+    ret = 'MATCH';
+    break;
+  case id.EMPTY:
+    ret = 'EMPTY';
+    break;
+  case id.NOMATCH:
+    ret = 'NOMATCH';
     break;
   }
   return ret;
@@ -1726,7 +1768,29 @@ exports.charsToHex = function(chars, beg, len) {
   }
   return ret;
 }
+exports.charsToHtmlEntities = function(chars, beg, len) {
+  var ret = "";
+  if (!Array.isArray(chars)) {
+    throw new Error(thisFileName + "charsToHex: input must be an array of integers");
+  }
+  var bounds = getBounds(chars.length, beg, len);
+  if (bounds.end > bounds.beg) {
+    for (var i = bounds.beg; i < bounds.end; i += 1) {
+      ret += "&#x"+chars[i].toString(16)+";";
+    }
+  }
+  return ret;
+}
 // Translates a sub-array of character codes to Unicode display format.
+function isUnicode(char){
+  if(char >= 0xD800 && char <= 0xDFFF){
+    return false;
+  }
+  if(char > 0x10FFFF){
+    return false;
+  }
+  return true;
+}
 exports.charsToUnicode = function(chars, beg, len) {
   var ret = "";
   if (!Array.isArray(chars)) {
@@ -1734,9 +1798,13 @@ exports.charsToUnicode = function(chars, beg, len) {
   }
   var bounds = getBounds(chars.length, beg, len);
   if (bounds.end > bounds.beg) {
-    ret += "U+" + _this.charToHex(chars[bounds.beg]);
-    for (var i = bounds.beg + 1; i < bounds.end; i += 1) {
-      ret += ",U+" + _this.charToHex(chars[i]);
+    for (var i = bounds.beg; i < bounds.end; i += 1) {
+      if(isUnicode(chars[i])){
+        ret += "&#" + chars[i] + ";";
+      }
+      else{
+        ret += " U+" + _this.charToHex(chars[i]);
+      }
     }
   }
   return ret;
@@ -1852,7 +1920,7 @@ module.exports = {
 *   WEBSITE: http://coasttocoastresearch.com/
 */
 
-exports.converter = __webpack_require__(24);
+exports.converter = __webpack_require__(25);
 exports.transformers = __webpack_require__(6);
 
 
@@ -1871,9 +1939,9 @@ exports.transformers = __webpack_require__(6);
 
 
 
-var base64 = __webpack_require__(10)
-var ieee754 = __webpack_require__(11)
-var isArray = __webpack_require__(12)
+var base64 = __webpack_require__(11)
+var ieee754 = __webpack_require__(12)
+var isArray = __webpack_require__(13)
 
 exports.Buffer = Buffer
 exports.SlowBuffer = SlowBuffer
@@ -3651,7 +3719,7 @@ function isnan (val) {
   return val !== val // eslint-disable-line no-self-compare
 }
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(9)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(10)))
 
 /***/ }),
 /* 6 */
@@ -4701,10 +4769,39 @@ module.exports = function() {
 
 /***/ }),
 /* 8 */
+/***/ (function(module, exports) {
+
+// This module has been developed programmatically in the `apg-lib` build process.
+// It is used by the `apg.html` application to build web pages on the fly.
+
+module.exports = function(){
+return '/* This file automatically generated by toless() and LESS. */\n.apg-mono {\n  font-family: monospace;\n}\n.apg-active {\n  font-weight: bold;\n  color: #000000;\n}\n.apg-match {\n  font-weight: bold;\n  color: #264BFF;\n}\n.apg-empty {\n  font-weight: bold;\n  color: #0fbd0f;\n}\n.apg-nomatch {\n  font-weight: bold;\n  color: #FF4000;\n}\n.apg-lh-match {\n  font-weight: bold;\n  color: #1A97BA;\n}\n.apg-lb-match {\n  font-weight: bold;\n  color: #5F1687;\n}\n.apg-remainder {\n  font-weight: bold;\n  color: #999999;\n}\n.apg-ctrl-char {\n  font-weight: bolder;\n  font-style: italic;\n  font-size: .6em;\n}\n.apg-line-end {\n  font-weight: bold;\n  color: #000000;\n}\n.apg-error {\n  font-weight: bold;\n  color: #FF4000;\n}\n.apg-phrase {\n  color: #000000;\n  background-color: #8caae6;\n}\n.apg-empty-phrase {\n  color: #0fbd0f;\n}\ntable.apg-state {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: left;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-state th,\ntable.apg-state td {\n  text-align: left;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-state th:nth-last-child(2),\ntable.apg-state td:nth-last-child(2) {\n  text-align: right;\n}\ntable.apg-state caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-stats {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-stats th,\ntable.apg-stats td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-stats caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-trace {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-trace caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-trace th,\ntable.apg-trace td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-trace th:last-child,\ntable.apg-trace th:nth-last-child(2),\ntable.apg-trace td:last-child,\ntable.apg-trace td:nth-last-child(2) {\n  text-align: left;\n}\ntable.apg-grammar {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-grammar caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-grammar th,\ntable.apg-grammar td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-grammar th:last-child,\ntable.apg-grammar td:last-child {\n  text-align: left;\n}\ntable.apg-rules {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-rules caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-rules th,\ntable.apg-rules td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-rules a {\n  color: #003399 !important;\n}\ntable.apg-rules a:hover {\n  color: #8caae6 !important;\n}\ntable.apg-attrs {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: center;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-attrs caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-attrs th,\ntable.apg-attrs td {\n  text-align: center;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-attrs th:nth-child(1),\ntable.apg-attrs th:nth-child(2),\ntable.apg-attrs th:nth-child(3) {\n  text-align: right;\n}\ntable.apg-attrs td:nth-child(1),\ntable.apg-attrs td:nth-child(2),\ntable.apg-attrs td:nth-child(3) {\n  text-align: right;\n}\ntable.apg-attrs a {\n  color: #003399 !important;\n}\ntable.apg-attrs a:hover {\n  color: #8caae6 !important;\n}\n';
+}
+
+
+/***/ }),
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(Buffer) {// This module is the APG API.
-// Throws execeptions on fatal errors.<br>
+/* WEBPACK VAR INJECTION */(function(Buffer) {// This module is the **APG** API.
+//
+// *Note on teminology.*
+// APG is a parser generator.
+// However, it really only generates a "grammar object" (see below) from the defining SABNF grammar.
+// The generated parser is incomplete at this stage.
+// Remaining, it is the job of the user to develop the generated parser from the grammar object and the **APG** Library (**apg-lib**).
+// 
+// The following terminology my help clear up any confusion between the idea of a "generated parser" versus a "generated grammar object".
+
+// - The generating parser: **APG** is an **APG** parser (yes, there is a circular dependence between **apg-api** and **apg-lib**). We'll call it the generating parser.
+// - The target parser: **APG**'s goal is to generate a parser. We'll call it the target parser.
+// - The target grammar: this is the (ASCII) SABNF grammar defining the target parser.
+// - The target grammar object: **APG** parses the SABNF grammar and generates the JavaScript source for a target grammar object constructor function
+// and/or an actual grammar object.
+// - The final target parser: The user then develops the final target parser using the generated target grammar
+// object and the **APG** parsing library, **apg-lib**.
+// Throws execeptions on fatal errors.
+//
 // src: the input SABNF grammar<br>
 // may be one of:
 // - Buffer of bytes
@@ -4715,18 +4812,40 @@ module.exports = function(src) {
   var thisFileName = "api.js: ";
   var _this = this;
   var apglib = __webpack_require__(0);
-  var scanner = __webpack_require__(21);
-  var parser = new (__webpack_require__(17))();
-  var attrsObj = new (__webpack_require__(16))();
+  var scanner = __webpack_require__(22);
+  var parser = new (__webpack_require__(18))();
+  var attrsObj = new (__webpack_require__(17))();
   var converter = __webpack_require__(4).converter;
   var lineMap;
 
   /* PUBLIC PROPERTIES */
+  // The input SABNF grammar as a JavaScript string.
   this.sabnf;
+  // The input SABNF grammar as an array of character codes.
   this.chars;
+  // An array of line objects, defining each line of the input SABNF grammar
+  // - lineNo : the zero-based line number
+  // - beginChar : offset (into `this.chars`) of the first character in the line
+  // - length : the number of characters in the line
+  // - textLength : the number of characters of text in the line, excluding the line ending characters
+  // - endType : "CRLF", "LF", "CR" or "none" if the last line has no line ending characters
+  // - invalidChars : `true` if the line contains invalid characters, `false` otherwise
   this.lines;
+  // An array of rule names and data.
+  // - name : the rule name
+  // - lower : the rule name in lower case
+  // - index : the index of the rule (ordered by appearance in SABNF grammar)
+  // - isBkr : `true` if this rule has been back referenced, `false` otherwise
+  // - opcodes : array of opcodes for this rule
+  // - attrs : the rule attributes
+  // - ctrl : system data
   this.rules;
+  // An array of UDT names and data.
   this.udts;
+  // An array of errors, if any.
+  // - line : the line number containing the error
+  // - char : the character offset of the error
+  //- msg : the error message
   this.errors = [];
 
   /* CONSTRUCTOR */
@@ -4742,12 +4861,24 @@ module.exports = function(src) {
   this.sabnf = converter.encode("STRING", this.chars)
 
   /* PUBLIC MEMBERS (FUNCTIONS) */
+  // Scan the input SABNF grammar for invalid characters and catalog the lines via `this.lines`.
+  // - strict : (optional) if `true`, all lines, including the last must end with CRLF (\r\n),
+  // if `false` (in any JavaScript sense) then line endings may be any mix of CRLF, LF, CR, or end-of-file.
+  // - trace (*) : (optional) a parser trace object, which will trace the parser that does the scan
   this.scan = function(strict, trace) {
     this.lines = scanner(this.chars, this.errors, strict, trace);
   }
+  // Parse the input SABNF grammar for correct syntax.
+  // - strict : (optional) if `true`, the input grammar must be strict ABNF, conforming to [RFC 5234](https://tools.ietf.org/html/rfc5234)
+  // and [RFC 7405](https://tools.ietf.org/html/rfc7405). No superset features allowed.
+  // - trace (\*) : (optional) a parser trace object, which will trace the syntax parser
+  //
+  // <i>(*)NOTE: the trace option was used primarily during development.
+  // Error detection and reporting is now fairly robust and tracing should be unnecessary. Use at your own peril.</i> 
   this.parse = function(strict, trace) {
     parser.syntax(this.chars, this.lines, this.errors, strict, trace);
   }
+  // Translate the SABNF grammar syntax into the opcodes that will guide the parser for this grammar.
   this.translate = function() {
     var ret = parser.semantic(this.chars, this.lines, this.errors);
     if (this.errors.length === 0) {
@@ -4756,18 +4887,12 @@ module.exports = function(src) {
       lineMap = ret.lineMap;
     }
   }
-  this.getAttributesObject = function(){
-    return attrsObj;
-  }
+  // Compute the attributes of each rule.
   this.attributes = function() {
     attrsObj.getAttributes(this.rules, this.udts, lineMap, this.errors)
   }
-  this.toSource = function(name){
-    return parser.generateSource(this.chars, this.lines, this.rules, this.udts, name);
-  }
-  this.toObject = function(){
-    return parser.generateObject(this.sabnf, this.rules, this.udts);
-  }
+  // This function will perform the full suite of steps required to generate a parser grammar object
+  // from the input SABNF grammar.
   this.generate = function(strict) {
     this.lines = scanner(this.chars, this.errors, strict);
     if (this.errors.length) {
@@ -4787,20 +4912,39 @@ module.exports = function(src) {
     }
     attrsObj.getAttributes(this.rules, this.udts, lineMap, this.errors)
   }
+  // Returns a parser grammar object constructor function as a JavaScript string.
+  this.toSource = function(name){
+    return parser.generateSource(this.chars, this.lines, this.rules, this.udts, name);
+  }
+  // Returns a parser grammar object.
+  this.toObject = function(){
+    return parser.generateObject(this.sabnf, this.rules, this.udts);
+  }
+  // Display errors in text format, suitable for `console.log()`.
   this.errorsToAscii = function() {
     return errorsToAscii(this.errors, this.lines, this.chars);
   }
+  // Display errors in HTML format, suitable for web page display.
+  // (`apg-lib.css` required for proper styling)
   this.errorsToHtml = function(title) {
     return errorsToHtml(this.errors, this.lines, this.chars, title);
   }
-  this.linesToHtml = function() {
-    return linesToHtml(this.lines);
-  }
+  // Gnerate an annotated the SABNF grammar display in text format.
   this.linesToAscii = function() {
     return linesToAscii(this.lines);
   }
+  // Gnerate an annotated the SABNF grammar display in HTML format.
+  // (`apg-lib.css` required for proper styling)
+  this.linesToHtml = function() {
+    return linesToHtml(this.lines);
+  }
+  // Returns the attributes object. Used by `apg.html`. You will probably never need this.
+  this.getAttributesObject = function(){
+    return attrsObj;
+  }
 
   /* PRIVATE MEMBERS (FUNCTIONS) */
+  /* traslate lines (SABNF grammar) to ASCII text */
   var linesToAscii = function(lines) {
     var str = "";
     str += "Annotated Input Grammar";
@@ -4814,6 +4958,7 @@ module.exports = function(src) {
     str += "\n";
     return str;
   }
+  /* traslate lines (SABNF grammar) to HTML */
   var linesToHtml = function(lines) {
     var html = "";
     html += '<table class="' + apglib.style.CLASS_GRAMMAR + '">\n';
@@ -4835,7 +4980,7 @@ module.exports = function(src) {
     html += '</table>\n';
     return html;
   }
-  // Format the error messages to HTML, for page display.
+  /* Format the error messages to HTML, for page display. */
   var errorsToHtml = function(errors, lines, chars, title) {
     var style = apglib.style;
     var html = "";
@@ -4874,9 +5019,7 @@ module.exports = function(src) {
     html += '</table></p>\n';
     return html;
   }
-  // Display an array of errors of the form<br>
-  // `{line: 0, char: 0, msg: "message"}`<br>
-  // as ASCII text.
+  /* Display an array of errors in ASCII text */
   var errorsToAscii = function(errors, lines, chars) {
     var str, line, beg, len;
     str = "";
@@ -4902,6 +5045,7 @@ module.exports = function(src) {
     });
     return str;
   }
+  /* Convert a phrase (array of character codes) to HTML. */
   var abnfToHtml = function(chars, beg, len) {
     var NORMAL = 0;
     var CONTROL = 1;
@@ -5007,6 +5151,7 @@ module.exports = function(src) {
     }
     return html;
   }
+  /* Convert a phrase (array of character codes) to ASCII text. */
   var abnfToAscii = function(chars, beg, len) {
     var str = "";
     for (var i = beg; i < beg + len; i += 1) {
@@ -5037,7 +5182,7 @@ module.exports = function(src) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
 
 /***/ }),
-/* 9 */
+/* 10 */
 /***/ (function(module, exports) {
 
 var g;
@@ -5064,7 +5209,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 10 */
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -5185,7 +5330,7 @@ function fromByteArray (uint8) {
 
 
 /***/ }),
-/* 11 */
+/* 12 */
 /***/ (function(module, exports) {
 
 exports.read = function (buffer, offset, isLE, mLen, nBytes) {
@@ -5275,7 +5420,7 @@ exports.write = function (buffer, value, offset, isLE, mLen, nBytes) {
 
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 var toString = {}.toString;
@@ -5286,7 +5431,7 @@ module.exports = Array.isArray || function (arr) {
 
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module is used by [`attributes.js`](./attributes.html) to determine rule dependencies
@@ -5380,7 +5525,7 @@ module.exports = function(rules) {
 
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module is used by [`attributes.js`](./attributes.html) to determine non-recursive attributes
@@ -5604,7 +5749,7 @@ module.exports = function(rules, Attr, NameList) {
 
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module is used by [`attributes.js`](./attributes.html) to determine recursive attributes
@@ -5945,7 +6090,7 @@ module.exports = function(rules, Attr, NameList) {
 
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module, along with
@@ -5992,9 +6137,9 @@ module.exports = function() {
   "use strict";
   var apglib = __webpack_require__(0);
   var id = apglib.ids;
-  var attrTypes = __webpack_require__(13);
-  var attrNonRecursive = __webpack_require__(14);
-  var attrRecursive = __webpack_require__(15);
+  var attrTypes = __webpack_require__(14);
+  var attrNonRecursive = __webpack_require__(15);
+  var attrRecursive = __webpack_require__(16);
   var rules = null;
   var udts = null;
   var ruleErrorCount = 0;
@@ -6403,7 +6548,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module converts an input SABNF grammar text file into a 
@@ -6418,9 +6563,9 @@ module.exports = function() {
   var thisFileName = "parser.js: ";
   var apglib = __webpack_require__(0);
   var id = apglib.ids;
-  var syn = new (__webpack_require__(23))();
-  var sem = new (__webpack_require__(22))();
-  var sabnfGrammar = new (__webpack_require__(18))();
+  var syn = new (__webpack_require__(24))();
+  var sem = new (__webpack_require__(23))();
+  var sabnfGrammar = new (__webpack_require__(19))();
   var parser = new apglib.parser();
   parser.ast = new apglib.ast();
   parser.callbacks = syn.callbacks;
@@ -6877,7 +7022,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 // Generated by JavaScript APG, Version [`apg-js2`](https://github.com/ldthomas/apg-js2)
@@ -7849,7 +7994,7 @@ module.exports = function(){
 
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* AST translation callback functions used to analyze the lines. */
@@ -7973,7 +8118,7 @@ callbacks["crlf"] = semCRLF;
 exports.callbacks = callbacks;
 
 /***/ }),
-/* 20 */
+/* 21 */
 /***/ (function(module, exports) {
 
 // Generated by JavaScript APG, Version [`apg-js2`](https://github.com/ldthomas/apg-js2)
@@ -8103,7 +8248,7 @@ module.exports = function(){
 
 
 /***/ }),
-/* 21 */
+/* 22 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module reads the input grammar file and does a preliminary analysis
@@ -8119,8 +8264,8 @@ module.exports = function(chars, errors, strict, trace) {
   "use strict";
   var thisFileName = "scanner.js: ";
   var apglib = __webpack_require__(0);
-  var grammar = new (__webpack_require__(20))();
-  var callbacks = __webpack_require__(19).callbacks;
+  var grammar = new (__webpack_require__(21))();
+  var callbacks = __webpack_require__(20).callbacks;
   
   /* Scan the grammar for character code errors and catalog the lines. */
   var lines = [];
@@ -8158,7 +8303,7 @@ module.exports = function(chars, errors, strict, trace) {
 
 
 /***/ }),
-/* 22 */
+/* 23 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module has all of the semantic callback functions for the [ABNF for SABNF parser](./abnf-for-sabnf-parser.html).
@@ -8960,7 +9105,7 @@ module.exports = function(grammar) {
 
 
 /***/ }),
-/* 23 */
+/* 24 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module has all of the syntax callback functions for the [ABNF for SABNF parser](./abnf-for-sabnf-parser.html).
@@ -9608,7 +9753,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 24 */
+/* 25 */
 /***/ (function(module, exports, __webpack_require__) {
 
 /* WEBPACK VAR INJECTION */(function(Buffer) {// This module exposes the public encoding, decoding and conversion functions.
@@ -10026,7 +10171,7 @@ exports.convert = function(srcType, srcData, dstType) {
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5).Buffer))
 
 /***/ }),
-/* 25 */
+/* 26 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // This module is used by the parser to build an [Abstract Syntax Tree](https://en.wikipedia.org/wiki/Abstract_syntax_tree) (AST).
@@ -10272,15 +10417,6 @@ module.exports = function() {
     }
     return obj;
   }
-}
-
-
-/***/ }),
-/* 26 */
-/***/ (function(module, exports) {
-
-module.exports = function(){
-return '/* This file automatically generated by toless() and LESS. */\n.apg-mono {\n  font-family: monospace;\n}\n.apg-active {\n  font-weight: bold;\n  color: #000000;\n}\n.apg-match {\n  font-weight: bold;\n  color: #264BFF;\n}\n.apg-empty {\n  font-weight: bold;\n  color: #0fbd0f;\n}\n.apg-nomatch {\n  font-weight: bold;\n  color: #FF4000;\n}\n.apg-lh-match {\n  font-weight: bold;\n  color: #1A97BA;\n}\n.apg-lb-match {\n  font-weight: bold;\n  color: #5F1687;\n}\n.apg-remainder {\n  font-weight: bold;\n  color: #999999;\n}\n.apg-ctrl-char {\n  font-weight: bolder;\n  font-style: italic;\n  font-size: .6em;\n}\n.apg-line-end {\n  font-weight: bold;\n  color: #000000;\n}\n.apg-error {\n  font-weight: bold;\n  color: #FF4000;\n}\n.apg-phrase {\n  color: #000000;\n  background-color: #8caae6;\n}\n.apg-empty-phrase {\n  color: #0fbd0f;\n}\ntable.apg-state {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: left;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-state th,\ntable.apg-state td {\n  text-align: left;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-state th:nth-last-child(2),\ntable.apg-state td:nth-last-child(2) {\n  text-align: right;\n}\ntable.apg-state caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-stats {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-stats th,\ntable.apg-stats td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-stats caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-trace {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-trace caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-trace th,\ntable.apg-trace td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-trace th:last-child,\ntable.apg-trace th:nth-last-child(2),\ntable.apg-trace td:last-child,\ntable.apg-trace td:nth-last-child(2) {\n  text-align: left;\n}\ntable.apg-grammar {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-grammar caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-grammar th,\ntable.apg-grammar td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-grammar th:last-child,\ntable.apg-grammar td:last-child {\n  text-align: left;\n}\ntable.apg-rules {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-rules caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-rules th,\ntable.apg-rules td {\n  text-align: right;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-rules a {\n  color: #003399 !important;\n}\ntable.apg-rules a:hover {\n  color: #8caae6 !important;\n}\ntable.apg-attrs {\n  font-family: monospace;\n  margin-top: 5px;\n  font-size: 11px;\n  line-height: 130%;\n  text-align: center;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-attrs caption {\n  font-size: 125%;\n  line-height: 130%;\n  font-weight: bold;\n  text-align: left;\n}\ntable.apg-attrs th,\ntable.apg-attrs td {\n  text-align: center;\n  border: 1px solid black;\n  border-collapse: collapse;\n}\ntable.apg-attrs th:nth-child(1),\ntable.apg-attrs th:nth-child(2),\ntable.apg-attrs th:nth-child(3) {\n  text-align: right;\n}\ntable.apg-attrs td:nth-child(1),\ntable.apg-attrs td:nth-child(2),\ntable.apg-attrs td:nth-child(3) {\n  text-align: right;\n}\ntable.apg-attrs a {\n  color: #003399 !important;\n}\ntable.apg-attrs a:hover {\n  color: #8caae6 !important;\n}\n';
 }
 
 
@@ -12077,7 +12213,7 @@ module.exports = function() {
 // See the function, `setMaxRecords(max)` below. This will result in only the last `max` records being saved. 
 // 
 // (See [`apg-examples`](https://github.com/ldthomas/apg-js2-examples) for examples of using `trace.js`.)
-module.exports = function() {
+module.exports = function () {
   "use strict";
   var thisFileName = "trace.js: ";
   var that = this;
@@ -12107,8 +12243,8 @@ module.exports = function() {
   var PHRASE_CONTINUE = '<span class="' + style.CLASS_LINEEND + '">&hellip;</span>';
   var PHRASE_EMPTY = '<span class="' + style.CLASS_EMPTY + '">&#120634;</span>';
   /* filter the non-RNM & non-UDT operators */
-  var initOperatorFilter = function() {
-    var setOperators = function(set) {
+  var initOperatorFilter = function () {
+    var setOperators = function (set) {
       operatorFilter[id.ALT] = set;
       operatorFilter[id.CAT] = set;
       operatorFilter[id.REP] = set;
@@ -12122,9 +12258,9 @@ module.exports = function() {
       operatorFilter[id.BKN] = set;
       operatorFilter[id.ABG] = set;
       operatorFilter[id.AEN] = set;
-    }
+    };
     var items = 0;
-    for ( var name in that.filter.operators) {
+    for (var name in that.filter.operators) {
       items += 1;
     }
     if (items === 0) {
@@ -12132,7 +12268,7 @@ module.exports = function() {
       setOperators(false);
       return;
     }
-    for ( var name in that.filter.operators) {
+    for (var name in that.filter.operators) {
       var upper = name.toUpperCase();
       if (upper === '<ALL>') {
         /* case 2: <all> operators specified: trace all operators ignore all other operator commands */
@@ -12146,52 +12282,64 @@ module.exports = function() {
       }
     }
     setOperators(false);
-    for ( var name in that.filter.operators) {
+    for (var name in that.filter.operators) {
       var upper = name.toUpperCase();
       /* case 4: one or more individual operators specified: trace 'true' operators only */
       if (upper === 'ALT') {
-        operatorFilter[id.ALT] = (that.filter.operators[name] === true) ? true: false;
+        operatorFilter[id.ALT] = (that.filter.operators[name] === true) ? true : false;
       } else if (upper === 'CAT') {
-        operatorFilter[id.CAT] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.CAT] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'REP') {
-        operatorFilter[id.REP] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.REP] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'AND') {
-        operatorFilter[id.AND] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.AND] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'NOT') {
-        operatorFilter[id.NOT] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.NOT] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'TLS') {
-        operatorFilter[id.TLS] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.TLS] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'TBS') {
-        operatorFilter[id.TBS] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.TBS] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'TRG') {
-        operatorFilter[id.TRG] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.TRG] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'BKR') {
-        operatorFilter[id.BKR] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.BKR] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'BKA') {
-        operatorFilter[id.BKA] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.BKA] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'BKN') {
-        operatorFilter[id.BKN] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.BKN] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'ABG') {
-        operatorFilter[id.ABG] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.ABG] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else if (upper === 'AEN') {
-        operatorFilter[id.AEN] = (that.filter.operators[name] === true) ? true: false;;
+        operatorFilter[id.AEN] = (that.filter.operators[name] === true) ? true : false;
+        ;
       } else {
         throw new Error(thisFileName + "initOpratorFilter: '" + name + "' not a valid operator name."
             + " Must be <all>, <none>, alt, cat, rep, tls, tbs, trg, and, not, bkr, bka or bkn");
       }
     }
-  }
+  };
   /* filter the rule and `UDT` named operators */
-  var initRuleFilter = function() {
-    var setRules = function(set) {
+  var initRuleFilter = function () {
+    var setRules = function (set) {
       operatorFilter[id.RNM] = set;
       operatorFilter[id.UDT] = set;
-      var count = rules.length + udts.length
+      var count = rules.length + udts.length;
       ruleFilter.length = 0;
       for (var i = 0; i < count; i += 1) {
         ruleFilter.push(set);
       }
-    }
+    };
     var items, i, list = [];
     for (i = 0; i < rules.length; i += 1) {
       list.push(rules[i].lower);
@@ -12201,7 +12349,7 @@ module.exports = function() {
     }
     ruleFilter.length = 0;
     items = 0;
-    for ( var name in that.filter.rules) {
+    for (var name in that.filter.rules) {
       items += 1;
     }
     if (items === 0) {
@@ -12209,7 +12357,7 @@ module.exports = function() {
       setRules(true);
       return;
     }
-    for ( var name in that.filter.rules) {
+    for (var name in that.filter.rules) {
       var lower = name.toLowerCase();
       if (lower === '<all>') {
         /* case 2: trace all rules ignore all other rule commands */
@@ -12226,43 +12374,50 @@ module.exports = function() {
     setRules(false);
     operatorFilter[id.RNM] = true;
     operatorFilter[id.UDT] = true;
-    for ( var name in that.filter.rules) {
+    for (var name in that.filter.rules) {
       var lower = name.toLowerCase();
       i = list.indexOf(lower);
       if (i < 0) {
         throw new Error(thisFileName + "initRuleFilter: '" + name + "' not a valid rule or udt name");
       }
-      ruleFilter[i] = (that.filter.rules[name] === true) ? true: false;;
+      ruleFilter[i] = (that.filter.rules[name] === true) ? true : false;
+      ;
     }
-  }
+  };
   /* used by other APG components to verify that they have a valid trace object */
   this.traceObject = "traceObject";
   this.filter = {
-    operators : [],
-    rules : []
-  }
+    operators: [],
+    rules: []
+  };
   // Set the maximum number of records to keep (default = 5000).
   // Each record number larger than `maxRecords`
   // will result in deleting the previously oldest record.
-  this.setMaxRecords = function(max, last) {
+  this.setMaxRecords = function (max, last) {
+    lastRecord = -1;
     if (typeof (max) === "number" && max > 0) {
       maxRecords = Math.ceil(max);
+    }else{
+      maxRecords = 0;
+      return;
     }
-    if(typeof(last) === "number"){
+    if (typeof (last) === "number") {
       lastRecord = Math.floor(last);
-      if(lastRecord < 0){
+      if (lastRecord < 0) {
         lastRecord = -1;
-      }else if(lastRecord < maxRecords){
-        lastRecord = maxRecords;
       }
     }
-  }
+  };
   // Returns `maxRecords` to the caller.
-  this.getMaxRecords = function() {
+  this.getMaxRecords = function () {
     return maxRecords;
-  }
+  };
+  // Returns `lastRecords` to the caller.
+  this.getMaxRecords = function () {
+    return lastRecord;
+  };
   /* Called only by the `parser.js` object. No verification of input. */
-  this.init = function(rulesIn, udtsIn, charsIn) {
+  this.init = function (rulesIn, udtsIn, charsIn) {
     records.length = 0;
     recordStack.length = 0;
     filteredRecords = 0;
@@ -12275,7 +12430,7 @@ module.exports = function() {
     circular.init(maxRecords);
   };
   /* returns true if this records passes through the designated filter, false if the record is to be skipped */
-  var filterOps = function(op) {
+  var filterOps = function (op) {
     var ret = false;
     if (op.type === id.RNM) {
       if (operatorFilter[op.type] && ruleFilter[op.index]) {
@@ -12293,35 +12448,38 @@ module.exports = function() {
       ret = operatorFilter[op.type];
     }
     return ret;
-  }
-  var filterRecords = function(record){
-    if((lastRecord === -1) || (record <= lastRecord)){
+  };
+  var filterRecords = function (record) {
+    if (lastRecord === -1) {
+      return true;
+    }
+    if (record <= lastRecord) {
       return true;
     }
     return false;
-  }
+  };
   /* Collect the "down" record. */
-  this.down = function(op, state, offset, length, anchor, lookAround) {
+  this.down = function (op, state, offset, length, anchor, lookAround) {
     if (filterRecords(filteredRecords) && filterOps(op)) {
       recordStack.push(filteredRecords);
       records[circular.increment()] = {
-        dirUp : false,
-        depth : treeDepth,
-        thisLine : filteredRecords,
-        thatLine : undefined,
-        opcode : op,
-        state : state,
-        phraseIndex : offset,
-        phraseLength : length,
-        lookAnchor : anchor,
-        lookAround : lookAround
+        dirUp: false,
+        depth: treeDepth,
+        thisLine: filteredRecords,
+        thatLine: undefined,
+        opcode: op,
+        state: state,
+        phraseIndex: offset,
+        phraseLength: length,
+        lookAnchor: anchor,
+        lookAround: lookAround
       };
       filteredRecords += 1;
       treeDepth += 1;
     }
   };
   /* Collect the "up" record. */
-  this.up = function(op, state, offset, length, anchor, lookAround) {
+  this.up = function (op, state, offset, length, anchor, lookAround) {
     if (filterRecords(filteredRecords) && filterOps(op)) {
       var thisLine = filteredRecords;
       var thatLine = recordStack.pop();
@@ -12331,25 +12489,433 @@ module.exports = function() {
       }
       treeDepth -= 1;
       records[circular.increment()] = {
-        dirUp : true,
-        depth : treeDepth,
-        thisLine : thisLine,
-        thatLine : thatLine,
-        opcode : op,
-        state : state,
-        phraseIndex : offset,
-        phraseLength : length,
-        lookAnchor : anchor,
-        lookAround : lookAround
+        dirUp: true,
+        depth: treeDepth,
+        thisLine: thisLine,
+        thatLine: thatLine,
+        opcode: op,
+        state: state,
+        phraseIndex: offset,
+        phraseLength: length,
+        lookAnchor: anchor,
+        lookAround: lookAround
       };
       filteredRecords += 1;
     }
   };
-  // Translate the trace records to HTML format.
-  // - *modearg* - can be `"ascii"`, `"decimal"`, `"hexidecimal"` or `"unicode"`.
-  // Determines the format of the string character code display.
-  // - *caption* - optional caption for the HTML table.
-  this.toHtml = function(modearg, caption) {
+  var toTree = function (obj, varname) {
+    /* private functions */
+    /* generate the tree nodes */
+    function nodeOpcode(node, opcode) {
+      if (opcode) {
+        node.op = {id: opcode.type, name: utils.opcodeToString(opcode.type)};
+        node.opData = undefined;
+        switch (opcode.type) {
+          case id.RNM:
+            node.opData = rules[opcode.index].name;
+            break;
+          case id.UDT:
+            node.opData = udts[opcode.index].name;
+            break;
+          case id.BKR:
+            var name, casetype, modetype;
+            if (opcode.index < rules.length) {
+              name = rules[opcode.index].name;
+            } else {
+              name = udts[opcode.index - rules.length].name;
+            }
+            casetype = opcode.bkrCase === id.BKR_MODE_CI ? "%i" : "%s";
+            modetype = opcode.bkrMode === id.BKR_MODE_UM ? "%u" : "%p";
+            node.opData = '\\' + casetype + modetype + name;
+            break;
+          case id.TLS:
+            node.opData = [];
+            for (var i = 0; i < opcode.string.length; i += 1) {
+              node.opData.push(opcode.string[i]);
+            }
+            break;
+          case id.TBS:
+            node.opData = [];
+            for (var i = 0; i < opcode.string.length; i += 1) {
+              node.opData.push(opcode.string[i]);
+            }
+            break;
+          case id.TRG:
+            node.opData = [opcode.min, opcode.max];
+            break;
+          case id.REP:
+            node.opData = [opcode.min, opcode.max];
+            break;
+        }
+      } else {
+        node.opType = {id: undefined, name: undefined};
+        node.opData = undefined;
+      }
+    }
+    function nodePhrase(state, index, length) {
+      if (state === id.MATCH) {
+        return {
+          index: index,
+          length: length
+        };
+      }
+      if (state === id.NOMATCH) {
+        return {
+          index: index,
+          length: 0
+        };
+      }
+      if (state === id.EMPTY) {
+        return {
+          index: index,
+          length: 0
+        };
+      }
+      return null;
+    }
+    function nodeDown(parent, record, depth) {
+      var node = {
+        id: nodeId++,
+        branch: -1,
+        parent: parent,
+        up: false,
+        depth: depth,
+        children: []
+      };
+      if (record) {
+        node.down = true;
+        node.state = {id: record.state, name: utils.stateToString(record.state)};
+        node.phrase = null;
+        nodeOpcode(node, record.opcode);
+      } else {
+        node.down = false;
+        node.state = {id: undefined, name: undefined};
+        node.phrase = nodePhrase();
+        nodeOpcode(node, undefined);
+      }
+      return node;
+    }
+    function nodeUp(node, record) {
+      if (record) {
+        node.up = true;
+        node.state = {id: record.state, name: utils.stateToString(record.state)};
+        node.phrase = nodePhrase(record.state, record.phraseIndex, record.phraseLength);
+        if (!node.down) {
+          nodeOpcode(node, record.opcode);
+        }
+      }
+    }
+    function indent(n, offset) {
+      var ret = "";
+      offset = (offset < 0) ? 0 : offset;
+      for (var i = 0; i < (n - offset); i += 1) {
+        ret += "  ";
+      }
+      return ret;
+    }
+    function display(node, offset, comma) {
+      var ret = '';
+      var inset = indent(node.depth, offset) + '  ';
+      var inset1 = inset + ' ';
+      ret += inset + '{';
+      ret += '\n';
+      ret += inset1 + 'id: ' + node.id + ',';
+      ret += '\n';
+      ret += inset1 + 'branch: ' + node.branch + ',';
+      ret += '\n';
+      ret += inset1 + 'branchType: "' + node.branchType + '",';
+      ret += '\n';
+      ret += inset1 + 'down: ' + node.down + ',';
+      ret += '\n';
+      ret += inset1 + 'up: ' + node.up + ',';
+      ret += '\n';
+      ret += inset1 + 'state: {id: ' + node.state.id + ', name: "' + node.state.name + '"},';
+      ret += '\n';
+      ret += inset1 + 'op: {id: ' + node.op.id + ', name: "' + node.op.name + '"},';
+      ret += '\n';
+      if (typeof (node.opData) === "string") {
+        ret += inset1 + 'opData: "' + node.opData + '",';
+      } else if (Array.isArray(node.opData)) {
+        ret += inset1 + 'opData: [';
+        for (var i = 0; i < node.opData.length; i += 1) {
+          if (i > 0) {
+            ret += ',';
+          }
+          ret += node.opData[i];
+        }
+        ret += '],';
+      } else {
+        ret += inset1 + 'opData: undefined,';
+      }
+      ret += '\n';
+      if (node.phrase) {
+        ret += inset1 + 'phrase: {index: ' + node.phrase.index + ', length: ' + node.phrase.length + '},';
+      } else {
+        ret += inset1 + 'phrase: null,';
+      }
+      ret += '\n';
+      ret += inset1 + 'depth: ' + node.depth + ',';
+      ret += '\n';
+      if (node.children.length === 0) {
+        ret += inset1 + 'children: []';
+      } else {
+        ret += inset1 + 'children: [';
+        ret += '\n';
+        for (var i = 0; i < node.children.length; i += 1) {
+          var c = (i === (node.children.length - 1)) ? false : true;
+          ret += display(node.children[i], offset, c);
+        }
+        ret += inset1 + ']';
+      }
+      ret += '\n';
+      ret += inset + '}';
+      if (comma) {
+        ret += ',';
+      }
+      ret += '\n';
+      return ret;
+    }
+
+    /* construct the tree beginning here */
+    var nodeId = -1;
+    var branch = [];
+    var node, root, parent, record;
+    var first = true;
+    root = nodeDown(null, null, -1);
+    node = root;
+    branch.push(node);
+    circular.forEach(function (lineIndex) {
+      record = records[lineIndex];
+      if (first) {
+        first = false;
+        if (record.depth > 0) {
+          /* push some dummy nodes to fill in for missing records. */
+          for (var i = 0; i < record.depth; i += 1) {
+            parent = node;
+            node = nodeDown(node, null, i);
+            branch.push(node);
+            if (parent) {
+              parent.children.push(node);
+            }
+          }
+        }
+      }
+      if (record.dirUp) {
+        /* handle the next record up */
+        node = branch.pop();
+        if (node) {
+          nodeUp(node, record);
+          node = (branch.length === 0) ? null : branch[branch.length - 1];
+        }
+      } else {
+        /* handle the next record down */
+        parent = node;
+        node = nodeDown(node, record, record.depth);
+        branch.push(node);
+        if (parent) {
+          parent.children.push(node);
+        }
+      }
+    });
+    if (branch.length > 0) {
+      /* walk it up to root node */
+      while (branch.length > 0) {
+        node = branch.pop();
+        nodeUp(node, null);
+      }
+    }
+    /* find the tree root */
+    // TBD: may need some boundary conditions for special cases
+    var treeRoot = root;
+    if (treeRoot.children.length === 0) {
+      throw new Error("trace.toTree(): parse tree has no nodes");
+    }
+    treeRoot = treeRoot.children[0];
+    if (treeRoot.down || treeRoot.up) {
+      /* the parse tree root is the grammar start rule node */
+    } else {
+      /* walk down to the first populated node, tree root is the psuedo node parent */
+      var prev;
+      while (treeRoot && !(treeRoot.down || treeRoot.up)) {
+        prev = treeRoot;
+        treeRoot = treeRoot.children[0];
+      }
+      treeRoot = prev;
+    }
+
+    /* walk the final tree for max tree depth and number of leaf nodes */
+    function branchType(node){
+      var type;
+      if(node.down){
+        if(node.up){
+          type = "complete";
+        }else{
+          type = "right";
+        }
+      }else{
+        if (node.up) {
+          type = "left";
+        } else {
+          type = "both";
+        }
+      }
+      return type;
+    }
+    function walk(node) {
+      node.branch = branchCount;
+      node.branchType = bt;
+      depth += 1;
+      if (depth > treeDepth) {
+        treeDepth = depth;
+      }
+      if (node.children.length === 0) {
+        leafNodes += 1;
+      } else {
+        for (var i = 0; i < node.children.length; i += 1) {
+          if (i > 0) {
+            branchCount += 1;
+            bt = branchType(node.children[i]);
+          }
+          walk(node.children[i]);
+        }
+      }
+      depth -= 1;
+    }
+    var treeDepth = 0;
+    var leafNodes = 0;
+    var depth = -1;
+    var branchCount = 1;
+    var bt = branchType(treeRoot);
+    walk(treeRoot);
+//    treeRoot.branch = 0;
+
+    /* generate the exported object*/
+    var str = '';
+    str += '{';
+    str += '\n';
+    str += '  /* the input string character codes*/\n';
+    str += '  string: [';
+    for (var i = 0; i < chars.length; i += 1) {
+      str += (i > 0) ? ',' + chars[i] : chars[i];
+    }
+    str += '],\n';
+    /* generate the exported rule names */
+    str += '\n';
+    str += '  /* the grammar rule names */\n';
+    str += '  rules: [';
+    for (var i = 0; i < rules.length; i += 1) {
+      if (i > 0) {
+        str += ', ';
+      }
+      str += '"' + rules[i].name + '"';
+    }
+    str += '],\n';
+    /* generate the exported UDT names*/
+    str += '\n';
+    str += '  /* the grammar UDT names */\n';
+    str += '  udts: [';
+    for (var i = 0; i < udts.length; i += 1) {
+      if (i > 0) {
+        str += ', ';
+      }
+      str += '"' + udts[i].name + '"';
+    }
+    str += '],\n';
+    /* generate the ids */
+    str += '\n';
+    str += '  /* the trace record ids */\n';
+    str += '  id: {';
+    str += '\n';
+    str += '      ALT: {id: ' + id.ALT + ', name: "ALT"},';
+    str += '\n';
+    str += '      CAT: {id: ' + id.CAT + ', name: "CAT"},';
+    str += '\n';
+    str += '      REP: {id: ' + id.REP + ', name: "REP"},';
+    str += '\n';
+    str += '      RNM: {id: ' + id.RNM + ', name: "RNM"},';
+    str += '\n';
+    str += '      TLS: {id: ' + id.TLS + ', name: "TLS"},';
+    str += '\n';
+    str += '      TBS: {id: ' + id.TBS + ', name: "TBS"},';
+    str += '\n';
+    str += '      TRG: {id: ' + id.TRG + ', name: "TRG"},';
+    str += '\n';
+    str += '      UDT: {id: ' + id.UDT + ', name: "UDT"},';
+    str += '\n';
+    str += '      AND: {id: ' + id.AND + ', name: "AND"},';
+    str += '\n';
+    str += '      NOT: {id: ' + id.NOT + ', name: "NOT"},';
+    str += '\n';
+    str += '      BKR: {id: ' + id.BKR + ', name: "BKR"},';
+    str += '\n';
+    str += '      BKA: {id: ' + id.BKA + ', name: "BKA"},';
+    str += '\n';
+    str += '      BKN: {id: ' + id.BKN + ', name: "BKN"},';
+    str += '\n';
+    str += '      ABG: {id: ' + id.ABG + ', name: "ABG"},';
+    str += '\n';
+    str += '      AEN: {id: ' + id.AEN + ', name: "AEN"},';
+    str += '\n';
+    str += '      ACTIVE: {id: ' + id.ACTIVE + ', name: "ACTIVE"},';
+    str += '\n';
+    str += '      MATCH: {id: ' + id.MATCH + ', name: "MATCH"},';
+    str += '\n';
+    str += '      EMPTY: {id: ' + id.EMPTY + ', name: "EMPTY"},';
+    str += '\n';
+    str += '      NOMATCH: {id: ' + id.NOMATCH + ', name: "NOMATCH"}';
+    str += '\n';
+    str += '  },\n';
+    /* generate the max tree depth */
+    str += '\n';
+    str += '  /* the maximum tree depth */\n';
+    str += '  treeDepth: ' + treeDepth + ',';
+    str += '\n';
+    /* generate the number of leaf nodes (branches) */
+    str += '\n';
+    str += '  /* the number of leaf nodes (branches) */\n';
+    str += '  leafNodes: ' + leafNodes + ',';
+    str += '\n';
+    /* generate the exported tree object*/
+    str += '\n';
+    str += '  /* the traced parse tree object */\n';
+    str += '  tree: \n';
+    str += display(treeRoot, treeRoot.depth, false);
+    str += '};';
+    str += '\n';
+
+    if (obj) {
+      return str;
+    }
+
+    var pre = "";
+    pre += '// generated by apg-lib.trace.toTreeSource()';
+    pre += '\n';
+    if (typeof (varname) === "string") {
+      pre += varname + ' = ';
+    } else {
+      pre += "var parseTree = ";
+    }
+    return pre + str;
+  };
+  // return the trace tree as a JavaScript object
+  this.toTreeObject = function () {
+    return eval("(function(){return " + toTree(true) + ";})()");
+  };
+  // return the trace tree as a string representing a JavaScript object variable definition
+  // - varname: should include the `var` keyword unless it is a module export
+  // - examples:
+  // - "module.exports"
+  // - "exports.name"
+  // - "var myTreeName"
+  // - defaults to "var parseTree"
+  this.toTreeSource = function (varname) {
+    return toTree(false, varname);
+  };
+// Translate the trace records to HTML format.
+// - *modearg* - can be `"ascii"`, `"decimal"`, `"hexidecimal"` or `"unicode"`.
+// Determines the format of the string character code display.
+// - *caption* - optional caption for the HTML table.
+  this.toHtml = function (modearg, caption) {
     /* writes the trace records as a table in a complete html page */
     var mode = MODE_ASCII;
     if (typeof (modearg) === "string" && modearg.length >= 3) {
@@ -12367,48 +12933,48 @@ module.exports = function() {
     html += htmlTable(mode);
     html += htmlFooter();
     return html;
-  }
-  // Translate the trace records to HTML format and create a complete HTML page for browser display.
-  this.toHtmlPage = function(mode, caption, title){
+  };
+// Translate the trace records to HTML format and create a complete HTML page for browser display.
+  this.toHtmlPage = function (mode, caption, title) {
     return utils.htmlToPage(this.toHtml(mode, caption), title);
-  }
+  };
 
   /* From here on down, these are just helper functions for `toHtml()`. */
-  var htmlHeader = function(mode, caption) {
+  var htmlHeader = function (mode, caption) {
     /* open the page */
     /* write the HTML5 header with table style */
     /* open the <table> tag */
     var modeName;
     switch (mode) {
-    case MODE_HEX:
-      modeName = "hexidecimal";
-      break;
-    case MODE_DEC:
-      modeName = "decimal";
-      break;
-    case MODE_ASCII:
-      modeName = "ASCII";
-      break;
-    case MODE_UNICODE:
-      modeName = "UNICODE";
-      break;
-    default:
-      throw new Error(thisFileName + "htmlHeader: unrecognized mode: " + mode);
+      case MODE_HEX:
+        modeName = "hexidecimal";
+        break;
+      case MODE_DEC:
+        modeName = "decimal";
+        break;
+      case MODE_ASCII:
+        modeName = "ASCII";
+        break;
+      case MODE_UNICODE:
+        modeName = "UNICODE";
+        break;
+      default:
+        throw new Error(thisFileName + "htmlHeader: unrecognized mode: " + mode);
     }
     var header = '';
     header += '<p>display mode: ' + modeName + '</p>\n';
-    header += '<table class="'+style.CLASS_TRACE+'">\n';
+    header += '<table class="' + style.CLASS_TRACE + '">\n';
     if (typeof (caption) === "string") {
       header += '<caption>' + caption + '</caption>';
     }
     return header;
-  }
-  var htmlFooter = function() {
+  };
+  var htmlFooter = function () {
     var footer = "";
     /* close the </table> tag */
     footer += '</table>\n';
     /* display a table legend */
-    footer += '<p class="'+style.CLASS_MONOSPACE+'">legend:<br>\n';
+    footer += '<p class="' + style.CLASS_MONOSPACE + '">legend:<br>\n';
     footer += '(a)&nbsp;-&nbsp;line number<br>\n';
     footer += '(b)&nbsp;-&nbsp;matching line number<br>\n';
     footer += '(c)&nbsp;-&nbsp;phrase offset<br>\n';
@@ -12422,11 +12988,11 @@ module.exports = function() {
     footer += 'operator&nbsp;-&nbsp;ALT, CAT, REP, RNM, TRG, TLS, TBS<sup>&dagger;</sup>, UDT, AND, NOT, BKA, BKN, BKR, ABG, AEN<sup>&Dagger;</sup><br>\n';
     footer += 'phrase&nbsp;&nbsp;&nbsp;-&nbsp;up to ' + MAX_PHRASE + ' characters of the phrase being matched<br>\n';
     footer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;<span class="' + style.CLASS_MATCH
-    + '">matched characters</span><br>\n';
+        + '">matched characters</span><br>\n';
     footer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;<span class="' + style.CLASS_LOOKAHEAD
-    + '">matched characters in look ahead mode</span><br>\n';
+        + '">matched characters in look ahead mode</span><br>\n';
     footer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;<span class="' + style.CLASS_LOOKBEHIND
-    + '">matched characters in look behind mode</span><br>\n';
+        + '">matched characters in look behind mode</span><br>\n';
     footer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;<span class="' + style.CLASS_REMAINDER
         + '">remainder characters(not yet examined by parser)</span><br>\n';
     footer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;<span class="' + style.CLASS_CTRLCHAR
@@ -12436,7 +13002,7 @@ module.exports = function() {
     footer += '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;' + PHRASE_CONTINUE
         + ' input string display truncated<br>\n';
     footer += '</p>\n';
-    footer += '<p class="'+style.CLASS_MONOSPACE+'">\n';
+    footer += '<p class="' + style.CLASS_MONOSPACE + '">\n';
     footer += '<sup>&dagger;</sup>original ABNF operators:<br>\n';
     footer += 'ALT - alternation<br>\n';
     footer += 'CAT - concatenation<br>\n';
@@ -12457,9 +13023,9 @@ module.exports = function() {
     footer += 'AEN - anchor - end of input string<br>\n';
     footer += '</p>\n';
     return footer;
-  }
+  };
   /* Returns the filtered records, formatted as an HTML table. */
-  var htmlTable = function(mode) {
+  var htmlTable = function (mode) {
     if (rules === null) {
       return "";
     }
@@ -12467,7 +13033,7 @@ module.exports = function() {
     var thisLine, thatLine, lookAhead, lookBehind, lookAround, anchor;
     html += '<tr><th>(a)</th><th>(b)</th><th>(c)</th><th>(d)</th><th>(e)</th><th>(f)</th>';
     html += '<th>operator</th><th>phrase</th></tr>\n';
-    circular.forEach(function(lineIndex, index) {
+    circular.forEach(function (lineIndex, index) {
       var line = records[lineIndex];
       thisLine = line.thisLine;
       thatLine = (line.thatLine !== undefined) ? line.thatLine : '--';
@@ -12485,7 +13051,7 @@ module.exports = function() {
         lookAround = true;
         anchor = line.phraseIndex;
       }
-      if (line.lookAround === id.LOOKAROUND_BEHIND){
+      if (line.lookAround === id.LOOKAROUND_BEHIND) {
         lookBehind = true;
         lookAround = true;
         anchor = line.lookAnchor;
@@ -12503,28 +13069,28 @@ module.exports = function() {
       html += '<td>' + line.depth + '</td>';
       html += '<td>';
       switch (line.state) {
-      case id.ACTIVE:
-        html += '<span class="' + style.CLASS_ACTIVE + '">&darr;&nbsp;</span>';
-        break;
-      case id.MATCH:
-        html += '<span class="' + style.CLASS_MATCH + '">&uarr;M</span>';
-        break;
-      case id.NOMATCH:
-        html += '<span class="' + style.CLASS_NOMATCH + '">&uarr;N</span>';
-        break;
-      case id.EMPTY:
-        html += '<span class="' + style.CLASS_EMPTY + '">&uarr;E</span>';
-        break;
-      default:
-        html += '<span class="' + style.CLASS_ACTIVE + '">--</span>';
-        break;
+        case id.ACTIVE:
+          html += '<span class="' + style.CLASS_ACTIVE + '">&darr;&nbsp;</span>';
+          break;
+        case id.MATCH:
+          html += '<span class="' + style.CLASS_MATCH + '">&uarr;M</span>';
+          break;
+        case id.NOMATCH:
+          html += '<span class="' + style.CLASS_NOMATCH + '">&uarr;N</span>';
+          break;
+        case id.EMPTY:
+          html += '<span class="' + style.CLASS_EMPTY + '">&uarr;E</span>';
+          break;
+        default:
+          html += '<span class="' + style.CLASS_ACTIVE + '">--</span>';
+          break;
       }
       html += '</td>';
       html += '<td>';
       html += that.indent(line.depth);
       if (lookAhead) {
         html += '<span class="' + style.CLASS_LOOKAHEAD + '">';
-      }else  if (lookBehind) {
+      } else if (lookBehind) {
         html += '<span class="' + style.CLASS_LOOKBEHIND + '">';
       }
       html += utils.opcodeToString(line.opcode.type);
@@ -12558,9 +13124,9 @@ module.exports = function() {
       html += '<td>';
       if (lookBehind) {
         html += displayBehind(mode, chars, line.state, line.phraseIndex, line.phraseLength, anchor);
-      } else if(lookAhead){
+      } else if (lookAhead) {
         html += displayAhead(mode, chars, line.state, line.phraseIndex, line.phraseLength);
-      }else{
+      } else {
         html += displayNone(mode, chars, line.state, line.phraseIndex, line.phraseLength);
       }
       html += '</td></tr>\n';
@@ -12571,7 +13137,7 @@ module.exports = function() {
     html += '</table>\n';
     return html;
   };
-  this.indent = function(depth) {
+  this.indent = function (depth) {
     var html = '';
     for (var i = 0; i < depth; i += 1) {
       html += '.';
@@ -12579,7 +13145,7 @@ module.exports = function() {
     return html;
   };
   /* format the TRG operator */
-  var displayTrg = function(mode, op) {
+  var displayTrg = function (mode, op) {
     var html = "";
     if (op.type === id.TRG) {
       if (mode === MODE_HEX || mode === MODE_UNICODE) {
@@ -12599,9 +13165,9 @@ module.exports = function() {
       }
     }
     return html;
-  }
+  };
   /* format the REP operator */
-  var displayRep = function(mode, op) {
+  var displayRep = function (mode, op) {
     var html = "";
     if (op.type === id.REP) {
       if (mode === MODE_HEX) {
@@ -12628,9 +13194,9 @@ module.exports = function() {
       }
     }
     return html;
-  }
+  };
   /* format the TBS operator */
-  var displayTbs = function(mode, op) {
+  var displayTbs = function (mode, op) {
     var html = "";
     if (op.type === id.TBS) {
       var len = Math.min(op.string.length, MAX_TLS * 2);
@@ -12661,9 +13227,9 @@ module.exports = function() {
       }
     }
     return html;
-  }
+  };
   /* format the TLS operator */
-  var displayTls = function(mode, op) {
+  var displayTls = function (mode, op) {
     var html = "";
     if (op.type === id.TLS) {
       var len = Math.min(op.string.length, MAX_TLS);
@@ -12707,27 +13273,27 @@ module.exports = function() {
       }
     }
     return html;
-  }
+  };
   /* display phrases matched in look-behind mode */
-  var displayBehind = function(mode, chars, state, index, length, anchor) {
+  var displayBehind = function (mode, chars, state, index, length, anchor) {
     var html = '';
     var beg1, len1, beg2, len2;
     var lastchar = PHRASE_END;
     var spanBehind = '<span class="' + style.CLASS_LOOKBEHIND + '">';
-    var spanRemainder = '<span class="' + style.CLASS_REMAINDER + '">'
+    var spanRemainder = '<span class="' + style.CLASS_REMAINDER + '">';
     var spanend = '</span>';
     var prev = false;
     switch (state) {
-    case id.EMPTY:
-      html += PHRASE_EMPTY;
-    case id.NOMATCH:
-    case id.MATCH:
-    case id.ACTIVE:
-      beg1 = index - length;
-      len1 = anchor - beg1;
-      beg2 = anchor;
-      len2 = chars.length - beg2;
-      break;
+      case id.EMPTY:
+        html += PHRASE_EMPTY;
+      case id.NOMATCH:
+      case id.MATCH:
+      case id.ACTIVE:
+        beg1 = index - length;
+        len1 = anchor - beg1;
+        beg2 = anchor;
+        len2 = chars.length - beg2;
+        break;
     }
     lastchar = PHRASE_END;
     if (len1 > MAX_PHRASE) {
@@ -12738,52 +13304,52 @@ module.exports = function() {
       lastchar = PHRASE_CONTINUE;
       len2 = MAX_PHRASE - len1;
     }
-    if(len1 > 0){
+    if (len1 > 0) {
       html += spanBehind;
       html += subPhrase(mode, chars, beg1, len1, prev);
       html += spanend;
       prev = true;
     }
-    if(len2 > 0){
+    if (len2 > 0) {
       html += spanRemainder;
       html += subPhrase(mode, chars, beg2, len2, prev);
       html += spanend;
     }
     return html + lastchar;
-  }
+  };
   /* display phrases matched in look-ahead mode */
-  var displayAhead = function(mode, chars, state, index, length) {
+  var displayAhead = function (mode, chars, state, index, length) {
     var spanAhead = '<span class="' + style.CLASS_LOOKAHEAD + '">';
     return displayForward(mode, chars, state, index, length, spanAhead);
-  }
+  };
   /* display phrases matched in normal parsing mode */
-  var displayNone = function(mode, chars, state, index, length) {
+  var displayNone = function (mode, chars, state, index, length) {
     var spanAhead = '<span class="' + style.CLASS_MATCH + '">';
     return displayForward(mode, chars, state, index, length, spanAhead);
-  }
-  var displayForward = function(mode, chars, state, index, length, spanAhead) {
+  };
+  var displayForward = function (mode, chars, state, index, length, spanAhead) {
     var html = '';
     var beg1, len1, beg2, len2;
     var lastchar = PHRASE_END;
-    var spanRemainder = '<span class="' + style.CLASS_REMAINDER + '">'
+    var spanRemainder = '<span class="' + style.CLASS_REMAINDER + '">';
     var spanend = '</span>';
     var prev = false;
     switch (state) {
-    case id.EMPTY:
-      html += PHRASE_EMPTY;
-    case id.NOMATCH:
-    case id.ACTIVE:
-      beg1 = index;
-      len1 = 0;
-      beg2 = index;
-      len2 = chars.length - beg2;
-      break;
-    case id.MATCH:
-      beg1 = index;
-      len1 = length;
-      beg2 = index + len1;
-      len2 = chars.length - beg2;
-      break;
+      case id.EMPTY:
+        html += PHRASE_EMPTY;
+      case id.NOMATCH:
+      case id.ACTIVE:
+        beg1 = index;
+        len1 = 0;
+        beg2 = index;
+        len2 = chars.length - beg2;
+        break;
+      case id.MATCH:
+        beg1 = index;
+        len1 = length;
+        beg2 = index + len1;
+        len2 = chars.length - beg2;
+        break;
     }
     lastchar = PHRASE_END;
     if (len1 > MAX_PHRASE) {
@@ -12794,46 +13360,46 @@ module.exports = function() {
       lastchar = PHRASE_CONTINUE;
       len2 = MAX_PHRASE - len1;
     }
-    if(len1 > 0){
+    if (len1 > 0) {
       html += spanAhead;
       html += subPhrase(mode, chars, beg1, len1, prev);
       html += spanend;
       prev = true;
     }
-    if(len2 > 0){
+    if (len2 > 0) {
       html += spanRemainder;
       html += subPhrase(mode, chars, beg2, len2, prev);
       html += spanend;
     }
     return html + lastchar;
-  }
-  var subPhrase = function(mode, chars, index, length, prev) {
+  };
+  var subPhrase = function (mode, chars, index, length, prev) {
     if (length === 0) {
       return "";
     }
     var phrase = "";
     var comma = prev ? "," : "";
     switch (mode) {
-    case MODE_HEX:
-      phrase = comma + utils.charsToHex(chars, index, length);
-      break;
-    case MODE_DEC:
-      if(prev){
-        return "," + utils.charsToDec(chars, index, length);
-      }
-      phrase = comma + utils.charsToDec(chars, index, length);
-      break;
-    case MODE_UNICODE:
-      phrase = comma + utils.charsToUnicode(chars, index, length);
-      break;
-    case MODE_ASCII:
-    default:
-    phrase = utils.charsToAsciiHtml(chars, index, length);
-      break;
+      case MODE_HEX:
+        phrase = comma + utils.charsToHex(chars, index, length);
+        break;
+      case MODE_DEC:
+        if (prev) {
+          return "," + utils.charsToDec(chars, index, length);
+        }
+        phrase = comma + utils.charsToDec(chars, index, length);
+        break;
+      case MODE_UNICODE:
+        phrase = utils.charsToUnicode(chars, index, length);
+        break;
+      case MODE_ASCII:
+      default:
+        phrase = utils.charsToAsciiHtml(chars, index, length);
+        break;
     }
     return phrase;
-  }
-}
+  };
+};
 
 
 /***/ }),
@@ -13566,7 +14132,7 @@ window.apgweb = (function() {
           if(isNaN(config.traceRecords.last)){
             throw new Error("apgParser: configuration error: last trace record must be integer >= -1");
           }
-          if(config.traceRecords.last <= 0 ){
+          if(config.traceRecords.last < 0 ){
             config.traceRecords.last = -1;
           }
           config.operatorsOnOff = checkedValue(TRACE.OPERATORS_ON.elements);
@@ -14289,7 +14855,7 @@ window.apgweb = (function() {
   }
 // Constructor for the generator function. Handles the main logic for parser generation.  
   var apgWeb = function() {
-    var api = __webpack_require__(8);
+    var api = __webpack_require__(9);
 
     /* handle the main menu tabs */
     this.openTab = function(tabnumber) {
