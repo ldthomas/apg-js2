@@ -1566,33 +1566,33 @@ window.apgweb = (function() {
           break;
         }
         
-        api = new api(sabnfGrammar);
-        api.scan();
-        grammarHtml = api.linesToHtml();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has invalid characters");
+        var apiObj = new api(sabnfGrammar);
+        apiObj.scan();
+        grammarHtml = apiObj.linesToHtml();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has invalid characters");
           break;
         }
 
         /* validate the SABNF grammar syntax */
-        api.parse();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has syntax errors");
+        apiObj.parse();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has syntax errors");
           break;
         }
 
         /* validate the SABNF grammar semantics */
-        api.translate();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has semantic errors");
+        apiObj.translate();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has semantic errors");
           break;
         }
 
         /* validate the SABNF grammar attributes */
-        attrsObj = api.getAttributesObject();
-        api.attributes();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has attribute errors");
+        attrsObj = apiObj.getAttributesObject();
+        apiObj.attributes();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has attribute errors");
           attrErrors = true;
           break;
         }
@@ -1606,8 +1606,8 @@ window.apgweb = (function() {
       PAGE_INFO[GRAMMAR_PAGE].element.innerHTML = grammarHtml;
       /* Initialize the parser object. */
       if (validGrammar) {
-        var src = api.toSource("generatedGrammar");
-        var obj = api.toObject();
+        var src = apiObj.toSource("generatedGrammar");
+        var obj = apiObj.toObject();
         this.parser.init(src, obj);
       } else {
         this.parser.init(null, null, parserErrorMsg);
@@ -1615,7 +1615,7 @@ window.apgweb = (function() {
       /* Initialize the rules and attributes objects. */
       /* Having attrsObj implies having result.udt */
       if (attrsObj) {
-        this.rules.init(attrsObj.rulesWithReferencesData(), api.udts);
+        this.rules.init(attrsObj.rulesWithReferencesData(), apiObj.udts);
         this.attrs.init(attrsObj.ruleAttrsData(), attrsObj.udtAttrsData());
       } else {
         this.rules.init(null, null, rulesErrorMsg);

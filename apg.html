@@ -4701,7 +4701,7 @@ exports.base64 = {
 // any actual records. It is used by [`trace.js`](./trace.html) for limiting the number of 
 // trace records saved.
 module.exports = function() {
-  "use strict;"
+  "use strict;";
   var thisFileName = "circular-buffer.js: ";
   var itemIndex = -1;
   var maxListSize = 0;
@@ -4709,7 +4709,7 @@ module.exports = function() {
   // *size* is `maxListSize`, the maximum number of records saved before overwriting begins.
   this.init = function(size) {
     if (typeof (size) !== "number" || size <= 0) {
-      throw new Error(thisFileName + "init: circular buffer size must an integer > 0")
+      throw new Error(thisFileName + "init: circular buffer size must an integer > 0");
     }
     maxListSize = Math.ceil(size);
     itemIndex = -1;
@@ -4723,13 +4723,13 @@ module.exports = function() {
   // Returns `maxListSize` - the maximum number of records to keep in the buffer.
   this.maxSize = function() {
     return maxListSize;
-  }
+  };
   // Returns the highest number of items saved.<br>
   // (The number of items is the actual number of records processed
   // even though only `maxListSize` records are actually retained.)
   this.items = function() {
     return itemIndex + 1;
-  }
+  };
   // Returns the record number associated with this item index.
   this.getListIndex = function(item) {
     if (itemIndex === -1) {
@@ -4742,7 +4742,7 @@ module.exports = function() {
       return -1;
     }
     return (item + maxListSize) % maxListSize;
-  }
+  };
   // The iterator over the circular buffer.
   // The user's function, `fn`, will be called with arguments `fn(listIndex, itemIndex)`
   // where `listIndex` is the saved record index and `itemIndex` is the actual item index.
@@ -4763,8 +4763,8 @@ module.exports = function() {
       var listIndex = (i + maxListSize) % maxListSize;
       fn(listIndex, i);
     }
-  }
-}
+  };
+};
 
 
 /***/ }),
@@ -12393,11 +12393,13 @@ module.exports = function () {
   // Set the maximum number of records to keep (default = 5000).
   // Each record number larger than `maxRecords`
   // will result in deleting the previously oldest record.
+  // - `max`: maximum number of records to retain (default = 5000)
+  // - `last`: last record number to retain, (default = -1 for (unknown) actual last record)
   this.setMaxRecords = function (max, last) {
     lastRecord = -1;
     if (typeof (max) === "number" && max > 0) {
       maxRecords = Math.ceil(max);
-    }else{
+    } else {
       maxRecords = 0;
       return;
     }
@@ -12412,8 +12414,8 @@ module.exports = function () {
   this.getMaxRecords = function () {
     return maxRecords;
   };
-  // Returns `lastRecords` to the caller.
-  this.getMaxRecords = function () {
+  // Returns `lastRecord` to the caller.
+  this.getLastRecord = function () {
     return lastRecord;
   };
   /* Called only by the `parser.js` object. No verification of input. */
@@ -12548,7 +12550,7 @@ module.exports = function () {
             break;
         }
       } else {
-        node.opType = {id: undefined, name: undefined};
+        node.op = {id: undefined, name: undefined};
         node.opData = undefined;
       }
     }
@@ -12579,6 +12581,7 @@ module.exports = function () {
         branch: -1,
         parent: parent,
         up: false,
+        down: false,
         depth: depth,
         children: []
       };
@@ -12588,7 +12591,6 @@ module.exports = function () {
         node.phrase = null;
         nodeOpcode(node, record.opcode);
       } else {
-        node.down = false;
         node.state = {id: undefined, name: undefined};
         node.phrase = nodePhrase();
         nodeOpcode(node, undefined);
@@ -12614,6 +12616,7 @@ module.exports = function () {
       return ret;
     }
     function display(node, offset, comma) {
+      var name;
       var ret = '';
       var inset = indent(node.depth, offset) + '  ';
       var inset1 = inset + ' ';
@@ -12623,15 +12626,19 @@ module.exports = function () {
       ret += '\n';
       ret += inset1 + 'branch: ' + node.branch + ',';
       ret += '\n';
-      ret += inset1 + 'branchType: "' + node.branchType + '",';
+      ret += inset1 + 'leftMost: ' + node.leftMost + ',';
       ret += '\n';
-      ret += inset1 + 'down: ' + node.down + ',';
+      ret += inset1 + 'rightMost: ' + node.rightMost + ',';
       ret += '\n';
-      ret += inset1 + 'up: ' + node.up + ',';
+//      ret += inset1 + 'left: ' + node.down + ',';
+//      ret += '\n';
+//      ret += inset1 + 'right: ' + node.up + ',';
+//      ret += '\n';
+      name = (node.state.name) ? '"'+node.state.name + '"' : '"ACTIVE"';
+      ret += inset1 + 'state: {id: ' + node.state.id + ', name: ' + name + '},';
       ret += '\n';
-      ret += inset1 + 'state: {id: ' + node.state.id + ', name: "' + node.state.name + '"},';
-      ret += '\n';
-      ret += inset1 + 'op: {id: ' + node.op.id + ', name: "' + node.op.name + '"},';
+      name = (node.op.name) ? '"'+node.op.name + '"' : '"?"';
+      ret += inset1 + 'op: {id: ' + node.op.id + ', name: ' + name + '},';
       ret += '\n';
       if (typeof (node.opData) === "string") {
         ret += inset1 + 'opData: "' + node.opData + '",';
@@ -12679,91 +12686,71 @@ module.exports = function () {
     /* construct the tree beginning here */
     var nodeId = -1;
     var branch = [];
-    var node, root, parent, record;
-    var first = true;
-    root = nodeDown(null, null, -1);
-    node = root;
-    branch.push(node);
-    circular.forEach(function (lineIndex) {
+    var root, node, dummy, parent, record;
+    var firstRecord = true;
+    var firstDown = false;
+    /* push a dummy node above the actual dummy node*/
+    dummy = nodeDown(null, null, -1);
+    branch.push(dummy);
+    node = dummy;
+    circular.forEach(function (lineIndex, index) {
       record = records[lineIndex];
-      if (first) {
-        first = false;
+      if (firstRecord) {
+        firstRecord = false;
         if (record.depth > 0) {
           /* push some dummy nodes to fill in for missing records. */
           for (var i = 0; i < record.depth; i += 1) {
             parent = node;
             node = nodeDown(node, null, i);
             branch.push(node);
-            if (parent) {
-              parent.children.push(node);
-            }
+            parent.children.push(node);
           }
         }
       }
       if (record.dirUp) {
         /* handle the next record up */
-        node = branch.pop();
-        if (node) {
-          nodeUp(node, record);
-          node = (branch.length === 0) ? null : branch[branch.length - 1];
+        if(firstDown){
+          node = branch.pop();
+        }else{
+          node = nodeDown(node, null, i);
         }
+        nodeUp(node, record);
+        node = branch[branch.length - 1];
       } else {
         /* handle the next record down */
+        firstDown = true;
         parent = node;
         node = nodeDown(node, record, record.depth);
         branch.push(node);
-        if (parent) {
-          parent.children.push(node);
-        }
+        parent.children.push(node);
       }
     });
-    if (branch.length > 0) {
-      /* walk it up to root node */
-      while (branch.length > 0) {
-        node = branch.pop();
-        nodeUp(node, null);
-      }
-    }
-    /* find the tree root */
-    // TBD: may need some boundary conditions for special cases
-    var treeRoot = root;
-    if (treeRoot.children.length === 0) {
-      throw new Error("trace.toTree(): parse tree has no nodes");
-    }
-    treeRoot = treeRoot.children[0];
-    if (treeRoot.down || treeRoot.up) {
-      /* the parse tree root is the grammar start rule node */
-    } else {
-      /* walk down to the first populated node, tree root is the psuedo node parent */
-      var prev;
-      while (treeRoot && !(treeRoot.down || treeRoot.up)) {
-        prev = treeRoot;
-        treeRoot = treeRoot.children[0];
-      }
-      treeRoot = prev;
+    
+    /* if not at root, walk it up to dummy node */
+    while (branch.length > 1) {
+      node = branch.pop();
+      nodeUp(node, null);
     }
 
-    /* walk the final tree for max tree depth and number of leaf nodes */
-    function branchType(node){
-      var type;
-      if(node.down){
-        if(node.up){
-          type = "complete";
-        }else{
-          type = "right";
-        }
-      }else{
-        if (node.up) {
-          type = "left";
-        } else {
-          type = "both";
-        }
-      }
-      return type;
+    if (dummy.children.length === 0) {
+      throw new Error("trace.toTree(): parse tree has no nodes");
     }
+    if (branch.length === 0) {
+      throw new Error("trace.toTree(): integrity check: dummy root node disappeared?");
+    }
+    
+    /* find the pseudo root node (first psuedo node above a real node) */
+    root = dummy.children[0];
+    var prev;
+    while (root && !root.down  && !root.up) {
+      prev = root;
+      root = root.children[0];
+    }
+    root = prev;
+
+    /* walk the final tree for max tree depth and number of leaf nodes */
     function walk(node) {
       node.branch = branchCount;
-      node.branchType = bt;
       depth += 1;
       if (depth > treeDepth) {
         treeDepth = depth;
@@ -12774,7 +12761,14 @@ module.exports = function () {
         for (var i = 0; i < node.children.length; i += 1) {
           if (i > 0) {
             branchCount += 1;
-            bt = branchType(node.children[i]);
+          }
+          node.children[i].leftMost = false;
+          node.children[i].rightMost = false;
+          if (node.leftMost) {
+            node.children[i].leftMost = (i === 0) ? true : false;
+          }
+          if(node.rightMost){
+            node.children[i].rightMost = (i === node.children.length - 1) ? true : false;
           }
           walk(node.children[i]);
         }
@@ -12785,9 +12779,10 @@ module.exports = function () {
     var leafNodes = 0;
     var depth = -1;
     var branchCount = 1;
-    var bt = branchType(treeRoot);
-    walk(treeRoot);
-//    treeRoot.branch = 0;
+    root.leftMost = true;
+    root.rightMost = true;
+    walk(root);
+    root.branch = 0;
 
     /* generate the exported object*/
     var str = '';
@@ -12875,11 +12870,30 @@ module.exports = function () {
     str += '  /* the number of leaf nodes (branches) */\n';
     str += '  leafNodes: ' + leafNodes + ',';
     str += '\n';
+    /* generate the types of the left- and right-most branches */
+    str += '\n';
+    str += '  /* are the left- and right-most branches complete */\n';
+    var branchesIncomplete;
+    if (root.down) {
+      if (root.up) {
+        branchesIncomplete = "none";
+      } else {
+        branchesIncomplete = "right";
+      }
+    } else {
+      if (root.up) {
+        branchesIncomplete = "left";
+      } else {
+        branchesIncomplete = "both";
+      }
+    }
+    str += '  branchesIncomplete: "' + branchesIncomplete + '",';
+    str += '\n';
     /* generate the exported tree object*/
     str += '\n';
     str += '  /* the traced parse tree object */\n';
     str += '  tree: \n';
-    str += display(treeRoot, treeRoot.depth, false);
+    str += display(root, root.depth, false);
     str += '};';
     str += '\n';
 
@@ -14974,33 +14988,33 @@ window.apgweb = (function() {
           break;
         }
         
-        api = new api(sabnfGrammar);
-        api.scan();
-        grammarHtml = api.linesToHtml();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has invalid characters");
+        var apiObj = new api(sabnfGrammar);
+        apiObj.scan();
+        grammarHtml = apiObj.linesToHtml();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has invalid characters");
           break;
         }
 
         /* validate the SABNF grammar syntax */
-        api.parse();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has syntax errors");
+        apiObj.parse();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has syntax errors");
           break;
         }
 
         /* validate the SABNF grammar semantics */
-        api.translate();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has semantic errors");
+        apiObj.translate();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has semantic errors");
           break;
         }
 
         /* validate the SABNF grammar attributes */
-        attrsObj = api.getAttributesObject();
-        api.attributes();
-        if(api.errors.length){
-          grammarHtml += api.errorsToHtml("SABNF grammar has attribute errors");
+        attrsObj = apiObj.getAttributesObject();
+        apiObj.attributes();
+        if(apiObj.errors.length){
+          grammarHtml += apiObj.errorsToHtml("SABNF grammar has attribute errors");
           attrErrors = true;
           break;
         }
@@ -15014,8 +15028,8 @@ window.apgweb = (function() {
       PAGE_INFO[GRAMMAR_PAGE].element.innerHTML = grammarHtml;
       /* Initialize the parser object. */
       if (validGrammar) {
-        var src = api.toSource("generatedGrammar");
-        var obj = api.toObject();
+        var src = apiObj.toSource("generatedGrammar");
+        var obj = apiObj.toObject();
         this.parser.init(src, obj);
       } else {
         this.parser.init(null, null, parserErrorMsg);
@@ -15023,7 +15037,7 @@ window.apgweb = (function() {
       /* Initialize the rules and attributes objects. */
       /* Having attrsObj implies having result.udt */
       if (attrsObj) {
-        this.rules.init(attrsObj.rulesWithReferencesData(), api.udts);
+        this.rules.init(attrsObj.rulesWithReferencesData(), apiObj.udts);
         this.attrs.init(attrsObj.ruleAttrsData(), attrsObj.udtAttrsData());
       } else {
         this.rules.init(null, null, rulesErrorMsg);
