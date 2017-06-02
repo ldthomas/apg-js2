@@ -11,7 +11,8 @@ additional superset features described here. However, a brief synopsis of ABNF w
 for the superset features description. If there is any descrepancy between what is said here and in the RFCs,
 the RFCs naturally prevail.
 
-##ABNF:  
+## ABNF
+
 ABNF is a syntax to describe phrases, a phrase being any string of integer character codes.
 Because the character codes so often represent the [ASCII](http://www.asciitable.com/) character set there are special
 ABNF features to accommodate an easy description of ASCII strings. However, the meaning and range of the
@@ -154,8 +155,8 @@ esign    = "+" / "-"
 exp      = 1*%d48-57
 ```
 
+## SABNF Restrictions
 
-##SABNF Restrictions:  
 Before getting into the additional features of the superset, there are a couple of minor
 restrictions/changes to the strict ABNF that need to be mentioned.  
 
@@ -172,7 +173,8 @@ RFC 5234 defines a `prose-val` operator, `<any text>`. This, as they point out, 
 to describe the phrase in the ordinary prose of a spoken language.
 The SABNF parser will recognize this as valid ABNF, but obviously cannot generate parser code from it.
 
-##SABNF Features:  
+## SABNF Features
+
 **User-Defined Terminals:**  
 In addition to the ABNF terminals above, **APG** allows for User-Defined Terminals (UDT).
 These allow the user to write any phrase he or she chooses as a code snippet. The syntax is,
@@ -319,7 +321,8 @@ All three of the above phrases defined the identical, case-sensitive string `abc
 notation for this was introduced in SABNF prior to publication of RFC 7405, or prior to my knowledge of it in any case.
 The SABNF single-quote notation is kept for backward compatibility.
 
-##ABNF for SABNF  
+## ABNF for SABNF
+
 RFC 5234 defines the ABNF syntax for the ABNF syntax. While this may seem paradoxical, it makes sense when you realize that a parser generator is a parser whose semantic phase generates a parser. In this case, both the parser of the generator and the parser it generates are defined with an ABNF syntax. Confusing? Here is what the ABNF (no superset features required) for SABNF looks like. It is more elaborate than that given in RFC 5234 partially because of the extra features but mostly because many "error" rules have been added so that the parser can catch input errors and report them rather than just fail to parse correctly. The latest version can always be found [here](https://github.com/ldthomas/apg-js2/blob/master/resources/abnf-for-sabnf-grammar.bnf).
 ```
 File            = *(BlankLine / Rule / RuleError)
