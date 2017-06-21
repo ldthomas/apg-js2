@@ -47,7 +47,7 @@ module.exports = function(args){
   }
   var version = function(){
     var v = "";
-    v  = "JavaScript APG, version 3.0.0, Copyright (C) 2017 Lowell D. Thomas, all rights reserved\n";
+    v  = "JavaScript APG, version 3.2.0, Copyright (C) 2017 Lowell D. Thomas, all rights reserved\n";
     v += "    http://coasttocoastresearch.com/\n";
     v += "    https://github.com/ldthomas/apg-js2\n";
     v += "    https://www.npmjs.com/package/apg\n";

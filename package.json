@@ -22,7 +22,7 @@
   "dependencies": {
     "apg-api": "1.0.x",
     "apg-conv-api": "1.0.x",
-    "apg-lib": "3.1.x"
+    "apg-lib": "3.2.x"
   },
   "repository": {
     "type": "git",
