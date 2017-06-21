@@ -14,6 +14,3 @@
 2. Read the command line arguments and convert them into a configuration object.
 > [command-line.js](./command-line.html)<br>
 
-6. Powers the **apg.html** web-page generator.
->[apgweb.js](./apgweb.html)<br>
-
