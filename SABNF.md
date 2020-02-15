@@ -186,9 +186,9 @@ UDTs begin with `u_` or `e_`. The underscore is not used in the ABNF syntax, so 
 distinguish between UDT names and rule names. The difference between the two forms is that a UDT that
 begins with `u_` may not return an empty phrase. If it does the parser will throw an exception.
 Only if the UDT name begins with `e_` is an empty phrase return accepted. The difference has to do with
-the [rule attributes](https://github.com/ldthomas/apg-js2/blob/master/src/attributes.js) and will not be discussed here further.
+the [rule attributes](https://github.com/ldthomas/apg-js2-api/blob/master/src/attributes.js) and will not be discussed here further.
 
-Note the even though UDTs are terminal phrases, they are also named phrases and share some of the named-phrase
+Note that even though UDTs are terminal phrases, they are also named phrases and share some of the named-phrase
 qualities with rules. Also, UDTs were introduced to **APG** prior to publication of RFC 7405, otherwise
 some kind of `%u` or `%e` type of notation might have been used for better consistency.
 
