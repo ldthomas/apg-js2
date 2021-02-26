@@ -5,7 +5,7 @@ JavaScript APG
 
 ### Description
 
-**APG** is an acronym for "ABNF Parser Generator". Originally written to generate parsers directly from ABNF syntax ([RFC 5234](https://tools.ietf.org/html/rfc5234)) it has since grown to include a number of additional features requiring additional syntax terms. The resulting syntax is a superset of ABNF or [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md). Some features have been primarily developed to support the new [**apg-exp**](https://github.com/ldthomas/apg-js2-exp) pattern-matching application. A general description of how **APG** works is given [here](http://coasttocoastresearch.com/apg).
+**APG** is an acronym for "ABNF Parser Generator". Originally written to generate parsers directly from ABNF syntax ([RFC 5234](https://tools.ietf.org/html/rfc5234)) it has since grown to include a number of additional features requiring additional syntax terms. The resulting syntax is a superset of ABNF or [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md). Some features have been primarily developed to support the new [**apg-exp**](https://github.com/ldthomas/apg-js2-exp) pattern-matching application. A general description of how **APG** works can be found on the [APG website](https://sabnf.com/apg).
 
 ### **apg-exp** features
 <ul>
@@ -45,7 +45,9 @@ Translation of the AST with user-written callback functions.
 Parsers can easily be used in web page applications with tools such as <a href="http://browserify.org/">browserify</a>.
 </li>
 </ul>
-More complete explanations of these features can be found in the [SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md) documentation, in the code file documentation and the [examples](https://github.com/ldthomas/apg-js2-examples).
+
+More complete explanations of these features can be found in the 
+[SABNF](https://github.com/ldthomas/apg-js2/blob/master/SABNF.md) documentation, in the code file documentation and the [examples](https://github.com/ldthomas/apg-js2-examples).
 
 #### Installation
 For command line usage:
@@ -92,7 +94,7 @@ npm install -g docco
 ./docco-gen
 ```
 View `docs/index.html` in any web browser to get started.
-Or view it on the [APG website](http://coasttocoastresearch.com/docjs2/apg/index.html)
+Or view it on the [APG website](https://sabnf.com/docjs2/apg/index.html)
 
 ##### Copyright
   *Copyright &copy; 2017 Lowell D. Thomas, all rights reserved*  
